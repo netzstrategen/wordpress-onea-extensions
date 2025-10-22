@@ -1,128 +1,63 @@
 <?php
 /**
- * PSR-11 compliant service container.
+ * Service Container
  *
  * @package Netzstrategen\Onea
  */
 
 namespace Netzstrategen\Onea;
 
-use Netzstrategen\Onea\Contracts\ServiceProviderInterface;
 use Netzstrategen\Onea\Exceptions\NotFoundException;
 use Psr\Container\ContainerInterface;
 
 /**
- * Container to store and reference the plugin components.
+ * Container
  *
- * This container implements PSR-11 ContainerInterface for
- * standardized dependency injection and service location.
+ * A simple PSR-11 compliant dependency injection container.
  */
 class Container implements ContainerInterface {
 
 	/**
-	 * Stored service instances.
+	 * Container bindings.
 	 *
-	 * @var array<string, mixed>
+	 * @var array
 	 */
 	private array $services = [];
 
 	/**
-	 * Registered service providers.
+	 * Store a service in the container.
 	 *
-	 * @var array<ServiceProviderInterface>
-	 */
-	private array $providers = [];
-
-	/**
-	 * Whether providers have been booted.
-	 *
-	 * @var bool
-	 */
-	private bool $booted = false;
-
-	/**
-	 * Sets up the object state.
-	 */
-	public function __construct() {
-		// Container is ready.
-	}
-
-	/**
-	 * Register a service provider.
-	 *
-	 * @param string|ServiceProviderInterface $provider The service provider class or instance.
-	 * @return ServiceProviderInterface
-	 */
-	public function register(string|ServiceProviderInterface $provider): ServiceProviderInterface {
-		if (is_string($provider)) {
-			$provider = new $provider($this);
-		}
-
-		$this->providers[] = $provider;
-		$provider->register();
-
-		// If already booted, boot this provider immediately.
-		if ($this->booted) {
-			$provider->boot();
-		}
-
-		return $provider;
-	}
-
-	/**
-	 * Boot all registered providers.
-	 *
+	 * @param string $id Service identifier.
+	 * @param mixed  $service Service instance.
 	 * @return void
 	 */
-	public function boot_providers(): void {
-		if ($this->booted) {
-			return;
-		}
-
-		foreach ($this->providers as $provider) {
-			$provider->boot();
-		}
-
-		$this->booted = true;
+	public function set( string $id, $service ): void {
+		$this->services[ $id ] = $service;
 	}
 
 	/**
-	 * Set a service in the container.
+	 * Retrieve a service from the container.
 	 *
-	 * @param string $id       The service identifier.
-	 * @param mixed  $service The service instance.
-	 * @return void
+	 * @param string $id Service identifier.
+	 * @return mixed
+	 * @throws NotFoundException If the service is not found.
 	 */
-	public function set(string $id, mixed $service): void {
-		$this->services[$id] = $service;
-	}
-
-	/**
-	 * Finds an entry of the container by its identifier and returns it.
-	 *
-	 * @param string $id Identifier of the entry to look for.
-	 * @return mixed Entry.
-	 * @throws NotFoundException No entry was found for this identifier.
-	 */
-	public function get(string $id) {
-		if (!isset($this->services[$id])) {
-			throw new NotFoundException(
-				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message, not HTML output.
-				sprintf('Service "%s" not found in container.', $id)
-			);
+	public function get( string $id ) {
+		if ( ! $this->has( $id ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new NotFoundException( "Service '{$id}' not found in container." );
 		}
 
-		return $this->services[$id];
+		return $this->services[ $id ];
 	}
 
 	/**
-	 * Returns true if the container can return an entry for the given identifier.
-	 * Returns false otherwise.
+	 * Check if a service exists in the container.
 	 *
-	 * @param string $id Identifier of the entry to look for.
+	 * @param string $id Service identifier.
 	 * @return bool
 	 */
-	public function has(string $id): bool {
-		return isset($this->services[$id]);
+	public function has( string $id ): bool {
+		return isset( $this->services[ $id ] );
 	}
 }

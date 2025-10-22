@@ -1,46 +1,77 @@
 <?php
 /**
- * Main plugin entry point.
+ * Main Plugin Class
  *
  * @package Netzstrategen\Onea
  */
 
 namespace Netzstrategen\Onea;
 
-use Netzstrategen\Onea\Container;
+use Netzstrategen\Onea\Contracts\ServiceProviderInterface;
+use Netzstrategen\Onea\Exceptions\ContainerException;
 
 /**
- * Main plugin entry point.
+ * Plugin
+ *
+ * Main plugin orchestrator that bootstraps the application.
+ * Acts like Laravel's Application class.
  */
-class Plugin {
+final class Plugin {
 
 	/**
-	 * Container instance.
+	 * Service container instance.
 	 *
-	 * @var Container|null
+	 * @var Container
 	 */
-	private static ?Container $container = null;
+	private static Container $container;
 
 	/**
-	 * List of service providers to register.
+	 * Registered service providers.
 	 *
-	 * @var array<string>
+	 * @var ServiceProviderInterface[]
 	 */
-	private array $providers = [
-		\Netzstrategen\Onea\Providers\ElementorServiceProvider::class,
+	private array $providers = [];
+
+	/**
+	 * Service provider class names to register.
+	 *
+	 * @var array
+	 */
+	private array $provider_classes = [
+		Providers\ElementorServiceProvider::class,
 	];
 
 	/**
-	 * Functions/hooks to be initialized/registered during init.
+	 * Booted status.
+	 *
+	 * @var bool
+	 */
+	private bool $booted = false;
+
+	/**
+	 * Initialize the plugin.
 	 *
 	 * @return void
 	 */
 	public static function init(): void {
+		$instance = new self();
+		$instance->bootstrap();
+	}
+
+	/**
+	 * Bootstrap the plugin.
+	 *
+	 * @return void
+	 */
+	private function bootstrap(): void {
+		// Create container.
 		self::$container = new Container();
 
-		$plugin = new self();
-		$plugin->register_providers();
-		$plugin->boot_providers();
+		// Register all service providers.
+		$this->register_providers();
+
+		// Boot all service providers.
+		$this->boot_providers();
 	}
 
 	/**
@@ -49,18 +80,62 @@ class Plugin {
 	 * @return void
 	 */
 	private function register_providers(): void {
-		foreach ($this->providers as $provider) {
-			self::$container->register($provider);
+		foreach ( $this->provider_classes as $provider_class ) {
+			$this->register_provider( $provider_class );
 		}
 	}
 
 	/**
-	 * Boot all service providers.
+	 * Register a service provider.
+	 *
+	 * @param string|ServiceProviderInterface $provider Provider class name or instance.
+	 * @return ServiceProviderInterface The registered provider.
+	 * @throws ContainerException If provider cannot be instantiated.
+	 */
+	private function register_provider( $provider ): ServiceProviderInterface {
+		// If it's a class name, instantiate it.
+		if ( is_string( $provider ) ) {
+			if ( ! class_exists( $provider ) ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+				throw new ContainerException( "Service provider class {$provider} does not exist." );
+			}
+			$provider = new $provider( self::$container );
+		}
+
+		// Check if it implements the interface.
+		if ( ! $provider instanceof ServiceProviderInterface ) {
+			throw new ContainerException(
+				sprintf(
+					'Service provider must implement %s',
+					ServiceProviderInterface::class
+				)
+			);
+		}
+
+		// Register the provider.
+		$provider->register();
+
+		// Store the provider instance.
+		$this->providers[] = $provider;
+
+		return $provider;
+	}
+
+	/**
+	 * Boot all registered service providers.
 	 *
 	 * @return void
 	 */
 	private function boot_providers(): void {
-		self::$container->boot_providers();
+		if ( $this->booted ) {
+			return;
+		}
+
+		foreach ( $this->providers as $provider ) {
+			$provider->boot();
+		}
+
+		$this->booted = true;
 	}
 
 	/**
