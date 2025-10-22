@@ -1,115 +1,239 @@
-# wordpress-onea-extensions
-----
+# WordPress Onea Extensions
 
-## Architecture and methodology
----
+WordPress plugin for Online Energieausweis (Onea)..
 
-This plugin is created to support Onea (Online Energieausweis) web site extensions and custom codes included as services. It follows a **Laravel-inspired architecture** with a **PSR-11 compliant** service container and **Service Provider** pattern for clean service registration and bootstrapping.
+## Architecture
 
-### Directory Structure (Laravel-like):
+This plugin works with **simplified PSR-11 compliant** service container and **Service Provider** pattern for clean service registration and bootstrapping.
+
+### Directory Structure
 
 ```
 src/
-├── Contracts/          # Interfaces (like Laravel's Contracts)
-│   ├── Service.php
-│   └── ServiceProvider.php
-├── Providers/          # Service Providers (like Laravel's app/Providers)
-│   ├── ServiceProvider.php (base)
-│   └── ElementorServiceProvider.php
-├── Services/           # Business logic services (like Laravel's app/Services)
+├── Contracts/              # Interfaces and Abstract Classes
+│   ├── ServiceInterface.php
 │   ├── AbstractService.php
+│   ├── ServiceProviderInterface.php
+│   └── AbstractServiceProvider.php
+├── Providers/              # Service Providers
+│   └── ElementorServiceProvider.php
+├── Services/               # Business Logic
 │   └── Elementor/
-│       └── EnergieausweisWidget.php
-├── Exceptions/         # Custom exceptions
+│       ├── ElementorWidgetsService.php
+│       ├── EnergieausweisWidget.php
+│       └── Widgets/
+│           └── ExampleWidget.php
+├── Exceptions/             # Custom Exceptions
 │   ├── ContainerException.php
 │   └── NotFoundException.php
-├── Container.php       # PSR-11 Container
-├── Plugin.php          # Main plugin class
-├── Schema.php          # Plugin lifecycle
-└── function-helpers.php
+├── Container.php           # Simplified PSR-11 Container
+├── Plugin.php              # Main Plugin Class
+├── Schema.php              # Plugin Lifecycle (activation/deactivation)
+└── function-helpers.php    # Helper Functions
 ```
 
-### Key Features:
-- **PSR-11 Container**: Implements `Psr\Container\ContainerInterface` for standardized dependency injection
-- **Service Provider Pattern**: Separate registration and bootstrapping logic (Laravel-style)
-- **Lazy Loading**: Services are instantiated only when needed (via `bind` and `singleton`)
-- **Service Organization**: Clear separation between Providers (configuration) and Services (business logic)
-- **Type-Safe**: Full type hints and return type declarations
+### Key Features
 
-## Adding a new service
----
+- **PSR-11 Container**: Simplified implementation with `set()`, `get()`, and `has()` methods
+- **Service Provider Pattern**: Two-phase initialization (register → boot)
+- **Service Contract Enforcement**: All services must implement `ServiceInterface` with `init()` method
+- **WPCS Compliant**: Follows WordPress Coding Standards 3.0
 
-### Method 1: Using Service Providers (Recommended)
+## How It Works
 
-1. **Create your service** in `src/Services/`:
+### 1. Service Providers
+
+Service providers handle service registration and bootstrapping:
 
 ```php
 <?php
+namespace Netzstrategen\Onea\Providers;
 
-namespace Onea\Services;
+use Netzstrategen\Onea\Contracts\AbstractServiceProvider;
+use Netzstrategen\Onea\Services\Elementor\ElementorWidgetsService;
 
-class MyCustomService extends AbstractService
-{
-    public function init(): void
-    {
+class ElementorServiceProvider extends AbstractServiceProvider {
+
+    // Define services to register
+    protected array $services = [
+        'elementor.widgets' => ElementorWidgetsService::class,
+        // Add more services here:
+        // 'elementor.dynamic_tags' => ElementorDynamicTagsService::class,.
+        // 'elementor.controls' => ElementorControlsService::class,.
+    ];
+
+    // Register services in the container
+    public function register(): void {
+        foreach ($this->services as $key => $class) {
+            $this->container->set($key, new $class());
+        }
+    }
+
+    // Boot services (call init() method)
+    public function boot(): void {
+        foreach ($this->services as $key => $class) {
+            $this->boot_service($key);
+        }
+    }
+}
+```
+
+### 2. Services
+
+Services contain the actual business logic and must implement `ServiceInterface`:
+
+```php
+<?php
+namespace Netzstrategen\Onea\Services\Elementor;
+
+use Netzstrategen\Onea\Contracts\AbstractService;
+
+class ElementorWidgetsService extends AbstractService {
+
+    // Required by ServiceInterface
+    public function init(): void {
+        add_action('elementor/widgets/register', [$this, 'register_widgets']);
+        add_action('elementor/elements/categories_registered', [$this, 'register_widget_categories']);
+    }
+
+    public function register_widgets($widgets_manager): void {
+        require_once __DIR__ . '/Widgets/ExampleWidget.php';
+        $widgets_manager->register(new \Netzstrategen\Onea\Services\Elementor\Widgets\ExampleWidget());
+    }
+
+    public function register_widget_categories($elements_manager): void {
+        $elements_manager->add_category('onea', [
+            'title' => __('Onea', 'onea'),
+            'icon' => 'fa fa-plug',
+        ]);
+    }
+}
+```
+
+### 3. Container Usage
+
+The simplified container provides three main methods:
+
+```php
+use Netzstrategen\Onea\Plugin;
+
+$container = Plugin::container();
+
+// Set a service
+$container->set('my.service', new MyService());
+
+// Check if service exists
+if ($container->has('my.service')) {
+    // Get the service
+    $service = $container->get('my.service');
+}
+```
+
+## Adding a New Service
+
+### Step 1: Create Your Service Class
+
+Create a new service in `src/Services/`:
+
+```php
+<?php
+namespace Netzstrategen\Onea\Services;
+
+use Netzstrategen\Onea\Contracts\AbstractService;
+
+class MyCustomService extends AbstractService {
+
+    public function init(): void {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
         add_filter('the_content', [$this, 'modify_content']);
     }
     
-    public function enqueue_assets(): void
-    {
-        // Your code here
+    public function enqueue_assets(): void {
+        wp_enqueue_style('my-custom-style', plugin_dir_url(__FILE__) . 'assets/style.css');
     }
     
-    public function modify_content($content): string
-    {
-        // Your code here
+    public function modify_content($content): string {
+        // Your custom logic here
         return $content;
     }
 }
 ```
 
-Then register it in `src/Container.php`:
+### Step 2: Create a Service Provider (or use existing)
+
+Option A: Add to existing provider (e.g., `ElementorServiceProvider`):
 
 ```php
-private function registerDefaultBindings(): void
-{
-    $this->instance('myCustomService', new MyCustomService());
-    // ... other services
+protected array $services = [
+    'elementor.widgets' => ElementorWidgetsService::class,
+    'my.custom' => MyCustomService::class, // Add here
+];
+```
+
+Option B: Create a new provider:
+
+```php
+<?php
+namespace Netzstrategen\Onea\Providers;
+
+use Netzstrategen\Onea\Contracts\AbstractServiceProvider;
+use Netzstrategen\Onea\Services\MyCustomService;
+
+class CustomServiceProvider extends AbstractServiceProvider {
+
+    protected array $services = [
+        'my.custom' => MyCustomService::class,
+    ];
+
+    public function register(): void {
+        foreach ($this->services as $key => $class) {
+            $this->container->set($key, new $class());
+        }
+    }
+
+    public function boot(): void {
+        foreach ($this->services as $key => $class) {
+            $this->boot_service($key);
+        }
+    }
 }
 ```
 
-## Accessing Services (PSR-11)
----
+### Step 3: Register Provider in Plugin
 
-The container implements PSR-11 `ContainerInterface`, providing standardized methods to access services:
+In `src/Plugin.php`, add your provider:
 
 ```php
-use Onea\Plugin;
-
-// Get the container
-$container = Plugin::container();
-
-// Check if a service exists
-if ($container->has('myCustomService')) {
-    $service = $container->get('myCustomService');
-}
-
-// Get a service (throws NotFoundException if not found)
-$service = $container->get('myCustomService');
-
-// Services registered with singleton() are only instantiated once
-$service1 = $container->get('myCustomService'); // Instantiated here
-$service2 = $container->get('myCustomService'); // Returns same instance
+protected array $providers = [
+    ElementorServiceProvider::class,
+    CustomServiceProvider::class, // Add here
+];
 ```
 
-### PSR-11 Methods:
-- `has(string $id): bool` - Check if service exists
-- `get(string $id): mixed` - Retrieve service (throws `NotFoundException` if not found)
+## Development
 
-### Container Methods:
-- `bind(string $id, callable $factory): void` - Register a service (new instance each time)
-- `singleton(string $id, callable $factory): void` - Register a singleton service (instantiated once)
-- `instance(string $id, mixed $instance): void` - Register an already instantiated object
-- `register(string|ServiceProvider $provider): ServiceProvider` - Register a service provider
-- `bootProviders(): void` - Boot all registered providers
+### Requirements
+
+- PHP 8.1+
+- WordPress 6.0+
+- Composer
+
+### Installation
+
+```bash
+composer install
+```
+
+### Code Standards
+
+Run WordPress Coding Standards check:
+
+```bash
+./vendor/bin/phpcs --standard=phpcs.ruleset.xml
+```
+
+Auto-fix violations:
+
+```bash
+./vendor/bin/phpcbf --standard=phpcs.ruleset.xml
+```
