@@ -1,7 +1,5 @@
 # WordPress Onea Extensions
 
-WordPress plugin for Online Energieausweis (Onea)..
-
 ## Architecture
 
 This plugin works with **simplified PSR-11 compliant** service container and **Service Provider** pattern for clean service registration and bootstrapping.
