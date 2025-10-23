@@ -8,5 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => array($vendorDir . '/dealerdirect/phpcodesniffer-composer-installer/src'),
-    'Netzstrategen\\Onea\\' => array($baseDir . '/src'),
+    'Netzstrategen\\Onea\\' => array($baseDir . '/includes'),
 );

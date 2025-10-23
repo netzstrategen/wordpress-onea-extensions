@@ -2,10 +2,10 @@
     "name": "netzstrategen/wp-onea-extensions",
     "autoload": {
         "psr-4": {
-            "Netzstrategen\\Onea\\": "src/"
+            "Netzstrategen\\Onea\\": "includes/"
         },
         "files" : [
-            "src/function-helpers.php"
+            "includes/function-helpers.php"
         ]
     },
     "type": "wordpress-plugin",
