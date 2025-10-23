@@ -8,7 +8,7 @@
 namespace Netzstrategen\Onea\Services\Elementor;
 
 use Netzstrategen\Onea\Contracts\AbstractService;
-use Netzstrategen\Onea\Services\Elementor\Widgets\ExampleWidget;
+use Netzstrategen\Onea\Services\Elementor\Widgets\MultipleStepFormWidget;
 
 /**
  * Elementor Widgets Service
@@ -23,7 +23,7 @@ class ElementorWidgetsService extends AbstractService {
 	 * @var array
 	 */
 	private array $widgets = [
-		ExampleWidget::class,
+		MultipleStepFormWidget::class,
 	];
 
 	/**
@@ -44,6 +44,70 @@ class ElementorWidgetsService extends AbstractService {
 
 		// Register widgets.
 		add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
+
+		// Register scripts for frontend.
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_scripts' ] );
+
+		// Enqueue scripts for Elementor editor.
+		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+	}
+
+	/**
+	 * Register or enqueue scripts and styles.
+	 *
+	 * @param bool $enqueue Whether to enqueue (true) or register (false) the scripts.
+	 * @return void
+	 */
+	private function handle_scripts( bool $enqueue = false ): void {
+		$plugin_dir = plugin_dir_path( __FILE__ ) . '../../../';
+		$plugin_url = plugin_dir_url( __FILE__ ) . '../../../';
+
+		$assets_file = $plugin_dir . 'build/components/multiple-step-form/index.asset.php';
+
+		if ( ! file_exists( $assets_file ) ) {
+			return;
+		}
+
+		$assets = include $assets_file;
+
+		$script_function = $enqueue ? 'wp_enqueue_script' : 'wp_register_script';
+		$style_function  = $enqueue ? 'wp_enqueue_style' : 'wp_register_style';
+
+		$script_function(
+			'onea-multiple-step-form',
+			$plugin_url . 'build/components/multiple-step-form/index.js',
+			$assets['dependencies'],
+			$assets['version'],
+			true
+		);
+
+		$style_file = $plugin_dir . 'build/components/multiple-step-form/style-index.css';
+		if ( file_exists( $style_file ) ) {
+			$style_function(
+				'onea-multiple-step-form',
+				$plugin_url . 'build/components/multiple-step-form/style-index.css',
+				[],
+				$assets['version']
+			);
+		}
+	}
+
+	/**
+	 * Register frontend scripts and styles.
+	 *
+	 * @return void
+	 */
+	public function register_scripts(): void {
+		$this->handle_scripts( false );
+	}
+
+	/**
+	 * Enqueue scripts for Elementor editor.
+	 *
+	 * @return void
+	 */
+	public function enqueue_scripts(): void {
+		$this->handle_scripts( true );
 	}
 
 	/**

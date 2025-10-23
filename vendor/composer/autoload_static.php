@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit020ccf84b11350c42c6fc931a993b74a
 {
     public static $files = array (
-        '3207b766cded9ba59142a028a9eba7a9' => __DIR__ . '/../..' . '/src/function-helpers.php',
+        'a3d0374862daafa6f3a592e9b0ae39dd' => __DIR__ . '/../..' . '/includes/function-helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -33,7 +33,7 @@ class ComposerStaticInit020ccf84b11350c42c6fc931a993b74a
         ),
         'Netzstrategen\\Onea\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/includes',
         ),
     );
 
