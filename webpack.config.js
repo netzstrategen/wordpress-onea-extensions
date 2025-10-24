@@ -20,4 +20,8 @@ module.exports = {
     ...defaultConfig.resolve,
     extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
+  devServer: {
+    ...defaultConfig.devServer,
+    allowedHosts: "all",
+  },
 };
