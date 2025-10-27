@@ -26,6 +26,8 @@ export interface BaseField {
   description?: string;
   placeholder?: string;
   required?: boolean;
+  readonly?: boolean;
+  disabled?: boolean;
   validation?: FieldValidation;
   dependsOn?: FieldDependency;
 }
