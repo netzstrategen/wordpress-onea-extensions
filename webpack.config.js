@@ -19,6 +19,10 @@ module.exports = {
   resolve: {
     ...defaultConfig.resolve,
     extensions: [".tsx", ".ts", ".js", ".jsx"],
+    alias: {
+      ...defaultConfig.resolve?.alias,
+      "@": path.resolve(process.cwd(), "src"),
+    },
   },
   devServer: {
     ...defaultConfig.devServer,
