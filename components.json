@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/components/multiple-step-form/style.scss",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@wordpress/components",
+    "utils": "@wordpress/lib/utils",
+    "ui": "@wordpress/components/ui",
+    "lib": "@wordpress/lib",
+    "hooks": "@wordpress/hooks"
+  },
+  "registries": {}
+}
