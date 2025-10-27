@@ -123,7 +123,7 @@ function renderFieldInput(field: FormFieldType, formField: any) {
           <RadioGroup
             onValueChange={formField.onChange}
             value={formField.value}
-            className="flex flex-col space-y-1"
+            className="flex flex-row px-4"
           >
             {field.options.map((option) => (
               <div key={option.value} className="flex items-center space-x-2">
