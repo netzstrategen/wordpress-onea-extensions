@@ -85,6 +85,17 @@ class MultipleStepFormWidget extends Widget_Base {
 		);
 
 		$this->add_control(
+			'product_id',
+			[
+				'label'       => __( 'Product ID', 'wp-onea-extensions' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => '',
+				'placeholder' => __( 'Enter product ID', 'wp-onea-extensions' ),
+				'description' => __( 'Enter the WooCommerce product ID to associate with this form', 'wp-onea-extensions' ),
+			]
+		);
+
+		$this->add_control(
 			'form_config',
 			[
 				'label'       => __( 'Form Configuration (JSON)', 'wp-onea-extensions' ),
@@ -163,6 +174,7 @@ class MultipleStepFormWidget extends Widget_Base {
 		$props = [
 			'componentId' => $this->get_id(),
 			'formConfig'  => $form_config,
+			'productId'   => ! empty( $settings['product_id'] ) ? $settings['product_id'] : '',
 		];
 
 		// Render container for React app.
