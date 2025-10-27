@@ -121,3 +121,8 @@
     @apply bg-background text-foreground;
   }
 }
+@layer components {
+  .woocommerce-js input[type="number"] {
+    max-width: 100% !important;
+  }
+}

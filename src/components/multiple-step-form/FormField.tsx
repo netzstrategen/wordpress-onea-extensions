@@ -19,6 +19,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { FormField as FormFieldType } from "./types";
+import { formatPeriodLabel } from "./utils/billing-periods";
 
 interface FormFieldProps {
   field: FormFieldType;
@@ -77,20 +78,39 @@ function renderFieldInput(field: FormFieldType, formField: any) {
 
     case "select":
       if (field.type === "select") {
+        // Handle disabled select fields (auto-calculated billing periods)
+        if (field.disabled) {
+          const displayLabel = formField.value
+            ? formatPeriodLabel(formField.value)
+            : field.placeholder || "";
+
+          return (
+            <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-muted px-3 py-2 text-sm">
+              <span className={formField.value ? "" : "text-muted-foreground"}>
+                {displayLabel}
+              </span>
+            </div>
+          );
+        }
+
+        // Normal select field
         return (
-          <Select
-            onValueChange={formField.onChange}
-            defaultValue={formField.value}
-          >
+          <Select onValueChange={formField.onChange} value={formField.value}>
             <SelectTrigger>
               <SelectValue placeholder={field.placeholder || "Select..."} />
             </SelectTrigger>
             <SelectContent>
-              {field.options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+              {field.options && field.options.length > 0 ? (
+                field.options.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem value="no-options" disabled>
+                  Keine Optionen verfügbar
                 </SelectItem>
-              ))}
+              )}
             </SelectContent>
           </Select>
         );
@@ -102,7 +122,7 @@ function renderFieldInput(field: FormFieldType, formField: any) {
         return (
           <RadioGroup
             onValueChange={formField.onChange}
-            defaultValue={formField.value}
+            value={formField.value}
             className="flex flex-col space-y-1"
           >
             {field.options.map((option) => (
@@ -169,7 +189,7 @@ function renderFieldInput(field: FormFieldType, formField: any) {
               const file = e.target.files?.[0];
               if (file) {
                 // For now, store the file object
-                // In production, you might want to convert to base64
+                // In production, might want to convert to base64
                 formField.onChange(file);
               }
             }}
