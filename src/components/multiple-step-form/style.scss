@@ -212,10 +212,23 @@
 
     input,
     select,
-    textarea {
+    textarea,
+    button[role="combobox"] {
       max-width: 100%;
       box-sizing: border-box;
       margin-top: 0.5rem;
+    }
+
+    // Disabled select field (rendered as a div)
+    div.flex.h-10.w-full.items-center.justify-between.rounded-md.border.border-input.bg-muted {
+      padding: 0.5rem 0.75rem !important;
+      height: 2.5rem !important;
+    }
+
+    // Make select trigger match input padding
+    button[role="combobox"] {
+      padding: 0.5rem 0.75rem !important;
+      height: 2.5rem !important;
     }
 
     label {
@@ -287,6 +300,62 @@
       align-items: flex-start;
       gap: 0.5rem;
       flex-wrap: wrap;
+    }
+  }
+
+  // Select dropdown styles - these need to be outside .onea-multiple-step-form
+  // because the dropdown portal renders outside the form container
+  [data-radix-select-content] {
+    z-index: 9999 !important;
+    overflow: auto !important;
+  }
+
+  [data-radix-select-viewport] {
+    padding: 0.25rem !important;
+  }
+
+  [role="option"] {
+    padding: 0.5rem 0.75rem !important;
+    padding-left: 2rem !important;
+    cursor: pointer !important;
+    position: relative !important;
+    outline: none !important;
+    display: flex !important;
+    align-items: center !important;
+
+    &:hover,
+    &:focus,
+    &[data-highlighted],
+    &[data-state="checked"] {
+      background: hsl(var(--accent)) !important;
+      color: hsl(var(--accent-foreground)) !important;
+    }
+
+    &[data-disabled] {
+      opacity: 0.5 !important;
+      pointer-events: none !important;
+    }
+
+    // The check icon indicator span
+    > span:first-child {
+      position: absolute !important;
+      left: 0.5rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 0.875rem !important;
+      height: 0.875rem !important;
+
+      svg {
+        width: 0.875rem !important;
+        height: 0.875rem !important;
+        display: block !important;
+      }
+    }
+
+    // The text content
+    > span:last-child {
+      display: inline-block !important;
     }
   }
 }
