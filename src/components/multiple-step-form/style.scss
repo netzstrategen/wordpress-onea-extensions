@@ -121,16 +121,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+// Elementor overrides
 @layer components {
   .woocommerce-js input[type="number"] {
     max-width: 100% !important;
   }
 
-  // Step Indicator Responsive Styles
   .step-indicator {
     margin-bottom: 2rem;
 
-    // Ensure circles are perfectly round on desktop
     .w-10 {
       width: 2.5rem !important;
       height: 2.5rem !important;
@@ -139,14 +139,12 @@
     @media (max-width: 640px) {
       margin-bottom: 1.5rem;
 
-      // Make step circles smaller on mobile
       .w-10 {
         width: 2rem !important;
         height: 2rem !important;
         font-size: 0.75rem !important;
       }
 
-      // Make step titles smaller and allow wrapping
       .text-xs {
         font-size: 0.625rem !important;
         line-height: 0.875rem !important;
@@ -155,25 +153,21 @@
         overflow-wrap: break-word;
       }
 
-      // Reduce connector line margins
       .mx-2 {
         margin-left: 0.25rem !important;
         margin-right: 0.25rem !important;
       }
 
-      // Adjust connector line position
       .mt-5 {
         margin-top: 1rem !important;
       }
 
-      // Reduce space between circle and title
       .mt-2 {
         margin-top: 0.25rem !important;
       }
     }
   }
 
-  // Field Group Styles
   .onea-multiple-step-form {
     max-width: 100%;
     overflow-x: hidden;
@@ -198,12 +192,10 @@
         margin-bottom: 1rem;
       }
 
-      // Spacing between fields inside groups
       > div > * + * {
         margin-top: 1rem;
       }
 
-      // Mobile responsive adjustments
       @media (max-width: 640px) {
         padding: 1rem;
         margin-bottom: 1rem;
@@ -218,7 +210,6 @@
       }
     }
 
-    // Ensure all inputs wrap properly
     input,
     select,
     textarea {
@@ -226,7 +217,6 @@
       box-sizing: border-box;
     }
 
-    // Make labels wrap on mobile
     label {
       word-wrap: break-word;
       overflow-wrap: break-word;
@@ -234,7 +224,6 @@
     }
   }
 
-  // Radio Group Styles - Override Elementor
   .onea-multiple-step-form {
     [role="radiogroup"] {
       display: flex;
@@ -243,7 +232,6 @@
       flex-wrap: wrap;
     }
 
-    // Radio button container
     button[role="radio"],
     button[role="checkbox"] {
       all: unset;
@@ -286,7 +274,6 @@
       }
     }
 
-    // Radio label
     label[for^="extensivelyRenovated"],
     label[for^="mainFuel"],
     label[for^="hasBasement"] {
@@ -303,7 +290,6 @@
     }
   }
 
-  // Checkbox Styles - Override Elementor
   .onea-multiple-step-form {
     // Checkbox button
     button[role="checkbox"] {
@@ -349,7 +335,6 @@
         }
       }
 
-      // Ensure the icon span is always rendered
       span {
         display: flex;
         align-items: center;
@@ -369,7 +354,6 @@
       }
     }
 
-    // Checkbox container
     .space-y-2 > div {
       display: flex;
       align-items: flex-start;
@@ -377,7 +361,6 @@
       flex-wrap: wrap;
     }
 
-    // Checkbox label
     label[for*="checkbox"] {
       font-size: 0.875rem;
       font-weight: 400;
@@ -395,17 +378,14 @@
     }
   }
 
-  // Reset any Elementor input styles that might interfere
   .onea-multiple-step-form {
     input[type="radio"],
     input[type="checkbox"] {
-      // Hide native inputs if they appear
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    // Ensure labels don't have Elementor's default margins
     label {
       margin: 0 !important;
       padding: 0 !important;
@@ -413,7 +393,6 @@
       display: block;
     }
 
-    // Add spacing between label and input
     input,
     select,
     textarea {
