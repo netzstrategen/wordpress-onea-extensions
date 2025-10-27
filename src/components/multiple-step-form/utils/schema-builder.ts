@@ -139,10 +139,12 @@ export function buildStepSchema(
 ): z.ZodObject<any> {
   const shape: Record<string, z.ZodTypeAny> = {};
 
-  for (const field of step.fields) {
-    // Check if field should be included based on dependencies
-    if (shouldIncludeField(field, allValues)) {
-      shape[field.name] = buildFieldSchema(field);
+  for (const group of step.fieldGroups) {
+    for (const field of group.fields) {
+      // Check if field should be included based on dependencies
+      if (shouldIncludeField(field, allValues)) {
+        shape[field.name] = buildFieldSchema(field);
+      }
     }
   }
 
@@ -181,9 +183,11 @@ export function buildFormSchema(
   const shape: Record<string, z.ZodTypeAny> = {};
 
   for (const step of steps) {
-    for (const field of step.fields) {
-      if (shouldIncludeField(field, allValues)) {
-        shape[field.name] = buildFieldSchema(field);
+    for (const group of step.fieldGroups) {
+      for (const field of group.fields) {
+        if (shouldIncludeField(field, allValues)) {
+          shape[field.name] = buildFieldSchema(field);
+        }
       }
     }
   }

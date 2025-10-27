@@ -12,12 +12,13 @@ import {
   generateBillingPeriodOptions,
   calculatePreviousPeriod,
 } from "./utils/billing-periods";
-import defaultFormConfig from "./form-schema.json";
+// import defaultFormConfig from "./form-schema.json";
 
 export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   formConfig,
   componentId,
 }) => {
+  console.log("formConfig:", formConfig);
   // Generate dynamic billing period options
   const billingPeriodOptions = useMemo(
     () => generateBillingPeriodOptions(),
@@ -26,24 +27,23 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
 
   // TODO: change for formConfig coming from props
   const config = useMemo(() => {
-    const configCopy = JSON.parse(
-      JSON.stringify(defaultFormConfig)
-    ) as FormConfig;
+    const configCopy = JSON.parse(JSON.stringify(formConfig)) as FormConfig;
 
     // Find and update billing period fields with dynamic options
     configCopy.steps.forEach((step) => {
-      step.fields.forEach((field) => {
-        if (field.name === "billingPeriod1" && field.type === "select") {
-          (field as any).options = billingPeriodOptions;
-        }
-        // Add empty options array for period 2 and 3 (will be populated dynamically)
-        if (
-          (field.name === "billingPeriod2" ||
-            field.name === "billingPeriod3") &&
-          field.type === "select"
-        ) {
-          (field as any).options = [];
-        }
+      step.fieldGroups.forEach((group) => {
+        group.fields.forEach((field) => {
+          if (field.name === "billingPeriod1" && field.type === "select") {
+            (field as any).options = billingPeriodOptions;
+          }
+          if (
+            (field.name === "billingPeriod2" ||
+              field.name === "billingPeriod3") &&
+            field.type === "select"
+          ) {
+            (field as any).options = [];
+          }
+        });
       });
     });
 
@@ -200,24 +200,42 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
           <div className="step-header mb-6">
             <h3 className="text-xl font-semibold">{currentStepConfig.title}</h3>
           </div>
-          <div className="space-y-6">
-            {currentStepConfig.fields.map((field) => {
-              // Check if field should be rendered based on dependencies
-              if (!shouldIncludeField(field, allFormValues)) {
-                return null;
-              }
 
-              return <FormField key={field.name} field={field} form={form} />;
-            })}
+          {/* Fields rendered in groups */}
+          <div className="space-y-6">
+            {currentStepConfig.fieldGroups.map((group, groupIndex) => (
+              <div
+                key={groupIndex}
+                className="field-group p-6 border border-border rounded-lg bg-card"
+              >
+                {group.title && (
+                  <h4 className="text-base font-semibold mb-4">
+                    {group.title}
+                  </h4>
+                )}
+                {group.description && (
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {group.description}
+                  </p>
+                )}
+                <div className="space-y-4">
+                  {group.fields.map((field) => {
+                    if (!shouldIncludeField(field, allFormValues)) {
+                      return null;
+                    }
+                    return (
+                      <FormField key={field.name} field={field} form={form} />
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex justify-between items-center pt-6 border-t">
+
+          <div className="flex justify-between items-center pt-6">
             <div className="flex gap-2">
               {currentStep > 0 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handlePrevious}
-                >
+                <Button type="button" onClick={handlePrevious}>
                   Zurück
                 </Button>
               )}

@@ -68,11 +68,17 @@ export type FormField =
   | CheckboxField
   | FileField;
 
+export interface FieldGroup {
+  title?: string;
+  description?: string;
+  fields: FormField[];
+}
+
 export interface FormStep {
   id: string;
   title: string;
   description?: string;
-  fields: FormField[];
+  fieldGroups: FieldGroup[];
 }
 
 export interface FormConfig {

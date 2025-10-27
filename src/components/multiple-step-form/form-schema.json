@@ -5,890 +5,990 @@
     {
       "id": "building-info",
       "title": "Gebäudeinformationen",
-      "fields": [
+      "fieldGroups": [
         {
-          "name": "buildingType",
-          "type": "select",
-          "label": "Gebäudeart",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "options": [
-            { "value": "einfamilienhaus", "label": "Einfamilienhaus" },
-            { "value": "zweifamilienhaus", "label": "Zweifamilienhaus" },
-            { "value": "mehrfamilienhaus", "label": "Mehrfamilienhaus" },
+          "title": "Gebäudeart & Wohneinheiten",
+          "fields": [
             {
-              "value": "wohnteilGemischt",
-              "label": "Wohnteil eines gemischt genutzten Gebäudes"
+              "name": "buildingType",
+              "type": "select",
+              "label": "Gebäudeart",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "einfamilienhaus", "label": "Einfamilienhaus" },
+                { "value": "zweifamilienhaus", "label": "Zweifamilienhaus" },
+                { "value": "mehrfamilienhaus", "label": "Mehrfamilienhaus" },
+                {
+                  "value": "wohnteilGemischt",
+                  "label": "Wohnteil eines gemischt genutzten Gebäudes"
+                },
+                { "value": "sonstiges", "label": "Sonstiges" }
+              ]
             },
-            { "value": "sonstiges", "label": "Sonstiges" }
+            {
+              "name": "buildingTypeOther",
+              "type": "text",
+              "label": "Sonstige Gebäudeart",
+              "placeholder": "Bitte angeben...",
+              "required": true,
+              "dependsOn": {
+                "field": "buildingType",
+                "value": "sonstiges"
+              }
+            },
+            {
+              "name": "numberOfUnits",
+              "type": "number",
+              "label": "Anzahl der Wohneinheiten",
+              "placeholder": "z.B. 1",
+              "required": true,
+              "validation": {
+                "min": 1,
+                "message": "Mindestens 1 Wohneinheit erforderlich"
+              },
+              "conditionalWarning": {
+                "condition": "numberOfUnits < 5 && buildingYear < 1978",
+                "message": "Bei weniger als 5 Wohneinheiten und Baujahr vor 1978 ist ein Bedarfsausweis erforderlich.",
+                "blocking": true,
+                "ctaText": "Zum Bedarfsausweis",
+                "ctaLink": "/bedarfsausweis"
+              }
+            }
           ]
         },
         {
-          "name": "buildingTypeOther",
-          "type": "text",
-          "label": "Sonstige Gebäudeart",
-          "placeholder": "Bitte angeben...",
-          "required": true,
-          "dependsOn": {
-            "field": "buildingType",
-            "value": "sonstiges"
-          }
-        },
-        {
-          "name": "numberOfUnits",
-          "type": "number",
-          "label": "Anzahl der Wohneinheiten",
-          "placeholder": "z.B. 1",
-          "required": true,
-          "validation": {
-            "min": 1,
-            "message": "Mindestens 1 Wohneinheit erforderlich"
-          },
-          "conditionalWarning": {
-            "condition": "numberOfUnits < 5 && buildingYear < 1978",
-            "message": "Bei weniger als 5 Wohneinheiten und Baujahr vor 1978 ist ein Bedarfsausweis erforderlich.",
-            "blocking": true,
-            "ctaText": "Zum Bedarfsausweis",
-            "ctaLink": "/bedarfsausweis"
-          }
-        },
-        {
-          "name": "buildingYear",
-          "type": "number",
-          "label": "Baujahr des Gebäudes",
-          "placeholder": "z.B. 1990",
-          "required": true,
-          "validation": {
-            "min": 1900,
-            "max": 2025,
-            "message": "Baujahr muss zwischen 1900 und heute liegen"
-          },
-          "conditionalWarning": {
-            "condition": "buildingYear > (currentYear - 3)",
-            "message": "Verbrauchsausweis nicht möglich – Bedarfsausweis notwendig, da Neubau",
-            "blocking": true,
-            "ctaText": "Zum Bedarfsausweis",
-            "ctaLink": "/bedarfsausweis"
-          }
-        },
-        {
-          "name": "heatingYear",
-          "type": "number",
-          "label": "Baujahr der Heizungsanlage",
-          "placeholder": "z.B. 2010",
-          "required": true,
-          "validation": {
-            "min": 1900,
-            "max": 2025,
-            "message": "Baujahr der Heizung kann nicht in der Zukunft liegen",
-            "customValidation": "heatingYear >= buildingYear"
-          }
-        },
-        {
-          "name": "livingArea",
-          "type": "number",
-          "label": "Beheizte Wohnfläche in m²",
-          "placeholder": "z.B. 120",
-          "required": true,
-          "validation": {
-            "min": 1,
-            "message": "Wohnfläche muss größer als 0 sein"
-          },
-          "conditionalWarning": {
-            "condition": "livingArea < 50",
-            "message": "Kein Energieausweis notwendig",
-            "blocking": false
-          }
-        },
-        {
-          "name": "hasBasement",
-          "type": "select",
-          "label": "Ist ein beheizter Keller vorhanden?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
+          "title": "Baujahre",
+          "fields": [
+            {
+              "name": "buildingYear",
+              "type": "number",
+              "label": "Baujahr des Gebäudes",
+              "placeholder": "z.B. 1990",
+              "required": true,
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr muss zwischen 1900 und heute liegen"
+              },
+              "conditionalWarning": {
+                "condition": "buildingYear > (currentYear - 3)",
+                "message": "Verbrauchsausweis nicht möglich – Bedarfsausweis notwendig, da Neubau",
+                "blocking": true,
+                "ctaText": "Zum Bedarfsausweis",
+                "ctaLink": "/bedarfsausweis"
+              }
+            },
+            {
+              "name": "heatingYear",
+              "type": "number",
+              "label": "Baujahr der Heizungsanlage",
+              "placeholder": "z.B. 2010",
+              "required": true,
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr der Heizung kann nicht in der Zukunft liegen",
+                "customValidation": "heatingYear >= buildingYear"
+              }
+            }
           ]
         },
         {
-          "name": "extensivelyRenovated",
-          "type": "radio",
-          "label": "Wurde das Gebäude umfangreich saniert?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
+          "title": "Flächen & Ausstattung",
+          "fields": [
+            {
+              "name": "livingArea",
+              "type": "number",
+              "label": "Beheizte Wohnfläche in m²",
+              "placeholder": "z.B. 120",
+              "required": true,
+              "validation": {
+                "min": 1,
+                "message": "Wohnfläche muss größer als 0 sein"
+              },
+              "conditionalWarning": {
+                "condition": "livingArea < 50",
+                "message": "Kein Energieausweis notwendig",
+                "blocking": false
+              }
+            },
+            {
+              "name": "hasBasement",
+              "type": "select",
+              "label": "Ist ein beheizter Keller vorhanden?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            }
           ]
         },
         {
-          "name": "renovationYear",
-          "type": "number",
-          "label": "Jahr der Sanierung",
-          "placeholder": "z.B. 2015",
-          "required": true,
-          "dependsOn": {
-            "field": "extensivelyRenovated",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 1900,
-            "max": 2025,
-            "message": "Sanierungsjahr muss gültig sein",
-            "customValidation": "renovationYear >= buildingYear"
-          }
+          "title": "Sanierung",
+          "fields": [
+            {
+              "name": "extensivelyRenovated",
+              "type": "radio",
+              "label": "Wurde das Gebäude umfangreich saniert?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "renovationYear",
+              "type": "number",
+              "label": "Jahr der Sanierung",
+              "placeholder": "z.B. 2015",
+              "required": true,
+              "dependsOn": {
+                "field": "extensivelyRenovated",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Sanierungsjahr muss gültig sein",
+                "customValidation": "renovationYear >= buildingYear"
+              }
+            }
+          ]
         }
       ]
     },
     {
       "id": "fuel-consumption",
       "title": "Brennstoff & Verbrauchsdaten",
-      "fields": [
+      "fieldGroups": [
         {
-          "name": "mainFuel",
-          "type": "select",
-          "label": "1. Energieträger",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "options": [
-            { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
-            { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
-            { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
-            { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+          "title": "Hauptbrennstoff",
+          "fields": [
             {
-              "value": "biogasNahe",
-              "label": "Biogas gebäudenah erzeugt",
-              "unit": "kWh"
+              "name": "mainFuel",
+              "type": "select",
+              "label": "1. Energieträger",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
+                { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
+                { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
+                { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+                {
+                  "value": "biogasNahe",
+                  "label": "Biogas gebäudenah erzeugt",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "bioOel",
+                  "label": "Bioöl / Pflanzenöl",
+                  "unit": "Liter"
+                },
+                { "value": "strom", "label": "Strom", "unit": "kWh" },
+                { "value": "holz", "label": "Holz", "unit": "Ster" },
+                {
+                  "value": "holzpellets",
+                  "label": "Holzpellets",
+                  "unit": "kg"
+                },
+                {
+                  "value": "holzhackschnitzel",
+                  "label": "Holzhackschnitzel",
+                  "unit": "kg"
+                },
+                { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
+                { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
+                {
+                  "value": "fernwaermeHeizwerkFossil",
+                  "label": "Fernwärme aus Heizwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkFossil",
+                  "label": "Fernwärme aus Kraftwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkErneuerbar",
+                  "label": "Fernwärme aus Kraftwerken, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeHeizwerkErneuerbar",
+                  "label": "Fernwärme aus Heizwerk, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "nachtstrom",
+                  "label": "Nachtstrom, NT",
+                  "unit": "kWh"
+                }
+              ]
             },
             {
-              "value": "bioOel",
-              "label": "Bioöl / Pflanzenöl",
-              "unit": "Liter"
-            },
-            { "value": "strom", "label": "Strom", "unit": "kWh" },
-            { "value": "holz", "label": "Holz", "unit": "Ster" },
-            { "value": "holzpellets", "label": "Holzpellets", "unit": "kg" },
-            {
-              "value": "holzhackschnitzel",
-              "label": "Holzhackschnitzel",
-              "unit": "kg"
-            },
-            { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
-            { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
-            {
-              "value": "fernwaermeHeizwerkFossil",
-              "label": "Fernwärme aus Heizwerken, fossil",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeKraftwerkFossil",
-              "label": "Fernwärme aus Kraftwerken, fossil",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeKraftwerkErneuerbar",
-              "label": "Fernwärme aus Kraftwerken, erneuerbar",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeHeizwerkErneuerbar",
-              "label": "Fernwärme aus Heizwerk, erneuerbar",
-              "unit": "kWh"
-            },
-            { "value": "nachtstrom", "label": "Nachtstrom, NT", "unit": "kWh" }
-          ]
-        },
-        {
-          "name": "primaryEnergyFactor",
-          "type": "number",
-          "label": "Primärenergiefaktor",
-          "placeholder": "z.B. 0.7",
-          "required": true,
-          "dependsOn": {
-            "field": "mainFuel",
-            "value": [
-              "fernwaermeHeizwerkFossil",
-              "fernwaermeKraftwerkFossil",
-              "fernwaermeKraftwerkErneuerbar",
-              "fernwaermeHeizwerkErneuerbar"
-            ]
-          },
-          "validation": {
-            "min": 0,
-            "max": 3,
-            "message": "Primärenergiefaktor muss zwischen 0 und 3 liegen"
-          }
-        },
-        {
-          "name": "billingPeriod1",
-          "type": "select",
-          "label": "1. Abrechnungsperiode",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "options": []
-        },
-        {
-          "name": "fuelConsumption1",
-          "type": "number",
-          "label": "Verbrauch 1. Periode",
-          "placeholder": "z.B. 15000",
-          "required": true,
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
-        },
-        {
-          "name": "vacancy1",
-          "type": "radio",
-          "label": "Leerstand in 1. Periode?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "vacancyPercent1",
-          "type": "number",
-          "label": "Leerstand in Prozent",
-          "placeholder": "z.B. 10",
-          "required": true,
-          "dependsOn": {
-            "field": "vacancy1",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
-          },
-          "conditionalWarning": {
-            "condition": "vacancyPercent1 > 30",
-            "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-            "blocking": true
-          }
-        },
-        {
-          "name": "billingPeriod2",
-          "type": "select",
-          "label": "2. Abrechnungsperiode",
-          "placeholder": "",
-          "required": true,
-          "readonly": true,
-          "disabled": true,
-          "autoCalculate": "billingPeriod1 - 1 year",
-          "options": []
-        },
-        {
-          "name": "fuelConsumption2",
-          "type": "number",
-          "label": "Verbrauch 2. Periode",
-          "placeholder": "z.B. 14000",
-          "required": true,
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
-        },
-        {
-          "name": "vacancy2",
-          "type": "radio",
-          "label": "Leerstand in 2. Periode?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "vacancyPercent2",
-          "type": "number",
-          "label": "Leerstand in Prozent",
-          "placeholder": "z.B. 10",
-          "required": true,
-          "dependsOn": {
-            "field": "vacancy2",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
-          },
-          "conditionalWarning": {
-            "condition": "vacancyPercent2 > 30",
-            "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-            "blocking": true
-          }
-        },
-        {
-          "name": "billingPeriod3",
-          "type": "select",
-          "label": "3. Abrechnungsperiode",
-          "placeholder": "",
-          "required": true,
-          "readonly": true,
-          "disabled": true,
-          "autoCalculate": "billingPeriod1 - 2 years",
-          "options": []
-        },
-        {
-          "name": "fuelConsumption3",
-          "type": "number",
-          "label": "Verbrauch 3. Periode",
-          "placeholder": "z.B. 16000",
-          "required": true,
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
-        },
-        {
-          "name": "vacancy3",
-          "type": "radio",
-          "label": "Leerstand in 3. Periode?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "vacancyPercent3",
-          "type": "number",
-          "label": "Leerstand in Prozent",
-          "placeholder": "z.B. 10",
-          "required": true,
-          "dependsOn": {
-            "field": "vacancy3",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
-          },
-          "conditionalWarning": {
-            "condition": "vacancyPercent3 > 30",
-            "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-            "blocking": true
-          }
-        },
-        {
-          "name": "hasAdditionalFuels",
-          "type": "radio",
-          "label": "Wurden weitere Brennstoffe verwendet?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "secondFuel",
-          "type": "select",
-          "label": "2. Energieträger",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "validation": {
-            "customValidation": "secondFuel !== mainFuel",
-            "message": "2. Brennstoff darf nicht gleich dem 1. Brennstoff sein"
-          },
-          "options": [
-            { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
-            { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
-            { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
-            { "value": "biogas", "label": "Biogas", "unit": "kWh" },
-            {
-              "value": "biogasNahe",
-              "label": "Biogas gebäudenah erzeugt",
-              "unit": "kWh"
-            },
-            {
-              "value": "bioOel",
-              "label": "Bioöl / Pflanzenöl",
-              "unit": "Liter"
-            },
-            { "value": "strom", "label": "Strom", "unit": "kWh" },
-            { "value": "holz", "label": "Holz", "unit": "Ster" },
-            { "value": "holzpellets", "label": "Holzpellets", "unit": "kg" },
-            {
-              "value": "holzhackschnitzel",
-              "label": "Holzhackschnitzel",
-              "unit": "kg"
-            },
-            { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
-            { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
-            {
-              "value": "fernwaermeHeizwerkFossil",
-              "label": "Fernwärme aus Heizwerken, fossil",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeKraftwerkFossil",
-              "label": "Fernwärme aus Kraftwerken, fossil",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeKraftwerkErneuerbar",
-              "label": "Fernwärme aus Kraftwerken, erneuerbar",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeHeizwerkErneuerbar",
-              "label": "Fernwärme aus Heizwerk, erneuerbar",
-              "unit": "kWh"
-            },
-            { "value": "nachtstrom", "label": "Nachtstrom, NT", "unit": "kWh" }
-          ]
-        },
-        {
-          "name": "secondHeatingYear",
-          "type": "number",
-          "label": "Baujahr der 2. Heizungsanlage",
-          "placeholder": "z.B. 2015",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 1900,
-            "max": 2025,
-            "customValidation": "secondHeatingYear >= buildingYear",
-            "message": "Baujahr der 2. Heizungsanlage darf nicht älter als Gebäude sein"
-          }
-        },
-        {
-          "name": "secondPrimaryEnergyFactor",
-          "type": "number",
-          "label": "Primärenergiefaktor (2. Brennstoff)",
-          "placeholder": "z.B. 0.7",
-          "required": true,
-          "dependsOn": {
-            "field": "secondFuel",
-            "value": [
-              "fernwaermeHeizwerkFossil",
-              "fernwaermeKraftwerkFossil",
-              "fernwaermeKraftwerkErneuerbar",
-              "fernwaermeHeizwerkErneuerbar"
-            ]
-          },
-          "validation": {
-            "min": 0,
-            "max": 3,
-            "message": "Primärenergiefaktor muss zwischen 0 und 3 liegen"
-          }
-        },
-        {
-          "name": "secondFuelConsumption1",
-          "type": "number",
-          "label": "Verbrauch 2. Brennstoff - 1. Periode",
-          "placeholder": "z.B. 5000",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
-        },
-        {
-          "name": "secondVacancy1",
-          "type": "radio",
-          "label": "Leerstand 2. Brennstoff - 1. Periode?",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "secondVacancyPercent1",
-          "type": "number",
-          "label": "Leerstand in Prozent",
-          "placeholder": "z.B. 10",
-          "required": true,
-          "dependsOn": {
-            "field": "secondVacancy1",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "max": 100
-          },
-          "conditionalWarning": {
-            "condition": "secondVacancyPercent1 > 30",
-            "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-            "blocking": true
-          }
-        },
-        {
-          "name": "secondFuelConsumption2",
-          "type": "number",
-          "label": "Verbrauch 2. Brennstoff - 2. Periode",
-          "placeholder": "z.B. 4800",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
-        },
-        {
-          "name": "secondVacancy2",
-          "type": "radio",
-          "label": "Leerstand 2. Brennstoff - 2. Periode?",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "secondVacancyPercent2",
-          "type": "number",
-          "label": "Leerstand in Prozent",
-          "placeholder": "z.B. 10",
-          "required": true,
-          "dependsOn": {
-            "field": "secondVacancy2",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "max": 100
-          },
-          "conditionalWarning": {
-            "condition": "secondVacancyPercent2 > 30",
-            "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-            "blocking": true
-          }
-        },
-        {
-          "name": "secondFuelConsumption3",
-          "type": "number",
-          "label": "Verbrauch 2. Brennstoff - 3. Periode",
-          "placeholder": "z.B. 5200",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
-        },
-        {
-          "name": "secondVacancy3",
-          "type": "radio",
-          "label": "Leerstand 2. Brennstoff - 3. Periode?",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAdditionalFuels",
-            "value": "ja"
-          },
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "secondVacancyPercent3",
-          "type": "number",
-          "label": "Leerstand in Prozent",
-          "placeholder": "z.B. 10",
-          "required": true,
-          "dependsOn": {
-            "field": "secondVacancy3",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "max": 100
-          },
-          "conditionalWarning": {
-            "condition": "secondVacancyPercent3 > 30",
-            "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-            "blocking": true
-          }
-        },
-        {
-          "name": "hotWaterPreparation",
-          "type": "select",
-          "label": "Warmwasseraufbereitung",
-          "required": true,
-          "options": [
-            { "value": "included", "label": "Im Heizungsverbrauch enthalten" },
-            {
-              "value": "separate",
-              "label": "Verbrauch nachfolgend separat eingeben"
-            },
-            {
-              "value": "central",
-              "label": "Warmwasseraufbereitung erfolgt zentral"
+              "name": "primaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor",
+              "placeholder": "z.B. 0.7",
+              "required": true,
+              "dependsOn": {
+                "field": "mainFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
             }
           ]
         },
         {
-          "name": "hotWaterFuel",
-          "type": "select",
-          "label": "Brennstoff für Warmwasser",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "dependsOn": {
-            "field": "hotWaterPreparation",
-            "value": "separate"
-          },
-          "options": [
-            { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
-            { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
-            { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
-            { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+          "title": "1. Abrechnungsperiode",
+          "fields": [
             {
-              "value": "biogasNahe",
-              "label": "Biogas gebäudenah erzeugt",
-              "unit": "kWh"
+              "name": "billingPeriod1",
+              "type": "select",
+              "label": "1. Abrechnungsperiode",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": []
             },
             {
-              "value": "bioOel",
-              "label": "Bioöl / Pflanzenöl",
-              "unit": "Liter"
-            },
-            { "value": "strom", "label": "Strom", "unit": "kWh" },
-            { "value": "holz", "label": "Holz", "unit": "Ster" },
-            { "value": "holzpellets", "label": "Holzpellets", "unit": "kg" },
-            {
-              "value": "holzhackschnitzel",
-              "label": "Holzhackschnitzel",
-              "unit": "kg"
-            },
-            { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
-            { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
-            {
-              "value": "fernwaermeHeizwerkFossil",
-              "label": "Fernwärme aus Heizwerken, fossil",
-              "unit": "kWh"
+              "name": "fuelConsumption1",
+              "type": "number",
+              "label": "Verbrauch",
+              "placeholder": "z.B. 15000",
+              "required": true,
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
             },
             {
-              "value": "fernwaermeKraftwerkFossil",
-              "label": "Fernwärme aus Kraftwerken, fossil",
-              "unit": "kWh"
+              "name": "vacancy1",
+              "type": "radio",
+              "label": "Leerstand?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
             },
             {
-              "value": "fernwaermeKraftwerkErneuerbar",
-              "label": "Fernwärme aus Kraftwerken, erneuerbar",
-              "unit": "kWh"
-            },
-            {
-              "value": "fernwaermeHeizwerkErneuerbar",
-              "label": "Fernwärme aus Heizwerk, erneuerbar",
-              "unit": "kWh"
-            },
-            { "value": "nachtstrom", "label": "Nachtstrom, NT", "unit": "kWh" }
+              "name": "vacancyPercent1",
+              "type": "number",
+              "label": "Leerstand in Prozent",
+              "placeholder": "z.B. 10",
+              "required": true,
+              "dependsOn": {
+                "field": "vacancy1",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100,
+                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
+              },
+              "conditionalWarning": {
+                "condition": "vacancyPercent1 > 30",
+                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
+                "blocking": true
+              }
+            }
           ]
         },
         {
-          "name": "hotWaterConsumption1",
-          "type": "number",
-          "label": "Warmwasser Verbrauch - 1. Periode",
-          "placeholder": "z.B. 3000",
-          "required": true,
-          "dependsOn": {
-            "field": "hotWaterPreparation",
-            "value": "separate"
-          },
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
+          "title": "2. Abrechnungsperiode",
+          "fields": [
+            {
+              "name": "billingPeriod2",
+              "type": "select",
+              "label": "2. Abrechnungsperiode",
+              "placeholder": "",
+              "required": true,
+              "readonly": true,
+              "disabled": true,
+              "autoCalculate": "billingPeriod1 - 1 year",
+              "options": []
+            },
+            {
+              "name": "fuelConsumption2",
+              "type": "number",
+              "label": "Verbrauch",
+              "placeholder": "z.B. 14000",
+              "required": true,
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "vacancy2",
+              "type": "radio",
+              "label": "Leerstand?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "vacancyPercent2",
+              "type": "number",
+              "label": "Leerstand in Prozent",
+              "placeholder": "z.B. 10",
+              "required": true,
+              "dependsOn": {
+                "field": "vacancy2",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100,
+                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
+              },
+              "conditionalWarning": {
+                "condition": "vacancyPercent2 > 30",
+                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
+                "blocking": true
+              }
+            }
+          ]
         },
         {
-          "name": "hotWaterConsumption2",
-          "type": "number",
-          "label": "Warmwasser Verbrauch - 2. Periode",
-          "placeholder": "z.B. 2900",
-          "required": true,
-          "dependsOn": {
-            "field": "hotWaterPreparation",
-            "value": "separate"
-          },
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
+          "title": "3. Abrechnungsperiode",
+          "fields": [
+            {
+              "name": "billingPeriod3",
+              "type": "select",
+              "label": "3. Abrechnungsperiode",
+              "placeholder": "",
+              "required": true,
+              "readonly": true,
+              "disabled": true,
+              "autoCalculate": "billingPeriod1 - 2 years",
+              "options": []
+            },
+            {
+              "name": "fuelConsumption3",
+              "type": "number",
+              "label": "Verbrauch",
+              "placeholder": "z.B. 16000",
+              "required": true,
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "vacancy3",
+              "type": "radio",
+              "label": "Leerstand?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "vacancyPercent3",
+              "type": "number",
+              "label": "Leerstand in Prozent",
+              "placeholder": "z.B. 10",
+              "required": true,
+              "dependsOn": {
+                "field": "vacancy3",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100,
+                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
+              },
+              "conditionalWarning": {
+                "condition": "vacancyPercent3 > 30",
+                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
+                "blocking": true
+              }
+            }
+          ]
         },
         {
-          "name": "hotWaterConsumption3",
-          "type": "number",
-          "label": "Warmwasser Verbrauch - 3. Periode",
-          "placeholder": "z.B. 3100",
-          "required": true,
-          "dependsOn": {
-            "field": "hotWaterPreparation",
-            "value": "separate"
-          },
-          "validation": {
-            "min": 0,
-            "message": "Verbrauch muss positiv sein"
-          }
+          "title": "Weitere Brennstoffe",
+          "fields": [
+            {
+              "name": "hasAdditionalFuels",
+              "type": "radio",
+              "label": "Wurden weitere Brennstoffe verwendet?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "secondFuel",
+              "type": "select",
+              "label": "2. Energieträger",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "customValidation": "secondFuel !== mainFuel",
+                "message": "2. Brennstoff darf nicht gleich dem 1. Brennstoff sein"
+              },
+              "options": [
+                { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
+                { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
+                { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
+                { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+                {
+                  "value": "biogasNahe",
+                  "label": "Biogas gebäudenah erzeugt",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "bioOel",
+                  "label": "Bioöl / Pflanzenöl",
+                  "unit": "Liter"
+                },
+                { "value": "strom", "label": "Strom", "unit": "kWh" },
+                { "value": "holz", "label": "Holz", "unit": "Ster" },
+                {
+                  "value": "holzpellets",
+                  "label": "Holzpellets",
+                  "unit": "kg"
+                },
+                {
+                  "value": "holzhackschnitzel",
+                  "label": "Holzhackschnitzel",
+                  "unit": "kg"
+                },
+                { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
+                { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
+                {
+                  "value": "fernwaermeHeizwerkFossil",
+                  "label": "Fernwärme aus Heizwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkFossil",
+                  "label": "Fernwärme aus Kraftwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkErneuerbar",
+                  "label": "Fernwärme aus Kraftwerken, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeHeizwerkErneuerbar",
+                  "label": "Fernwärme aus Heizwerk, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "nachtstrom",
+                  "label": "Nachtstrom, NT",
+                  "unit": "kWh"
+                }
+              ]
+            },
+            {
+              "name": "secondHeatingYear",
+              "type": "number",
+              "label": "Baujahr der 2. Heizungsanlage",
+              "placeholder": "z.B. 2015",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "customValidation": "secondHeatingYear >= buildingYear",
+                "message": "Baujahr der 2. Heizungsanlage darf nicht älter als Gebäude sein"
+              }
+            },
+            {
+              "name": "secondPrimaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor (2. Brennstoff)",
+              "placeholder": "z.B. 0.7",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "secondFuelConsumption1",
+              "type": "number",
+              "label": "Verbrauch 2. Brennstoff - 1. Periode",
+              "placeholder": "z.B. 5000",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondVacancy1",
+              "type": "radio",
+              "label": "Leerstand 2. Brennstoff - 1. Periode?",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "secondVacancyPercent1",
+              "type": "number",
+              "label": "Leerstand in Prozent",
+              "placeholder": "z.B. 10",
+              "required": true,
+              "dependsOn": {
+                "field": "secondVacancy1",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100
+              },
+              "conditionalWarning": {
+                "condition": "secondVacancyPercent1 > 30",
+                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
+                "blocking": true
+              }
+            },
+            {
+              "name": "secondFuelConsumption2",
+              "type": "number",
+              "label": "Verbrauch 2. Brennstoff - 2. Periode",
+              "placeholder": "z.B. 4800",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondVacancy2",
+              "type": "radio",
+              "label": "Leerstand 2. Brennstoff - 2. Periode?",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "secondVacancyPercent2",
+              "type": "number",
+              "label": "Leerstand in Prozent",
+              "placeholder": "z.B. 10",
+              "required": true,
+              "dependsOn": {
+                "field": "secondVacancy2",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100
+              },
+              "conditionalWarning": {
+                "condition": "secondVacancyPercent2 > 30",
+                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
+                "blocking": true
+              }
+            },
+            {
+              "name": "secondFuelConsumption3",
+              "type": "number",
+              "label": "Verbrauch 2. Brennstoff - 3. Periode",
+              "placeholder": "z.B. 5200",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondVacancy3",
+              "type": "radio",
+              "label": "Leerstand 2. Brennstoff - 3. Periode?",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "secondVacancyPercent3",
+              "type": "number",
+              "label": "Leerstand in Prozent",
+              "placeholder": "z.B. 10",
+              "required": true,
+              "dependsOn": {
+                "field": "secondVacancy3",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100
+              },
+              "conditionalWarning": {
+                "condition": "secondVacancyPercent3 > 30",
+                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
+                "blocking": true
+              }
+            }
+          ]
+        },
+        {
+          "title": "Warmwasseraufbereitung",
+          "fields": [
+            {
+              "name": "hotWaterPreparation",
+              "type": "select",
+              "label": "Warmwasseraufbereitung",
+              "required": true,
+              "options": [
+                {
+                  "value": "included",
+                  "label": "Im Heizungsverbrauch enthalten"
+                },
+                {
+                  "value": "separate",
+                  "label": "Verbrauch nachfolgend separat eingeben"
+                },
+                {
+                  "value": "central",
+                  "label": "Warmwasseraufbereitung erfolgt zentral"
+                }
+              ]
+            },
+            {
+              "name": "hotWaterFuel",
+              "type": "select",
+              "label": "Brennstoff für Warmwasser",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hotWaterPreparation",
+                "value": "separate"
+              },
+              "options": [
+                { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
+                { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
+                { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
+                { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+                {
+                  "value": "biogasNahe",
+                  "label": "Biogas gebäudenah erzeugt",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "bioOel",
+                  "label": "Bioöl / Pflanzenöl",
+                  "unit": "Liter"
+                },
+                { "value": "strom", "label": "Strom", "unit": "kWh" },
+                { "value": "holz", "label": "Holz", "unit": "Ster" },
+                {
+                  "value": "holzpellets",
+                  "label": "Holzpellets",
+                  "unit": "kg"
+                },
+                {
+                  "value": "holzhackschnitzel",
+                  "label": "Holzhackschnitzel",
+                  "unit": "kg"
+                },
+                { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
+                { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
+                {
+                  "value": "fernwaermeHeizwerkFossil",
+                  "label": "Fernwärme aus Heizwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkFossil",
+                  "label": "Fernwärme aus Kraftwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkErneuerbar",
+                  "label": "Fernwärme aus Kraftwerken, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeHeizwerkErneuerbar",
+                  "label": "Fernwärme aus Heizwerk, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "nachtstrom",
+                  "label": "Nachtstrom, NT",
+                  "unit": "kWh"
+                }
+              ]
+            },
+            {
+              "name": "hotWaterConsumption1",
+              "type": "number",
+              "label": "Warmwasser Verbrauch - 1. Periode",
+              "placeholder": "z.B. 3000",
+              "required": true,
+              "dependsOn": {
+                "field": "hotWaterPreparation",
+                "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "hotWaterConsumption2",
+              "type": "number",
+              "label": "Warmwasser Verbrauch - 2. Periode",
+              "placeholder": "z.B. 2900",
+              "required": true,
+              "dependsOn": {
+                "field": "hotWaterPreparation",
+                "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "hotWaterConsumption3",
+              "type": "number",
+              "label": "Warmwasser Verbrauch - 3. Periode",
+              "placeholder": "z.B. 3100",
+              "required": true,
+              "dependsOn": {
+                "field": "hotWaterPreparation",
+                "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            }
+          ]
         }
       ]
     },
     {
       "id": "additional-info",
       "title": "Weitere Angaben zur Immobilie",
-      "fields": [
+      "fieldGroups": [
         {
-          "name": "ventilation",
-          "type": "checkbox",
-          "label": "Gebäudelüftung",
-          "required": true,
-          "options": [
-            { "value": "fenster", "label": "Fensterlüftung" },
-            { "value": "schacht", "label": "Schachtlüftung" },
-            { "value": "mitWRG", "label": "Anlage mit Wärmerückgewinnung" },
-            { "value": "ohneWRG", "label": "Anlage ohne Wärmerückgewinnung" },
-            { "value": "gekuehlt", "label": "Mechanisch gekühlt" }
+          "title": "Gebäudelüftung",
+          "fields": [
+            {
+              "name": "ventilation",
+              "type": "checkbox",
+              "label": "Gebäudelüftung",
+              "required": true,
+              "options": [
+                { "value": "fenster", "label": "Fensterlüftung" },
+                { "value": "schacht", "label": "Schachtlüftung" },
+                { "value": "mitWRG", "label": "Anlage mit Wärmerückgewinnung" },
+                {
+                  "value": "ohneWRG",
+                  "label": "Anlage ohne Wärmerückgewinnung"
+                },
+                { "value": "gekuehlt", "label": "Mechanisch gekühlt" }
+              ]
+            }
           ]
         },
         {
-          "name": "energyMeasures",
-          "type": "checkbox",
-          "label": "Energetische Maßnahmen",
-          "required": false,
-          "options": [
-            { "value": "aussenwand", "label": "Außenwand gedämmt?" },
+          "title": "Energetische Maßnahmen",
+          "fields": [
             {
-              "value": "verglasung",
-              "label": "Wärmeschutz-/Isolierverglasung vorhanden?"
+              "name": "energyMeasures",
+              "type": "checkbox",
+              "label": "Energetische Maßnahmen",
+              "required": false,
+              "options": [
+                { "value": "aussenwand", "label": "Außenwand gedämmt?" },
+                {
+                  "value": "verglasung",
+                  "label": "Wärmeschutz-/Isolierverglasung vorhanden?"
+                },
+                {
+                  "value": "dach",
+                  "label": "Dach- oder Dachbodendämmung vorhanden?"
+                },
+                { "value": "keller", "label": "Kellerdecke gedämmt?" }
+              ]
             },
             {
-              "value": "dach",
-              "label": "Dach- oder Dachbodendämmung vorhanden?"
+              "name": "windowReplacementYear",
+              "type": "number",
+              "label": "Jahr des Fenstertausches",
+              "placeholder": "z.B. 2010",
+              "required": true,
+              "dependsOn": {
+                "field": "energyMeasures",
+                "contains": "verglasung"
+              },
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "customValidation": "windowReplacementYear >= buildingYear",
+                "message": "Jahr des Fenstertausches darf nicht älter als Baujahr Gebäude sein"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Erneuerbare Energien",
+          "fields": [
+            {
+              "name": "hasRenewableEnergy",
+              "type": "radio",
+              "label": "Werden erneuerbare Energien genutzt?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
             },
-            { "value": "keller", "label": "Kellerdecke gedämmt?" }
+            {
+              "name": "renewableEnergySource",
+              "type": "checkbox",
+              "label": "Art der Energiequelle",
+              "required": true,
+              "dependsOn": {
+                "field": "hasRenewableEnergy",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "solarzelle", "label": "Solarzelle" },
+                { "value": "solarkollektor", "label": "Solarkollektor" },
+                { "value": "waermepumpe", "label": "Wärmepumpe" },
+                { "value": "biomasse", "label": "Biomasse" },
+                { "value": "windkraft", "label": "Windkraft" },
+                { "value": "wasserkraft", "label": "Wasserkraft" }
+              ]
+            },
+            {
+              "name": "renewableEnergyUse",
+              "type": "checkbox",
+              "label": "Art der Verwendung",
+              "required": true,
+              "dependsOn": {
+                "field": "hasRenewableEnergy",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "heizung", "label": "Heizung" },
+                { "value": "warmwasser", "label": "Warmwasser" },
+                { "value": "strom", "label": "Strom (u.A. Kühlung / Lüftung)" }
+              ]
+            }
           ]
         },
         {
-          "name": "windowReplacementYear",
-          "type": "number",
-          "label": "Jahr des Fenstertausches",
-          "placeholder": "z.B. 2010",
-          "required": true,
-          "dependsOn": {
-            "field": "energyMeasures",
-            "contains": "verglasung"
-          },
-          "validation": {
-            "min": 1900,
-            "max": 2025,
-            "customValidation": "windowReplacementYear >= buildingYear",
-            "message": "Jahr des Fenstertausches darf nicht älter als Baujahr Gebäude sein"
-          }
-        },
-        {
-          "name": "hasAirConditioning",
-          "type": "radio",
-          "label": "Ist eine Klimaanlage vorhanden?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "coolingType",
-          "type": "select",
-          "label": "Art der Klimatisierung",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAirConditioning",
-            "value": "ja"
-          },
-          "options": [
-            { "value": "split", "label": "Split-Klimaanlage" },
-            { "value": "zentral", "label": "Zentrale Klimaanlage" },
-            { "value": "mobil", "label": "Mobile Klimaanlage" },
-            { "value": "sonstige", "label": "Sonstige" }
-          ]
-        },
-        {
-          "name": "cooledArea",
-          "type": "number",
-          "label": "Gekühlte Fläche in m²",
-          "placeholder": "z.B. 80",
-          "required": true,
-          "dependsOn": {
-            "field": "hasAirConditioning",
-            "value": "ja"
-          },
-          "validation": {
-            "min": 0,
-            "customValidation": "cooledArea <= livingArea",
-            "message": "Gekühlte Fläche darf nicht größer als Wohnfläche sein"
-          }
-        },
-        {
-          "name": "hasRenewableEnergy",
-          "type": "radio",
-          "label": "Werden erneuerbare Energien genutzt?",
-          "required": true,
-          "options": [
-            { "value": "ja", "label": "Ja" },
-            { "value": "nein", "label": "Nein" }
-          ]
-        },
-        {
-          "name": "renewableEnergySource",
-          "type": "checkbox",
-          "label": "Art der Energiequelle",
-          "required": true,
-          "dependsOn": {
-            "field": "hasRenewableEnergy",
-            "value": "ja"
-          },
-          "options": [
-            { "value": "solarzelle", "label": "Solarzelle" },
-            { "value": "solarkollektor", "label": "Solarkollektor" },
-            { "value": "waermepumpe", "label": "Wärmepumpe" },
-            { "value": "biomasse", "label": "Biomasse" },
-            { "value": "windkraft", "label": "Windkraft" },
-            { "value": "wasserkraft", "label": "Wasserkraft" }
-          ]
-        },
-        {
-          "name": "renewableEnergyUse",
-          "type": "checkbox",
-          "label": "Art der Verwendung",
-          "required": true,
-          "dependsOn": {
-            "field": "hasRenewableEnergy",
-            "value": "ja"
-          },
-          "options": [
-            { "value": "heizung", "label": "Heizung" },
-            { "value": "warmwasser", "label": "Warmwasser" },
-            { "value": "strom", "label": "Strom (u.A. Kühlung / Lüftung)" }
+          "title": "Klimaanlage",
+          "fields": [
+            {
+              "name": "hasAirConditioning",
+              "type": "radio",
+              "label": "Ist eine Klimaanlage vorhanden?",
+              "required": true,
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "coolingType",
+              "type": "select",
+              "label": "Art der Klimatisierung",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAirConditioning",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "split", "label": "Split-Klimaanlage" },
+                { "value": "zentral", "label": "Zentrale Klimaanlage" },
+                { "value": "mobil", "label": "Mobile Klimaanlage" },
+                { "value": "sonstige", "label": "Sonstige" }
+              ]
+            },
+            {
+              "name": "cooledArea",
+              "type": "number",
+              "label": "Gekühlte Fläche in m²",
+              "placeholder": "z.B. 80",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAirConditioning",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "customValidation": "cooledArea <= livingArea",
+                "message": "Gekühlte Fläche darf nicht größer als Wohnfläche sein"
+              }
+            }
           ]
         }
       ]
@@ -896,211 +996,234 @@
     {
       "id": "customer-info",
       "title": "Bestell- & Kundendaten",
-      "fields": [
+      "fieldGroups": [
         {
-          "name": "objectStreet",
-          "type": "text",
-          "label": "Objektadresse: Straße",
-          "placeholder": "z.B. Musterstraße",
-          "required": true
-        },
-        {
-          "name": "objectHouseNumber",
-          "type": "text",
-          "label": "Hausnummer",
-          "placeholder": "z.B. 123",
-          "required": true
-        },
-        {
-          "name": "objectZip",
-          "type": "text",
-          "label": "PLZ",
-          "placeholder": "z.B. 12345",
-          "required": true,
-          "validation": {
-            "pattern": "^[0-9]{5}$",
-            "message": "PLZ muss 5 Ziffern haben"
-          }
-        },
-        {
-          "name": "objectCity",
-          "type": "text",
-          "label": "Ort",
-          "placeholder": "z.B. München",
-          "required": true
-        },
-        {
-          "name": "buildingPhoto",
-          "type": "file",
-          "label": "Foto des Gebäudes (optional)",
-          "required": false,
-          "accept": "image/*"
-        },
-        {
-          "name": "heatingPhoto",
-          "type": "file",
-          "label": "Foto der Heizungsanlage (Pflicht)",
-          "required": true,
-          "accept": "image/*"
-        },
-        {
-          "name": "purpose",
-          "type": "select",
-          "label": "Ausstellungsgrund",
-          "placeholder": "Bitte wählen...",
-          "required": true,
-          "options": [
-            { "value": "verkauf", "label": "Verkauf" },
-            { "value": "vermietung", "label": "Vermietung" },
-            { "value": "modernisierung", "label": "Modernisierung" },
-            { "value": "sonstiges", "label": "Sonstiges" }
-          ]
-        },
-        {
-          "name": "company",
-          "type": "text",
-          "label": "Firma (optional)",
-          "placeholder": "Firmenname",
-          "required": false
-        },
-        {
-          "name": "salutation",
-          "type": "select",
-          "label": "Anrede",
-          "required": true,
-          "options": [
-            { "value": "herr", "label": "Herr" },
-            { "value": "frau", "label": "Frau" },
-            { "value": "divers", "label": "Divers" }
-          ]
-        },
-        {
-          "name": "title",
-          "type": "text",
-          "label": "Titel (optional)",
-          "placeholder": "z.B. Dr.",
-          "required": false
-        },
-        {
-          "name": "firstName",
-          "type": "text",
-          "label": "Vorname",
-          "placeholder": "Vorname",
-          "required": true
-        },
-        {
-          "name": "lastName",
-          "type": "text",
-          "label": "Nachname",
-          "placeholder": "Nachname",
-          "required": true
-        },
-        {
-          "name": "email",
-          "type": "email",
-          "label": "E-Mail",
-          "placeholder": "name@beispiel.de",
-          "required": true,
-          "validation": {
-            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
-            "message": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
-          }
-        },
-        {
-          "name": "phone",
-          "type": "text",
-          "label": "Telefonnummer",
-          "placeholder": "+49 123 456789",
-          "required": true
-        },
-        {
-          "name": "customerStreet",
-          "type": "text",
-          "label": "Rechnungsadresse: Straße",
-          "placeholder": "z.B. Musterstraße",
-          "required": true
-        },
-        {
-          "name": "customerHouseNumber",
-          "type": "text",
-          "label": "Hausnummer",
-          "placeholder": "z.B. 123",
-          "required": true
-        },
-        {
-          "name": "customerZip",
-          "type": "text",
-          "label": "PLZ",
-          "placeholder": "z.B. 12345",
-          "required": true,
-          "validation": {
-            "pattern": "^[0-9]{5}$",
-            "message": "PLZ muss 5 Ziffern haben"
-          }
-        },
-        {
-          "name": "customerCity",
-          "type": "text",
-          "label": "Ort",
-          "placeholder": "z.B. München",
-          "required": true
-        },
-        {
-          "name": "copyObjectAddress",
-          "type": "checkbox",
-          "label": "Rechnungsadresse übernehmen",
-          "required": false,
-          "options": [
+          "title": "Objektadresse & Fotos",
+          "fields": [
             {
-              "value": "copyFromObject",
-              "label": "Rechnungsadresse von Objektadresse übernehmen"
+              "name": "objectStreet",
+              "type": "text",
+              "label": "Objektadresse: Straße",
+              "placeholder": "z.B. Musterstraße",
+              "required": true
+            },
+            {
+              "name": "objectHouseNumber",
+              "type": "text",
+              "label": "Hausnummer",
+              "placeholder": "z.B. 123",
+              "required": true
+            },
+            {
+              "name": "objectZip",
+              "type": "text",
+              "label": "PLZ",
+              "placeholder": "z.B. 12345",
+              "required": true,
+              "validation": {
+                "pattern": "^[0-9]{5}$",
+                "message": "PLZ muss 5 Ziffern haben"
+              }
+            },
+            {
+              "name": "objectCity",
+              "type": "text",
+              "label": "Ort",
+              "placeholder": "z.B. München",
+              "required": true
+            },
+            {
+              "name": "buildingPhoto",
+              "type": "file",
+              "label": "Foto des Gebäudes (optional)",
+              "required": false,
+              "accept": "image/*"
+            },
+            {
+              "name": "heatingPhoto",
+              "type": "file",
+              "label": "Foto der Heizungsanlage (Pflicht)",
+              "required": true,
+              "accept": "image/*"
+            },
+            {
+              "name": "purpose",
+              "type": "select",
+              "label": "Ausstellungsgrund",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "verkauf", "label": "Verkauf" },
+                { "value": "vermietung", "label": "Vermietung" },
+                { "value": "modernisierung", "label": "Modernisierung" },
+                { "value": "sonstiges", "label": "Sonstiges" }
+              ]
             }
           ]
         },
         {
-          "name": "customerType",
-          "type": "select",
-          "label": "Kundenart",
-          "required": true,
-          "options": [
-            { "value": "privat", "label": "Privater Eigentümer" },
-            { "value": "makler", "label": "Makler" },
-            { "value": "verwalter", "label": "Hausverwalter" },
-            { "value": "sonstige", "label": "Sonstige" }
-          ]
-        },
-        {
-          "name": "customerTypeOther",
-          "type": "text",
-          "label": "Bitte angeben",
-          "placeholder": "Art des Kunden",
-          "required": true,
-          "dependsOn": {
-            "field": "customerType",
-            "value": "sonstige"
-          }
-        },
-        {
-          "name": "acceptTerms",
-          "type": "checkbox",
-          "label": "Zustimmungen",
-          "required": true,
-          "options": [
-            { "value": "agb", "label": "Ich akzeptiere die AGB" },
+          "title": "Kontaktdaten",
+          "fields": [
             {
-              "value": "privacy",
-              "label": "Ich akzeptiere die Datenschutzerklärung"
+              "name": "company",
+              "type": "text",
+              "label": "Firma (optional)",
+              "placeholder": "Firmenname",
+              "required": false
+            },
+            {
+              "name": "salutation",
+              "type": "select",
+              "label": "Anrede",
+              "required": true,
+              "options": [
+                { "value": "herr", "label": "Herr" },
+                { "value": "frau", "label": "Frau" },
+                { "value": "divers", "label": "Divers" }
+              ]
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "label": "Titel (optional)",
+              "placeholder": "z.B. Dr.",
+              "required": false
+            },
+            {
+              "name": "firstName",
+              "type": "text",
+              "label": "Vorname",
+              "placeholder": "Vorname",
+              "required": true
+            },
+            {
+              "name": "lastName",
+              "type": "text",
+              "label": "Nachname",
+              "placeholder": "Nachname",
+              "required": true
+            },
+            {
+              "name": "email",
+              "type": "email",
+              "label": "E-Mail",
+              "placeholder": "name@beispiel.de",
+              "required": true,
+              "validation": {
+                "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                "message": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+              }
+            },
+            {
+              "name": "phone",
+              "type": "text",
+              "label": "Telefonnummer",
+              "placeholder": "+49 123 456789",
+              "required": true
             }
           ]
         },
         {
-          "name": "expressService",
-          "type": "checkbox",
-          "label": "Zusatzdienstleistungen",
-          "required": false,
-          "options": [
-            { "value": "express", "label": "Express-Bearbeitung (+50 €)" },
-            { "value": "print", "label": "Gedruckter Ausweis per Post (+20 €)" }
+          "title": "Rechnungsadresse",
+          "fields": [
+            {
+              "name": "customerStreet",
+              "type": "text",
+              "label": "Rechnungsadresse: Straße",
+              "placeholder": "z.B. Musterstraße",
+              "required": true
+            },
+            {
+              "name": "customerHouseNumber",
+              "type": "text",
+              "label": "Hausnummer",
+              "placeholder": "z.B. 123",
+              "required": true
+            },
+            {
+              "name": "customerZip",
+              "type": "text",
+              "label": "PLZ",
+              "placeholder": "z.B. 12345",
+              "required": true,
+              "validation": {
+                "pattern": "^[0-9]{5}$",
+                "message": "PLZ muss 5 Ziffern haben"
+              }
+            },
+            {
+              "name": "customerCity",
+              "type": "text",
+              "label": "Ort",
+              "placeholder": "z.B. München",
+              "required": true
+            },
+            {
+              "name": "copyObjectAddress",
+              "type": "checkbox",
+              "label": "Rechnungsadresse übernehmen",
+              "required": false,
+              "options": [
+                {
+                  "value": "copyFromObject",
+                  "label": "Rechnungsadresse von Objektadresse übernehmen"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Kundenart & Zustimmungen",
+          "fields": [
+            {
+              "name": "customerType",
+              "type": "select",
+              "label": "Kundenart",
+              "required": true,
+              "options": [
+                { "value": "privat", "label": "Privater Eigentümer" },
+                { "value": "makler", "label": "Makler" },
+                { "value": "verwalter", "label": "Hausverwalter" },
+                { "value": "sonstige", "label": "Sonstige" }
+              ]
+            },
+            {
+              "name": "customerTypeOther",
+              "type": "text",
+              "label": "Bitte angeben",
+              "placeholder": "Art des Kunden",
+              "required": true,
+              "dependsOn": {
+                "field": "customerType",
+                "value": "sonstige"
+              }
+            },
+            {
+              "name": "acceptTerms",
+              "type": "checkbox",
+              "label": "Zustimmungen",
+              "required": true,
+              "options": [
+                { "value": "agb", "label": "Ich akzeptiere die AGB" },
+                {
+                  "value": "privacy",
+                  "label": "Ich akzeptiere die Datenschutzerklärung"
+                }
+              ]
+            },
+            {
+              "name": "expressService",
+              "type": "checkbox",
+              "label": "Zusatzdienstleistungen",
+              "required": false,
+              "options": [
+                { "value": "express", "label": "Express-Bearbeitung (+50 €)" },
+                {
+                  "value": "print",
+                  "label": "Gedruckter Ausweis per Post (+20 €)"
+                }
+              ]
+            }
           ]
         }
       ]
