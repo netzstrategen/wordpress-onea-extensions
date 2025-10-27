@@ -12,20 +12,17 @@ import {
   generateBillingPeriodOptions,
   calculatePreviousPeriod,
 } from "./utils/billing-periods";
-// import defaultFormConfig from "./form-schema.json";
 
 export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   formConfig,
   componentId,
 }) => {
-  console.log("formConfig:", formConfig);
   // Generate dynamic billing period options
   const billingPeriodOptions = useMemo(
     () => generateBillingPeriodOptions(),
     []
   );
 
-  // TODO: change for formConfig coming from props
   const config = useMemo(() => {
     const configCopy = JSON.parse(JSON.stringify(formConfig)) as FormConfig;
 
