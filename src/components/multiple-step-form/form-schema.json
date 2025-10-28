@@ -45,14 +45,9 @@
               "required": true,
               "validation": {
                 "min": 1,
-                "message": "Mindestens 1 Wohneinheit erforderlich"
-              },
-              "conditionalWarning": {
-                "condition": "numberOfUnits < 5 && buildingYear < 1978",
-                "message": "Bei weniger als 5 Wohneinheiten und Baujahr vor 1978 ist ein Bedarfsausweis erforderlich.",
-                "blocking": true,
-                "ctaText": "Zum Bedarfsausweis",
-                "ctaLink": "/bedarfsausweis"
+                "message": "Mindestens 1 Wohneinheit erforderlich",
+                "customValidation": "numberOfUnits >= 5 || buildingYear >= 1978",
+                "validationMessage": "Ausstellung Verbrauchsausweis nicht möglich. Bitte Bedarfsausweis beantragen."
               }
             }
           ]
@@ -69,14 +64,9 @@
               "validation": {
                 "min": 1900,
                 "max": 2025,
-                "message": "Baujahr muss zwischen 1900 und heute liegen"
-              },
-              "conditionalWarning": {
-                "condition": "buildingYear > (currentYear - 3)",
-                "message": "Verbrauchsausweis nicht möglich – Bedarfsausweis notwendig, da Neubau",
-                "blocking": true,
-                "ctaText": "Zum Bedarfsausweis",
-                "ctaLink": "/bedarfsausweis"
+                "message": "Baujahr muss zwischen 1900 und heute liegen",
+                "customValidation": "buildingYear < 2022",
+                "validationMessage": "Kein Energieausweis notwendig"
               }
             },
             {
@@ -88,7 +78,7 @@
               "validation": {
                 "min": 1900,
                 "max": 2025,
-                "message": "Baujahr der Heizung kann nicht in der Zukunft liegen",
+                "message": "Die Heizung darf nicht älter als das Gebäude sein",
                 "customValidation": "heatingYear >= buildingYear"
               }
             }
@@ -104,13 +94,8 @@
               "placeholder": "z.B. 120",
               "required": true,
               "validation": {
-                "min": 1,
-                "message": "Wohnfläche muss größer als 0 sein"
-              },
-              "conditionalWarning": {
-                "condition": "livingArea < 50",
-                "message": "Kein Energieausweis notwendig",
-                "blocking": false
+                "min": 50,
+                "message": "Wohnfläche muss mindestens 50 m² betragen - Kein Energieausweis notwendig"
               }
             },
             {
@@ -151,7 +136,7 @@
               "validation": {
                 "min": 1900,
                 "max": 2025,
-                "message": "Sanierungsjahr muss gültig sein",
+                "message": "Das Jahr der Sanierung darf nicht vor dem Baujahr des Gebäudes liegen.",
                 "customValidation": "renovationYear >= buildingYear"
               }
             }
@@ -227,27 +212,6 @@
                   "unit": "kWh"
                 }
               ]
-            },
-            {
-              "name": "primaryEnergyFactor",
-              "type": "number",
-              "label": "Primärenergiefaktor",
-              "placeholder": "z.B. 0.7",
-              "required": true,
-              "dependsOn": {
-                "field": "mainFuel",
-                "value": [
-                  "fernwaermeHeizwerkFossil",
-                  "fernwaermeKraftwerkFossil",
-                  "fernwaermeKraftwerkErneuerbar",
-                  "fernwaermeHeizwerkErneuerbar"
-                ]
-              },
-              "validation": {
-                "min": 0,
-                "max": 3,
-                "message": "Primärenergiefaktor muss zwischen 0 und 3 liegen"
-              }
             }
           ]
         },
@@ -296,12 +260,9 @@
               "validation": {
                 "min": 0,
                 "max": 100,
-                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
-              },
-              "conditionalWarning": {
-                "condition": "vacancyPercent1 > 30",
-                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-                "blocking": true
+                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen",
+                "customValidation": "vacancyPercent1 <= 30",
+                "validationMessage": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
               }
             }
           ]
@@ -354,12 +315,9 @@
               "validation": {
                 "min": 0,
                 "max": 100,
-                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
-              },
-              "conditionalWarning": {
-                "condition": "vacancyPercent2 > 30",
-                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-                "blocking": true
+                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen",
+                "customValidation": "vacancyPercent2 <= 30",
+                "validationMessage": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
               }
             }
           ]
@@ -412,12 +370,9 @@
               "validation": {
                 "min": 0,
                 "max": 100,
-                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen"
-              },
-              "conditionalWarning": {
-                "condition": "vacancyPercent3 > 30",
-                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-                "blocking": true
+                "message": "Leerstand muss zwischen 0 und 100 Prozent liegen",
+                "customValidation": "vacancyPercent3 <= 30",
+                "validationMessage": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
               }
             }
           ]
@@ -447,7 +402,7 @@
               },
               "validation": {
                 "customValidation": "secondFuel !== mainFuel",
-                "message": "2. Brennstoff darf nicht gleich dem 1. Brennstoff sein"
+                "message": "Die Brennstoffe dürfen nicht gleich sein."
               },
               "options": [
                 { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
@@ -523,27 +478,6 @@
               }
             },
             {
-              "name": "secondPrimaryEnergyFactor",
-              "type": "number",
-              "label": "Primärenergiefaktor (2. Brennstoff)",
-              "placeholder": "z.B. 0.7",
-              "required": true,
-              "dependsOn": {
-                "field": "secondFuel",
-                "value": [
-                  "fernwaermeHeizwerkFossil",
-                  "fernwaermeKraftwerkFossil",
-                  "fernwaermeKraftwerkErneuerbar",
-                  "fernwaermeHeizwerkErneuerbar"
-                ]
-              },
-              "validation": {
-                "min": 0,
-                "max": 3,
-                "message": "Primärenergiefaktor muss zwischen 0 und 3 liegen"
-              }
-            },
-            {
               "name": "secondFuelConsumption1",
               "type": "number",
               "label": "Verbrauch 2. Brennstoff - 1. Periode",
@@ -556,40 +490,6 @@
               "validation": {
                 "min": 0,
                 "message": "Verbrauch muss positiv sein"
-              }
-            },
-            {
-              "name": "secondVacancy1",
-              "type": "radio",
-              "label": "Leerstand 2. Brennstoff - 1. Periode?",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "options": [
-                { "value": "ja", "label": "Ja" },
-                { "value": "nein", "label": "Nein" }
-              ]
-            },
-            {
-              "name": "secondVacancyPercent1",
-              "type": "number",
-              "label": "Leerstand in Prozent",
-              "placeholder": "z.B. 10",
-              "required": true,
-              "dependsOn": {
-                "field": "secondVacancy1",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "max": 100
-              },
-              "conditionalWarning": {
-                "condition": "secondVacancyPercent1 > 30",
-                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-                "blocking": true
               }
             },
             {
@@ -608,40 +508,6 @@
               }
             },
             {
-              "name": "secondVacancy2",
-              "type": "radio",
-              "label": "Leerstand 2. Brennstoff - 2. Periode?",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "options": [
-                { "value": "ja", "label": "Ja" },
-                { "value": "nein", "label": "Nein" }
-              ]
-            },
-            {
-              "name": "secondVacancyPercent2",
-              "type": "number",
-              "label": "Leerstand in Prozent",
-              "placeholder": "z.B. 10",
-              "required": true,
-              "dependsOn": {
-                "field": "secondVacancy2",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "max": 100
-              },
-              "conditionalWarning": {
-                "condition": "secondVacancyPercent2 > 30",
-                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-                "blocking": true
-              }
-            },
-            {
               "name": "secondFuelConsumption3",
               "type": "number",
               "label": "Verbrauch 2. Brennstoff - 3. Periode",
@@ -654,40 +520,6 @@
               "validation": {
                 "min": 0,
                 "message": "Verbrauch muss positiv sein"
-              }
-            },
-            {
-              "name": "secondVacancy3",
-              "type": "radio",
-              "label": "Leerstand 2. Brennstoff - 3. Periode?",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "options": [
-                { "value": "ja", "label": "Ja" },
-                { "value": "nein", "label": "Nein" }
-              ]
-            },
-            {
-              "name": "secondVacancyPercent3",
-              "type": "number",
-              "label": "Leerstand in Prozent",
-              "placeholder": "z.B. 10",
-              "required": true,
-              "dependsOn": {
-                "field": "secondVacancy3",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "max": 100
-              },
-              "conditionalWarning": {
-                "condition": "secondVacancyPercent3 > 30",
-                "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich",
-                "blocking": true
               }
             }
           ]
@@ -998,12 +830,12 @@
       "title": "Bestell- & Kundendaten",
       "fieldGroups": [
         {
-          "title": "Objektadresse & Fotos",
+          "title": "Adresse & Fotos",
           "fields": [
             {
               "name": "objectStreet",
               "type": "text",
-              "label": "Objektadresse: Straße",
+              "label": "Straße",
               "placeholder": "z.B. Musterstraße",
               "required": true
             },
@@ -1166,7 +998,7 @@
               "options": [
                 {
                   "value": "copyFromObject",
-                  "label": "Rechnungsadresse von Objektadresse übernehmen"
+                  "label": "Rechnungsadresse von Adresse übernehmen"
                 }
               ]
             }

@@ -17,6 +17,8 @@ export interface FieldValidation {
   max?: number;
   pattern?: string;
   message?: string;
+  customValidation?: string;
+  validationMessage?: string;
 }
 
 export interface BaseField {
