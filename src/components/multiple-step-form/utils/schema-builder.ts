@@ -17,22 +17,28 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
       if (field.validation?.pattern) {
         schema = (schema as z.ZodString).regex(
           new RegExp(field.validation.pattern),
-          field.validation.message || "Invalid format"
+          field.validation.message || "Ungültiges Format"
         );
       }
 
       if (field.required) {
-        schema = (schema as z.ZodString).min(1, `${field.label} is required`);
+        schema = (schema as z.ZodString).min(
+          1,
+          `${field.label} ist erforderlich`
+        );
       } else {
         schema = schema.optional();
       }
       break;
 
     case "email":
-      schema = z.string().email("Invalid email address");
+      schema = z.string().email("Ungültige E-Mail-Adresse");
 
       if (field.required) {
-        schema = (schema as z.ZodString).min(1, `${field.label} is required`);
+        schema = (schema as z.ZodString).min(
+          1,
+          `${field.label} ist erforderlich`
+        );
       } else {
         schema = schema.optional();
       }
@@ -40,20 +46,20 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
 
     case "number":
       let numberSchema = z.number({
-        message: `${field.label} must be a number`,
+        message: `${field.label} muss eine Zahl sein`,
       });
 
       if (field.validation?.min !== undefined) {
         numberSchema = numberSchema.min(
           field.validation.min,
-          field.validation.message || `Minimum value is ${field.validation.min}`
+          field.validation.message || `Mindestwert ist ${field.validation.min}`
         );
       }
 
       if (field.validation?.max !== undefined) {
         numberSchema = numberSchema.max(
           field.validation.max,
-          field.validation.message || `Maximum value is ${field.validation.max}`
+          field.validation.message || `Maximalwert ist ${field.validation.max}`
         );
       }
 
@@ -101,7 +107,7 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
       if (field.required) {
         schema = (schema as z.ZodArray<z.ZodString>).min(
           1,
-          `Please select at least one option for ${field.label}`
+          `Bitte wählen Sie mindestens eine Option für ${field.label}`
         );
       } else {
         schema = schema.optional();
@@ -115,7 +121,7 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         schema = z
           .any()
           .refine((val) => val !== null && val !== undefined && val !== "", {
-            message: `${field.label} is required`,
+            message: `${field.label} ist erforderlich`,
           });
       } else {
         schema = z.any().optional();
@@ -138,17 +144,152 @@ export function buildStepSchema(
   allValues: FormValues = {}
 ): z.ZodObject<any> {
   const shape: Record<string, z.ZodTypeAny> = {};
+  const customValidations: Array<{
+    field: FormField;
+    validation: string;
+  }> = [];
 
   for (const group of step.fieldGroups) {
     for (const field of group.fields) {
       // Check if field should be included based on dependencies
       if (shouldIncludeField(field, allValues)) {
         shape[field.name] = buildFieldSchema(field);
+
+        // Collect custom validations that need access to other field values
+        if (field.validation?.customValidation) {
+          customValidations.push({
+            field,
+            validation: field.validation.customValidation,
+          });
+        }
       }
     }
   }
 
-  return z.object(shape);
+  let schema = z.object(shape);
+
+  // Apply custom cross-field validations
+  for (const { field, validation } of customValidations) {
+    schema = schema.refine(
+      (data) => {
+        try {
+          // Handle OR conditions (||)
+          if (validation.includes("||")) {
+            const conditions = validation.split("||").map((s) => s.trim());
+            return conditions.some((condition) =>
+              evaluateCondition(condition, data)
+            );
+          }
+
+          // Handle AND conditions (&&)
+          if (validation.includes("&&")) {
+            const conditions = validation.split("&&").map((s) => s.trim());
+            return conditions.every((condition) =>
+              evaluateCondition(condition, data)
+            );
+          }
+
+          // Handle single condition
+          return evaluateCondition(validation, data);
+        } catch (error) {
+          console.error("Custom validation error:", error);
+          return true;
+        }
+      },
+      {
+        message:
+          field.validation?.validationMessage ||
+          field.validation?.message ||
+          `Validierung für ${field.label} fehlgeschlagen`,
+        path: [field.name],
+      }
+    );
+  }
+
+  return schema;
+}
+
+/**
+ * Evaluate a single condition (e.g., "field >= 5", "field <= otherField", "field !== value")
+ */
+function evaluateCondition(condition: string, data: any): boolean {
+  // Handle >= operator
+  if (condition.includes(">=")) {
+    const [leftField, rightPart] = condition.split(">=").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    // Check if rightPart is a number or a field name
+    const rightValue = isNaN(Number(rightPart))
+      ? data[rightPart]
+      : Number(rightPart);
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return Number(leftValue) >= Number(rightValue);
+    }
+    return true; // Skip validation if values are not present
+  }
+
+  // Handle <= operator
+  if (condition.includes("<=")) {
+    const [leftField, rightPart] = condition.split("<=").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    const rightValue = isNaN(Number(rightPart))
+      ? data[rightPart]
+      : Number(rightPart);
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return Number(leftValue) <= Number(rightValue);
+    }
+    return true;
+  }
+
+  // Handle !== operator
+  if (condition.includes("!==")) {
+    const [leftField, rightPart] = condition.split("!==").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    // Check if rightPart is a field name or a literal value
+    const rightValue =
+      data[rightPart] !== undefined ? data[rightPart] : rightPart;
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return leftValue !== rightValue;
+    }
+    return true;
+  }
+
+  // Handle > operator
+  if (condition.includes(">") && !condition.includes(">=")) {
+    const [leftField, rightPart] = condition.split(">").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    const rightValue = isNaN(Number(rightPart))
+      ? data[rightPart]
+      : Number(rightPart);
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return Number(leftValue) > Number(rightValue);
+    }
+    return true;
+  }
+
+  // Handle < operator
+  if (condition.includes("<") && !condition.includes("<=")) {
+    const [leftField, rightPart] = condition.split("<").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    const rightValue = isNaN(Number(rightPart))
+      ? data[rightPart]
+      : Number(rightPart);
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return Number(leftValue) < Number(rightValue);
+    }
+    return true;
+  }
+
+  return true;
 }
 
 /**
