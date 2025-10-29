@@ -269,7 +269,13 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                 )}
                 <div className="space-y-4">
                   {group.fields.map((field) => {
-                    if (!shouldIncludeField(field, allFormValues)) {
+                    // Collect all fields from current step for nested dependency checking
+                    const allStepFields = currentStepConfig.fieldGroups.flatMap(
+                      (g) => g.fields
+                    );
+                    if (
+                      !shouldIncludeField(field, allFormValues, allStepFields)
+                    ) {
                       return null;
                     }
                     return (

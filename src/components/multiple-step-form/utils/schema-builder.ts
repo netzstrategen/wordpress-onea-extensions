@@ -149,10 +149,16 @@ export function buildStepSchema(
     rules: Array<{ condition: string; message: string }>;
   }> = [];
 
+  // Collect all fields from the step for nested dependency checking
+  const allFields: FormField[] = [];
+  for (const group of step.fieldGroups) {
+    allFields.push(...group.fields);
+  }
+
   for (const group of step.fieldGroups) {
     for (const field of group.fields) {
       // Check if field should be included based on dependencies
-      if (shouldIncludeField(field, allValues)) {
+      if (shouldIncludeField(field, allValues, allFields)) {
         shape[field.name] = buildFieldSchema(field);
 
         // Collect custom validation rules (array-based structure)
@@ -405,10 +411,12 @@ function evaluateCondition(condition: string, data: any): boolean {
 
 /**
  * Check if a field should be included based on its dependencies
+ * This function recursively checks if dependency fields are themselves visible
  */
 export function shouldIncludeField(
   field: FormField,
-  values: FormValues
+  values: FormValues,
+  allFields?: FormField[]
 ): boolean {
   if (!field.dependsOn) {
     return true;
@@ -417,11 +425,31 @@ export function shouldIncludeField(
   const { field: dependencyField, value: dependencyValue } = field.dependsOn;
   const currentValue = values[dependencyField];
 
+  // Check if the current field's dependency is met
+  let isDependencyMet = false;
   if (Array.isArray(dependencyValue)) {
-    return dependencyValue.includes(currentValue);
+    isDependencyMet = dependencyValue.includes(currentValue);
+  } else {
+    isDependencyMet = currentValue === dependencyValue;
   }
 
-  return currentValue === dependencyValue;
+  // If the dependency is not met, the field should not be included
+  if (!isDependencyMet) {
+    return false;
+  }
+
+  // If allFields is provided, recursively check if the dependency field itself is visible
+  if (allFields) {
+    const dependencyFieldConfig = allFields.find(
+      (f) => f.name === dependencyField
+    );
+    if (dependencyFieldConfig && dependencyFieldConfig.dependsOn) {
+      // Recursively check if the dependency field is visible
+      return shouldIncludeField(dependencyFieldConfig, values, allFields);
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -434,10 +462,18 @@ export function buildFormSchema(
 ): z.ZodObject<any> {
   const shape: Record<string, z.ZodTypeAny> = {};
 
+  // Collect all fields from all steps for nested dependency checking
+  const allFields: FormField[] = [];
+  for (const step of steps) {
+    for (const group of step.fieldGroups) {
+      allFields.push(...group.fields);
+    }
+  }
+
   for (const step of steps) {
     for (const group of step.fieldGroups) {
       for (const field of group.fields) {
-        if (shouldIncludeField(field, allValues)) {
+        if (shouldIncludeField(field, allValues, allFields)) {
           shape[field.name] = buildFieldSchema(field);
         }
       }
