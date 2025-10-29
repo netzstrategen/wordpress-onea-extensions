@@ -24,9 +24,14 @@ import { formatPeriodLabel } from "./utils/billing-periods";
 interface FormFieldProps {
   field: FormFieldType;
   form: UseFormReturn<any>;
+  allFormValues?: any;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({ field, form }) => {
+export const FormField: React.FC<FormFieldProps> = ({
+  field,
+  form,
+  allFormValues,
+}) => {
   return (
     <ShadcnFormField
       control={form.control}
@@ -38,7 +43,9 @@ export const FormField: React.FC<FormFieldProps> = ({ field, form }) => {
             {field.required && <span className="text-red-500 ml-1">*</span>}
           </FormLabel>
 
-          <FormControl>{renderFieldInput(field, formField)}</FormControl>
+          <FormControl>
+            {renderFieldInput(field, formField, allFormValues)}
+          </FormControl>
 
           {field.description && (
             <FormDescription>{field.description}</FormDescription>
@@ -51,7 +58,18 @@ export const FormField: React.FC<FormFieldProps> = ({ field, form }) => {
   );
 };
 
-function renderFieldInput(field: FormFieldType, formField: any) {
+function renderFieldInput(
+  field: FormFieldType,
+  formField: any,
+  allFormValues?: any
+) {
+  // Check if this is the numberOfUnits field and determine if it should be disabled
+  const isNumberOfUnitsField = field.name === "numberOfUnits";
+  const buildingType = allFormValues?.buildingType;
+  const shouldDisableNumberOfUnits =
+    isNumberOfUnitsField &&
+    (buildingType === "einfamilienhaus" || buildingType === "zweifamilienhaus");
+
   switch (field.type) {
     case "text":
     case "email":
@@ -64,6 +82,15 @@ function renderFieldInput(field: FormFieldType, formField: any) {
       );
 
     case "number":
+      // Handle disabled number field (e.g., numberOfUnits for einfamilienhaus/zweifamilienhaus)
+      if (shouldDisableNumberOfUnits) {
+        return (
+          <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-muted px-3 py-2 text-sm">
+            <span>{formField.value || ""}</span>
+          </div>
+        );
+      }
+
       return (
         <Input
           {...formField}

@@ -12,6 +12,11 @@ export interface FieldDependency {
   value: string | string[];
 }
 
+export interface CustomValidationRule {
+  condition: string;
+  message: string;
+}
+
 export interface FieldValidation {
   min?: number;
   max?: number;
@@ -19,6 +24,7 @@ export interface FieldValidation {
   message?: string;
   customValidation?: string;
   validationMessage?: string;
+  customValidations?: CustomValidationRule[];
 }
 
 export interface BaseField {
@@ -30,6 +36,7 @@ export interface BaseField {
   required?: boolean;
   readonly?: boolean;
   disabled?: boolean;
+  autoSetValue?: boolean;
   validation?: FieldValidation;
   dependsOn?: FieldDependency;
 }
@@ -81,6 +88,7 @@ export interface FormStep {
   title: string;
   description?: string;
   fieldGroups: FieldGroup[];
+  customValidations?: CustomValidationRule[];
 }
 
 export interface FormConfig {
