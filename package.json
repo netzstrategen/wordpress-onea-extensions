@@ -4,6 +4,12 @@
   "description": "WordPress plugin for Online Energieausweis extensions with React components",
   "author": "netzstrategen",
   "license": "GPL-3.0-or-later",
+  "files": [
+    "build/",
+    "includes/",
+    "vendor/",
+    "wp-onea-extensions.php"
+  ],
   "scripts": {
     "build": "wp-scripts build",
     "format": "wp-scripts format",
