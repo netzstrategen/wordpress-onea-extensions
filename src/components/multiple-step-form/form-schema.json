@@ -7,8 +7,8 @@
       "title": "Gebäudeinformationen",
       "customValidations": [
         {
-          "condition": "(buildingType === 'einfamilienhaus' || buildingType === 'zweifamilienhaus') || (buildingType !== 'mehrfamilienhaus' && buildingType !== 'wohnteilGemischt' && buildingType !== 'sonstiges') || numberOfUnits >= 5 || buildingYear >= 1978",
-          "message": "Für diese Gebäudeart mit weniger als 5 Wohneinheiten und Baujahr vor 1978 ist die Ausstellung eines Verbrauchsausweises nicht möglich. Bitte Bedarfsausweis beantragen."
+          "condition": "numberOfUnits >= 5 || buildingYear >= 1978",
+          "message": "Bei weniger als 5 Wohneinheiten und Baujahr vor 1978 ist die Ausstellung eines Verbrauchsausweises nicht möglich. Bitte Bedarfsausweis beantragen."
         }
       ],
       "fieldGroups": [
