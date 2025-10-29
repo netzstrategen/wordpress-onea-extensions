@@ -278,6 +278,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                         field={field}
                         form={form}
                         allFormValues={allFormValues}
+                        currentStepConfig={currentStepConfig}
                       />
                     );
                   })}

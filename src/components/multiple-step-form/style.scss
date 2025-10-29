@@ -181,6 +181,10 @@
       }
     }
 
+    .consumption-unit {
+      margin-left: 0.15rem !important;
+    }
+
     .field-group {
       background: hsl(var(--card));
       border: 1px solid hsl(var(--border));
@@ -316,11 +320,17 @@
   // because the dropdown portal renders outside the form container
   [data-radix-select-content] {
     z-index: 9999 !important;
-    overflow: auto !important;
+    overflow-y: auto !important;
+    max-height: 20rem !important; // Limit height to enable scrolling
+
+    .consumption-unit {
+      margin-left: 0.15rem !important;
+    }
   }
 
   [data-radix-select-viewport] {
     padding: 0.25rem !important;
+    max-height: 20rem !important;
   }
 
   [role="option"] {

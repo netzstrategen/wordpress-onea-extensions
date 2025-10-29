@@ -18,20 +18,29 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { FormField as FormFieldType } from "./types";
+import type { FormField as FormFieldType, FormStep } from "./types";
 import { formatPeriodLabel } from "./utils/billing-periods";
+import { getConsumptionFieldUnit } from "./utils/consumption-fields";
 
 interface FormFieldProps {
   field: FormFieldType;
   form: UseFormReturn<any>;
   allFormValues?: any;
+  currentStepConfig?: FormStep;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
   field,
   form,
   allFormValues,
+  currentStepConfig,
 }) => {
+  const consumptionUnit = getConsumptionFieldUnit(
+    field.name,
+    allFormValues,
+    currentStepConfig
+  );
+
   return (
     <ShadcnFormField
       control={form.control}
@@ -41,6 +50,11 @@ export const FormField: React.FC<FormFieldProps> = ({
           <FormLabel>
             {field.label}
             {field.required && <span className="text-red-500 ml-1">*</span>}
+            {consumptionUnit && (
+              <span className="consumption-unit text-muted-foreground font-normal">
+                (in {consumptionUnit})
+              </span>
+            )}
           </FormLabel>
 
           <FormControl>
@@ -131,6 +145,12 @@ function renderFieldInput(
                 field.options.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
+                    {(option as any).unit && (
+                      <span className="text-muted-foreground">
+                        {" "}
+                        ({(option as any).unit})
+                      </span>
+                    )}
                   </SelectItem>
                 ))
               ) : (
