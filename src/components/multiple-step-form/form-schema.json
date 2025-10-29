@@ -5,6 +5,12 @@
     {
       "id": "building-info",
       "title": "Gebäudeinformationen",
+      "customValidations": [
+        {
+          "condition": "(buildingType === 'einfamilienhaus' || buildingType === 'zweifamilienhaus') || (buildingType !== 'mehrfamilienhaus' && buildingType !== 'wohnteilGemischt' && buildingType !== 'sonstiges') || numberOfUnits >= 5 || buildingYear >= 1978",
+          "message": "Für diese Gebäudeart mit weniger als 5 Wohneinheiten und Baujahr vor 1978 ist die Ausstellung eines Verbrauchsausweises nicht möglich. Bitte Bedarfsausweis beantragen."
+        }
+      ],
       "fieldGroups": [
         {
           "title": "Gebäudeart & Wohneinheiten",
@@ -41,13 +47,18 @@
               "name": "numberOfUnits",
               "type": "number",
               "label": "Anzahl der Wohneinheiten",
-              "placeholder": "z.B. 1",
+              "placeholder": "z.B. 3",
               "required": true,
+              "autoSetValue": true,
               "validation": {
                 "min": 1,
                 "message": "Mindestens 1 Wohneinheit erforderlich",
-                "customValidation": "numberOfUnits >= 5 || buildingYear >= 1978",
-                "validationMessage": "Ausstellung Verbrauchsausweis nicht möglich. Bitte Bedarfsausweis beantragen."
+                "customValidations": [
+                  {
+                    "condition": "buildingType !== 'mehrfamilienhaus' || numberOfUnits >= 3",
+                    "message": "Bei einem Mehrfamilienhaus muss die Anzahl der Wohneinheiten mindestens 3 sein."
+                  }
+                ]
               }
             }
           ]
@@ -65,8 +76,12 @@
                 "min": 1900,
                 "max": 2025,
                 "message": "Baujahr muss zwischen 1900 und heute liegen",
-                "customValidation": "buildingYear < 2022",
-                "validationMessage": "Kein Energieausweis notwendig"
+                "customValidations": [
+                  {
+                    "condition": "buildingYear < 2022",
+                    "message": "Kein Energieausweis notwendig"
+                  }
+                ]
               }
             },
             {
@@ -79,7 +94,12 @@
                 "min": 1900,
                 "max": 2025,
                 "message": "Die Heizung darf nicht älter als das Gebäude sein",
-                "customValidation": "heatingYear >= buildingYear"
+                "customValidations": [
+                  {
+                    "condition": "heatingYear >= buildingYear",
+                    "message": "Die Heizung darf nicht älter als das Gebäude sein"
+                  }
+                ]
               }
             }
           ]
@@ -137,7 +157,12 @@
                 "min": 1900,
                 "max": 2025,
                 "message": "Das Jahr der Sanierung darf nicht vor dem Baujahr des Gebäudes liegen.",
-                "customValidation": "renovationYear >= buildingYear"
+                "customValidations": [
+                  {
+                    "condition": "renovationYear >= buildingYear",
+                    "message": "Das Jahr der Sanierung darf nicht vor dem Baujahr des Gebäudes liegen."
+                  }
+                ]
               }
             }
           ]
@@ -261,8 +286,12 @@
                 "min": 0,
                 "max": 100,
                 "message": "Leerstand muss zwischen 0 und 100 Prozent liegen",
-                "customValidation": "vacancyPercent1 <= 30",
-                "validationMessage": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
+                "customValidations": [
+                  {
+                    "condition": "vacancyPercent1 <= 30",
+                    "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
+                  }
+                ]
               }
             }
           ]
@@ -316,8 +345,12 @@
                 "min": 0,
                 "max": 100,
                 "message": "Leerstand muss zwischen 0 und 100 Prozent liegen",
-                "customValidation": "vacancyPercent2 <= 30",
-                "validationMessage": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
+                "customValidations": [
+                  {
+                    "condition": "vacancyPercent2 <= 30",
+                    "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
+                  }
+                ]
               }
             }
           ]
@@ -371,8 +404,12 @@
                 "min": 0,
                 "max": 100,
                 "message": "Leerstand muss zwischen 0 und 100 Prozent liegen",
-                "customValidation": "vacancyPercent3 <= 30",
-                "validationMessage": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
+                "customValidations": [
+                  {
+                    "condition": "vacancyPercent3 <= 30",
+                    "message": "Bei mehr als 30 % Leerstand ist ein Bedarfsausweis erforderlich"
+                  }
+                ]
               }
             }
           ]
@@ -401,8 +438,12 @@
                 "value": "ja"
               },
               "validation": {
-                "customValidation": "secondFuel !== mainFuel",
-                "message": "Die Brennstoffe dürfen nicht gleich sein."
+                "customValidations": [
+                  {
+                    "condition": "secondFuel !== mainFuel",
+                    "message": "Die Brennstoffe dürfen nicht gleich sein."
+                  }
+                ]
               },
               "options": [
                 { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
@@ -473,8 +514,12 @@
               "validation": {
                 "min": 1900,
                 "max": 2025,
-                "customValidation": "secondHeatingYear >= buildingYear",
-                "message": "Baujahr der 2. Heizungsanlage darf nicht älter als Gebäude sein"
+                "customValidations": [
+                  {
+                    "condition": "secondHeatingYear >= buildingYear",
+                    "message": "Baujahr der 2. Heizungsanlage darf nicht älter als Gebäude sein"
+                  }
+                ]
               }
             },
             {
@@ -721,8 +766,12 @@
               "validation": {
                 "min": 1900,
                 "max": 2025,
-                "customValidation": "windowReplacementYear >= buildingYear",
-                "message": "Jahr des Fenstertausches darf nicht älter als Baujahr Gebäude sein"
+                "customValidations": [
+                  {
+                    "condition": "windowReplacementYear >= buildingYear",
+                    "message": "Jahr des Fenstertausches darf nicht älter als Baujahr Gebäude sein"
+                  }
+                ]
               }
             }
           ]
@@ -817,8 +866,12 @@
               },
               "validation": {
                 "min": 0,
-                "customValidation": "cooledArea <= livingArea",
-                "message": "Gekühlte Fläche darf nicht größer als Wohnfläche sein"
+                "customValidations": [
+                  {
+                    "condition": "cooledArea <= livingArea",
+                    "message": "Gekühlte Fläche darf nicht größer als Wohnfläche sein"
+                  }
+                ]
               }
             }
           ]

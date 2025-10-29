@@ -172,6 +172,15 @@
     max-width: 100%;
     overflow-x: hidden;
 
+    .custom-error {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+
+      p {
+        margin-bottom: 0 !important;
+      }
+    }
+
     .field-group {
       background: hsl(var(--card));
       border: 1px solid hsl(var(--border));

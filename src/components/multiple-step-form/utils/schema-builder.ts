@@ -144,9 +144,9 @@ export function buildStepSchema(
   allValues: FormValues = {}
 ): z.ZodObject<any> {
   const shape: Record<string, z.ZodTypeAny> = {};
-  const customValidations: Array<{
+  const customValidationRules: Array<{
     field: FormField;
-    validation: string;
+    rules: Array<{ condition: string; message: string }>;
   }> = [];
 
   for (const group of step.fieldGroups) {
@@ -155,11 +155,14 @@ export function buildStepSchema(
       if (shouldIncludeField(field, allValues)) {
         shape[field.name] = buildFieldSchema(field);
 
-        // Collect custom validations that need access to other field values
-        if (field.validation?.customValidation) {
-          customValidations.push({
+        // Collect custom validation rules (array-based structure)
+        if (
+          field.validation?.customValidations &&
+          Array.isArray(field.validation.customValidations)
+        ) {
+          customValidationRules.push({
             field,
-            validation: field.validation.customValidation,
+            rules: field.validation.customValidations,
           });
         }
       }
@@ -168,51 +171,174 @@ export function buildStepSchema(
 
   let schema = z.object(shape);
 
-  // Apply custom cross-field validations
-  for (const { field, validation } of customValidations) {
-    schema = schema.refine(
-      (data) => {
-        try {
-          // Handle OR conditions (||)
-          if (validation.includes("||")) {
-            const conditions = validation.split("||").map((s) => s.trim());
-            return conditions.some((condition) =>
-              evaluateCondition(condition, data)
-            );
+  // Apply field-level custom validation rules
+  for (const { field, rules } of customValidationRules) {
+    for (const rule of rules) {
+      schema = schema.refine(
+        (data) => {
+          try {
+            const condition = rule.condition.trim();
+            const result = evaluateComplexCondition(condition, data);
+            return result;
+          } catch (error) {
+            console.error("Custom validation error:", error);
+            return true;
           }
-
-          // Handle AND conditions (&&)
-          if (validation.includes("&&")) {
-            const conditions = validation.split("&&").map((s) => s.trim());
-            return conditions.every((condition) =>
-              evaluateCondition(condition, data)
-            );
-          }
-
-          // Handle single condition
-          return evaluateCondition(validation, data);
-        } catch (error) {
-          console.error("Custom validation error:", error);
-          return true;
+        },
+        {
+          message: rule.message,
+          path: [field.name],
         }
-      },
-      {
-        message:
-          field.validation?.validationMessage ||
-          field.validation?.message ||
-          `Validierung für ${field.label} fehlgeschlagen`,
-        path: [field.name],
-      }
-    );
+      );
+    }
+  }
+
+  // Apply step-level custom validation rules
+  if (step.customValidations && Array.isArray(step.customValidations)) {
+    for (const rule of step.customValidations) {
+      schema = schema.refine(
+        (data) => {
+          try {
+            const condition = rule.condition.trim();
+            const result = evaluateComplexCondition(condition, data);
+            return result;
+          } catch (error) {
+            console.error("Step-level validation error:", error);
+            return true;
+          }
+        },
+        {
+          message: rule.message,
+          path: ["_stepValidation"], // Use a special field name for step-level errors
+        }
+      );
+    }
   }
 
   return schema;
 }
 
 /**
+ * Evaluate complex conditions with proper parentheses handling
+ */
+function evaluateComplexCondition(condition: string, data: any): boolean {
+  condition = condition.trim();
+
+  // Find top-level OR operators (not inside parentheses)
+  const orParts = splitByTopLevelOperator(condition, "||");
+  if (orParts.length > 1) {
+    const result = orParts.some((part) => {
+      const partResult = evaluateComplexCondition(part, data);
+      return partResult;
+    });
+    return result;
+  }
+
+  // Find top-level AND operators (not inside parentheses)
+  const andParts = splitByTopLevelOperator(condition, "&&");
+  if (andParts.length > 1) {
+    const result = andParts.every((part) => {
+      const partResult = evaluateComplexCondition(part, data);
+      return partResult;
+    });
+    return result;
+  }
+
+  // Remove outer parentheses if present
+  if (condition.startsWith("(") && condition.endsWith(")")) {
+    return evaluateComplexCondition(condition.slice(1, -1), data);
+  }
+
+  // Single condition - evaluate it
+  return evaluateCondition(condition, data);
+}
+
+/**
+ * Split a condition string by a top-level operator (not inside parentheses)
+ */
+function splitByTopLevelOperator(
+  condition: string,
+  operator: string
+): string[] {
+  const parts: string[] = [];
+  let current = "";
+  let depth = 0;
+  let i = 0;
+
+  while (i < condition.length) {
+    const char = condition[i];
+
+    if (char === "(") {
+      depth++;
+      current += char;
+      i++;
+    } else if (char === ")") {
+      depth--;
+      current += char;
+      i++;
+    } else if (
+      depth === 0 &&
+      condition.slice(i, i + operator.length) === operator
+    ) {
+      // Found top-level operator
+      parts.push(current.trim());
+      current = "";
+      i += operator.length;
+    } else {
+      current += char;
+      i++;
+    }
+  }
+
+  if (current.trim()) {
+    parts.push(current.trim());
+  }
+
+  return parts.length > 0 ? parts : [condition];
+}
+
+/**
  * Evaluate a single condition (e.g., "field >= 5", "field <= otherField", "field !== value")
  */
 function evaluateCondition(condition: string, data: any): boolean {
+  // Handle === operator (must come before !==)
+  if (condition.includes("===")) {
+    const [leftField, rightPart] = condition.split("===").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    // Remove quotes from string literals
+    const rightValue =
+      rightPart.startsWith("'") || rightPart.startsWith('"')
+        ? rightPart.slice(1, -1)
+        : data[rightPart] !== undefined
+        ? data[rightPart]
+        : rightPart;
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return leftValue === rightValue;
+    }
+    return true;
+  }
+
+  // Handle !== operator
+  if (condition.includes("!==")) {
+    const [leftField, rightPart] = condition.split("!==").map((s) => s.trim());
+    const leftValue = data[leftField];
+
+    // Remove quotes from string literals
+    const rightValue =
+      rightPart.startsWith("'") || rightPart.startsWith('"')
+        ? rightPart.slice(1, -1)
+        : data[rightPart] !== undefined
+        ? data[rightPart]
+        : rightPart;
+
+    if (leftValue !== undefined && rightValue !== undefined) {
+      return leftValue !== rightValue;
+    }
+    return true;
+  }
+
   // Handle >= operator
   if (condition.includes(">=")) {
     const [leftField, rightPart] = condition.split(">=").map((s) => s.trim());
@@ -240,21 +366,6 @@ function evaluateCondition(condition: string, data: any): boolean {
 
     if (leftValue !== undefined && rightValue !== undefined) {
       return Number(leftValue) <= Number(rightValue);
-    }
-    return true;
-  }
-
-  // Handle !== operator
-  if (condition.includes("!==")) {
-    const [leftField, rightPart] = condition.split("!==").map((s) => s.trim());
-    const leftValue = data[leftField];
-
-    // Check if rightPart is a field name or a literal value
-    const rightValue =
-      data[rightPart] !== undefined ? data[rightPart] : rightPart;
-
-    if (leftValue !== undefined && rightValue !== undefined) {
-      return leftValue !== rightValue;
     }
     return true;
   }
