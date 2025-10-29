@@ -183,8 +183,10 @@ export function buildStepSchema(
       schema = schema.refine(
         (data) => {
           try {
+            // Merge allValues with current step data to access fields from other steps
+            const completeData = { ...allValues, ...data };
             const condition = rule.condition.trim();
-            const result = evaluateComplexCondition(condition, data);
+            const result = evaluateComplexCondition(condition, completeData);
             return result;
           } catch (error) {
             console.error("Custom validation error:", error);
@@ -205,8 +207,10 @@ export function buildStepSchema(
       schema = schema.refine(
         (data) => {
           try {
+            // Merge allValues with current step data to access fields from other steps
+            const completeData = { ...allValues, ...data };
             const condition = rule.condition.trim();
-            const result = evaluateComplexCondition(condition, data);
+            const result = evaluateComplexCondition(condition, completeData);
             return result;
           } catch (error) {
             console.error("Step-level validation error:", error);
