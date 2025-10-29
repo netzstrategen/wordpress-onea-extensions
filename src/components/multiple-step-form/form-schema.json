@@ -237,6 +237,45 @@
                   "unit": "kWh"
                 }
               ]
+            },
+            {
+              "name": "mainFuelPrimaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor",
+              "placeholder": "z.B. 0.7",
+              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "required": true,
+              "dependsOn": {
+                "field": "mainFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "mainFuelDocumentation",
+              "type": "file",
+              "label": "Nachweis Primärenergiefaktor (PDF oder Bild)",
+              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
+              "required": true,
+              "dependsOn": {
+                "field": "mainFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "accept": "image/*,application/pdf"
             }
           ]
         },
@@ -502,6 +541,45 @@
               ]
             },
             {
+              "name": "secondFuelPrimaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor (2. Energieträger)",
+              "placeholder": "z.B. 0.7",
+              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "secondFuelDocumentation",
+              "type": "file",
+              "label": "Nachweis Primärenergiefaktor (2. Energieträger)",
+              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "accept": "image/*,application/pdf"
+            },
+            {
               "name": "secondHeatingYear",
               "type": "number",
               "label": "Baujahr der 2. Heizungsanlage",
@@ -657,6 +735,45 @@
                   "unit": "kWh"
                 }
               ]
+            },
+            {
+              "name": "hotWaterFuelPrimaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor (Warmwasser)",
+              "placeholder": "z.B. 0.7",
+              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "required": true,
+              "dependsOn": {
+                "field": "hotWaterFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "hotWaterFuelDocumentation",
+              "type": "file",
+              "label": "Nachweis Primärenergiefaktor (Warmwasser)",
+              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
+              "required": true,
+              "dependsOn": {
+                "field": "hotWaterFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "accept": "image/*,application/pdf"
             },
             {
               "name": "hotWaterConsumption1",
