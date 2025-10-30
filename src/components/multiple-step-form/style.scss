@@ -141,13 +141,34 @@
     }
   }
 
-  .previous-button,
-  .next-button {
+  .previous-button {
     &:hover,
     &:focus,
     &[data-highlighted] {
       background-color: var(--ast-global-color-0) !important;
       border: 1px solid var(--ast-global-color-0) !important;
+    }
+  }
+
+  .next-button {
+    background-color: var(--ast-global-color-0) !important;
+    border: 1px solid var(--ast-global-color-0) !important;
+    &:hover,
+    &:focus,
+    &[data-highlighted] {
+      background-color: #9dd2a2 !important;
+      border: 1px solid #9dd2a2 !important;
+    }
+  }
+
+  .reset-button {
+    &:hover,
+    &:focus,
+    &[data-highlighted] {
+      color: white !important;
+      opacity: 0.5 !important;
+      background-color: var(--destructive) !important;
+      border: 1px solid var(--destructive) !important;
     }
   }
 
