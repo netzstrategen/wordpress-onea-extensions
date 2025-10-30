@@ -1,65 +1,29 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import type { MultiStepFormProps, FormValues, FormConfig } from "./types";
+import type { MultiStepFormProps, FormValues } from "./types";
 import { buildStepSchema, shouldIncludeField } from "./utils/schema-builder";
 import { useFormPersistence } from "./hooks/useFormPersistence";
+import { useBillingPeriodOptions } from "./hooks/useBillingPeriodOptions";
+import { useFormAutoCalculations } from "./hooks/useFormAutoCalculations";
+import { useFormNavigation } from "./hooks/useFormNavigation";
 import { StepIndicator } from "./StepIndicator";
 import { FormField } from "./FormField";
-import {
-  generateBillingPeriodOptions,
-  calculatePreviousPeriod,
-} from "./utils/billing-periods";
 
 export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   formConfig,
   componentId,
 }) => {
-  // Generate dynamic billing period options
-  const billingPeriodOptions = useMemo(
-    () => generateBillingPeriodOptions(),
-    []
-  );
-
-  const config = useMemo(() => {
-    const configCopy = JSON.parse(JSON.stringify(formConfig)) as FormConfig;
-
-    // Find and update billing period fields with dynamic options
-    configCopy.steps.forEach((step) => {
-      step.fieldGroups.forEach((group) => {
-        group.fields.forEach((field) => {
-          if (field.name === "billingPeriod1" && field.type === "select") {
-            (field as any).options = billingPeriodOptions;
-          }
-          if (
-            (field.name === "billingPeriod2" ||
-              field.name === "billingPeriod3") &&
-            field.type === "select"
-          ) {
-            (field as any).options = [];
-          }
-        });
-      });
-    });
-
-    return configCopy;
-  }, [billingPeriodOptions]);
+  // Inject dynamic billing period options into form config
+  const config = useBillingPeriodOptions(formConfig);
 
   const [currentStep, setCurrentStep] = useState(0);
   const [allFormValues, setAllFormValues] = useState<FormValues>({});
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Use ref to track latest form values without causing re-renders
-  const allFormValuesRef = useRef<FormValues>({});
-
-  // Keep ref in sync with state
-  useEffect(() => {
-    allFormValuesRef.current = allFormValues;
-  }, [allFormValues]);
-
-  const { loadSavedData, saveData } = useFormPersistence({
+  const { loadSavedData, saveData, clearData } = useFormPersistence({
     formId: config.formId,
   });
 
@@ -73,7 +37,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       };
     }
     return { values: {}, step: 0 };
-  }, []);
+  }, [loadSavedData]);
 
   // Initialize state with loaded data
   useEffect(() => {
@@ -82,10 +46,9 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       setCurrentStep(initialData.step);
     }
     setIsInitialized(true);
-  }, []);
+  }, [initialData]);
 
   const currentStepConfig = config.steps[currentStep];
-  const isLastStep = currentStep === config.steps.length - 1;
 
   // Build schema for current step based on all form values
   const stepSchema = buildStepSchema(currentStepConfig, allFormValues);
@@ -94,132 +57,37 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   const form = useForm<any>({
     resolver: zodResolver(stepSchema as any),
     defaultValues: initialData.values,
-    mode: "onChange",
+    mode: "onChange", // Validate on change for instant feedback
+    reValidateMode: "onChange", // Continue validating on change
   });
 
-  // Single watch subscription to handle all form changes
-  useEffect(() => {
-    if (!isInitialized) return;
-
-    const subscription = form.watch((values, { name, type }) => {
-      // Skip if this is a setValue operation (type will be undefined for programmatic changes)
-      if (type !== "change") return;
-
-      // Use ref to get current values without dependency
-      let updatedValues = { ...allFormValuesRef.current };
-      let needsUpdate = false;
-
-      // Handle billing period auto-calculation
-      if (name === "billingPeriod1" && values.billingPeriod1) {
-        const period1Value = values.billingPeriod1;
-        const period2Value = calculatePreviousPeriod(period1Value, 1);
-        const period3Value = calculatePreviousPeriod(period1Value, 2);
-
-        form.setValue("billingPeriod2", period2Value, {
-          shouldValidate: false,
-          shouldDirty: false,
-        });
-        form.setValue("billingPeriod3", period3Value, {
-          shouldValidate: false,
-          shouldDirty: false,
-        });
-
-        updatedValues = {
-          ...updatedValues,
-          billingPeriod1: period1Value,
-          billingPeriod2: period2Value,
-          billingPeriod3: period3Value,
-        };
-        needsUpdate = true;
-      }
-      // Handle buildingType auto-set numberOfUnits
-      else if (name === "buildingType" && values.buildingType) {
-        const buildingType = values.buildingType;
-        let unitsValue: number | undefined;
-
-        if (buildingType === "einfamilienhaus") {
-          unitsValue = 1;
-        } else if (buildingType === "zweifamilienhaus") {
-          unitsValue = 2;
-        } else if (buildingType === "mehrfamilienhaus") {
-          const currentUnits = allFormValuesRef.current.numberOfUnits;
-          // Only set to 3 if coming from einfamilienhaus/zweifamilienhaus or not set
-          if (
-            currentUnits === undefined ||
-            currentUnits === 1 ||
-            currentUnits === 2
-          ) {
-            unitsValue = 3;
-          }
-        }
-
-        if (unitsValue !== undefined) {
-          form.setValue("numberOfUnits", unitsValue, {
-            shouldValidate: true,
-            shouldDirty: false,
-          });
-
-          updatedValues = {
-            ...updatedValues,
-            buildingType: buildingType,
-            numberOfUnits: unitsValue,
-          };
-          needsUpdate = true;
-        } else {
-          updatedValues = {
-            ...updatedValues,
-            buildingType: buildingType,
-          };
-          needsUpdate = true;
-        }
-      }
-      // Handle regular field changes
-      else if (name && values[name] !== allFormValuesRef.current[name]) {
-        updatedValues = { ...updatedValues, [name]: values[name] };
-        needsUpdate = true;
-      }
-
-      // Only update state if something actually changed
-      if (needsUpdate) {
-        setAllFormValues(updatedValues);
-        saveData(updatedValues, currentStep);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form, saveData, isInitialized, currentStep]);
-
-  // Handle next step
-  const handleNext = form.handleSubmit(async (data) => {
-    const updatedValues = { ...allFormValues, ...data };
-    setAllFormValues(updatedValues);
-
-    if (!isLastStep) {
-      const newStep = currentStep + 1;
-      setCurrentStep(newStep);
-      saveData(updatedValues, newStep);
-      setTimeout(() => {
-        form.reset(updatedValues);
-      }, 0);
-    } else {
-      saveData(updatedValues, currentStep);
-    }
+  // Handle automatic calculations (billing periods, number of units)
+  useFormAutoCalculations({
+    form,
+    isInitialized,
+    currentStep,
+    allFormValues,
+    setAllFormValues,
+    saveData,
   });
 
-  // Handle previous step
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      const currentValues = form.getValues();
-      const updatedValues = { ...allFormValues, ...currentValues };
-      const newStep = currentStep - 1;
-      setAllFormValues(updatedValues);
-      setCurrentStep(newStep);
-      saveData(updatedValues, newStep);
-      setTimeout(() => {
-        form.reset(updatedValues);
-      }, 0);
-    }
-  };
+  // Handle navigation (next, previous, step click, reset)
+  const {
+    isLastStep,
+    handleNext,
+    handlePrevious,
+    handleStepClick,
+    handleReset,
+  } = useFormNavigation({
+    form,
+    config,
+    currentStep,
+    setCurrentStep,
+    allFormValues,
+    setAllFormValues,
+    saveData,
+    clearData,
+  });
 
   return (
     <div className="onea-multiple-step-form" data-component-id={componentId}>
@@ -229,20 +97,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       <StepIndicator
         steps={config.steps}
         currentStep={currentStep}
-        onStepClick={(stepIndex) => {
-          if (stepIndex < currentStep) {
-            const currentValues = form.getValues();
-            const updatedValues = { ...allFormValues, ...currentValues };
-            setAllFormValues(updatedValues);
-            setCurrentStep(stepIndex);
-            saveData(updatedValues, stepIndex);
-            // Defer form.reset to next tick to ensure state updates complete
-            // Without setTimeout, form.reset triggers form.watch which saves with old currentStep
-            setTimeout(() => {
-              form.reset(updatedValues);
-            }, 0);
-          }
-        }}
+        onStepClick={handleStepClick}
       />
       <Form {...form}>
         <form onSubmit={handleNext} className="space-y-6 mt-8">
@@ -311,6 +166,15 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                   onClick={handlePrevious}
                 >
                   Zurück
+                </Button>
+              )}
+              {currentStep === 0 && (
+                <Button
+                  className="reset-button bg-destructive/10 hover:bg-destructive/20 text-destructive border-destructive/30"
+                  type="button"
+                  onClick={handleReset}
+                >
+                  Formular zurücksetzen
                 </Button>
               )}
             </div>

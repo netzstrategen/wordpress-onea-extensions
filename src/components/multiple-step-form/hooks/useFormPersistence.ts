@@ -49,8 +49,17 @@ export function useFormPersistence({
     [storageKey, enabled]
   );
 
+  const clearData = useCallback(() => {
+    try {
+      localStorage.removeItem(storageKey);
+    } catch (error) {
+      console.error("Failed to clear form data from localStorage:", error);
+    }
+  }, [storageKey]);
+
   return {
     loadSavedData,
     saveData,
+    clearData,
   };
 }
