@@ -305,12 +305,16 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
           <div className="flex justify-between items-center pt-6">
             <div className="flex gap-2">
               {currentStep > 0 && (
-                <Button type="button" onClick={handlePrevious}>
+                <Button
+                  className="previous-button"
+                  type="button"
+                  onClick={handlePrevious}
+                >
                   Zurück
                 </Button>
               )}
             </div>
-            <Button type="submit">
+            <Button className="next-button" type="submit">
               {isLastStep ? "Fertigstellen" : "Weiter"}
             </Button>
           </div>
