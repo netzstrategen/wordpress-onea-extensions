@@ -1100,24 +1100,6 @@
               "required": false
             }
           ]
-        },
-        {
-          "title": "Zustimmungen",
-          "fields": [
-            {
-              "name": "acceptTerms",
-              "type": "checkbox",
-              "label": "Zustimmungen",
-              "required": true,
-              "options": [
-                { "value": "agb", "label": "Ich akzeptiere die AGB" },
-                {
-                  "value": "privacy",
-                  "label": "Ich akzeptiere die Datenschutzerklärung"
-                }
-              ]
-            }
-          ]
         }
       ]
     }
