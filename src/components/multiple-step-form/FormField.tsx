@@ -137,7 +137,7 @@ function renderFieldInput(
         // Normal select field
         return (
           <Select onValueChange={formField.onChange} value={formField.value}>
-            <SelectTrigger>
+            <SelectTrigger className="select-trigger">
               <SelectValue placeholder={field.placeholder || "Select..."} />
             </SelectTrigger>
             <SelectContent>
