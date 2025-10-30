@@ -138,7 +138,9 @@ function renderFieldInput(
         return (
           <Select onValueChange={formField.onChange} value={formField.value}>
             <SelectTrigger className="select-trigger">
-              <SelectValue placeholder={field.placeholder || "Select..."} />
+              <SelectValue
+                placeholder={field.placeholder || "Bitte auswählen..."}
+              />
             </SelectTrigger>
             <SelectContent>
               {field.options && field.options.length > 0 ? (

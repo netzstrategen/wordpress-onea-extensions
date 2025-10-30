@@ -83,18 +83,24 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         if (field.options && Array.isArray(field.options)) {
           const validValues = field.options.map((opt) => opt.value);
           if (validValues.length > 0) {
-            const enumSchema = z.enum(validValues as [string, ...string[]]);
+            const enumSchema = z.enum(validValues as [string, ...string[]], {
+              message: "Bitte Eingabe kontrollieren",
+            });
             if (field.required) {
               schema = enumSchema;
             } else {
               schema = enumSchema.optional();
             }
           } else {
-            schema = field.required ? z.string() : z.string().optional();
+            schema = field.required
+              ? z.string({ message: "Bitte Eingabe kontrollieren" })
+              : z.string().optional();
           }
         } else {
           // No options defined (e.g., auto-calculated fields)
-          schema = field.required ? z.string() : z.string().optional();
+          schema = field.required
+            ? z.string({ message: "Bitte Eingabe kontrollieren" })
+            : z.string().optional();
         }
       } else {
         schema = z.string().optional();
