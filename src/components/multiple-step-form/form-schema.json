@@ -1000,20 +1000,13 @@
       "title": "Bestell- & Kundendaten",
       "fieldGroups": [
         {
-          "title": "Adresse & Fotos",
+          "title": "Objektadresse für den Energieausweis",
           "fields": [
             {
               "name": "objectStreet",
               "type": "text",
-              "label": "Straße",
-              "placeholder": "z.B. Musterstraße",
-              "required": true
-            },
-            {
-              "name": "objectHouseNumber",
-              "type": "text",
-              "label": "Hausnummer",
-              "placeholder": "z.B. 123",
+              "label": "Straße & Hausnummer",
+              "placeholder": "Straße & Hausnummer",
               "required": true
             },
             {
@@ -1033,14 +1026,12 @@
               "label": "Ort",
               "placeholder": "z.B. München",
               "required": true
-            },
-            {
-              "name": "buildingPhoto",
-              "type": "file",
-              "label": "Foto des Gebäudes (optional)",
-              "required": false,
-              "accept": "image/*"
-            },
+            }
+          ]
+        },
+        {
+          "title": "Bild-Uploads",
+          "fields": [
             {
               "name": "heatingPhoto",
               "type": "file",
@@ -1048,6 +1039,18 @@
               "required": true,
               "accept": "image/*"
             },
+            {
+              "name": "buildingPhoto",
+              "type": "file",
+              "label": "Außenbild des Gebäudes",
+              "required": false,
+              "accept": "image/*"
+            }
+          ]
+        },
+        {
+          "title": "Ausstellungsgrund & Kundenart",
+          "fields": [
             {
               "name": "purpose",
               "type": "select",
@@ -1060,123 +1063,7 @@
                 { "value": "modernisierung", "label": "Modernisierung" },
                 { "value": "sonstiges", "label": "Sonstiges" }
               ]
-            }
-          ]
-        },
-        {
-          "title": "Kontaktdaten",
-          "fields": [
-            {
-              "name": "company",
-              "type": "text",
-              "label": "Firma (optional)",
-              "placeholder": "Firmenname",
-              "required": false
             },
-            {
-              "name": "salutation",
-              "type": "select",
-              "label": "Anrede",
-              "required": true,
-              "options": [
-                { "value": "herr", "label": "Herr" },
-                { "value": "frau", "label": "Frau" },
-                { "value": "divers", "label": "Divers" }
-              ]
-            },
-            {
-              "name": "title",
-              "type": "text",
-              "label": "Titel (optional)",
-              "placeholder": "z.B. Dr.",
-              "required": false
-            },
-            {
-              "name": "firstName",
-              "type": "text",
-              "label": "Vorname",
-              "placeholder": "Vorname",
-              "required": true
-            },
-            {
-              "name": "lastName",
-              "type": "text",
-              "label": "Nachname",
-              "placeholder": "Nachname",
-              "required": true
-            },
-            {
-              "name": "email",
-              "type": "email",
-              "label": "E-Mail",
-              "placeholder": "name@beispiel.de",
-              "required": true,
-              "validation": {
-                "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
-                "message": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
-              }
-            },
-            {
-              "name": "phone",
-              "type": "text",
-              "label": "Telefonnummer",
-              "placeholder": "+49 123 456789",
-              "required": true
-            }
-          ]
-        },
-        {
-          "title": "Rechnungsadresse",
-          "fields": [
-            {
-              "name": "customerStreet",
-              "type": "text",
-              "label": "Rechnungsadresse: Straße",
-              "placeholder": "z.B. Musterstraße",
-              "required": true
-            },
-            {
-              "name": "customerHouseNumber",
-              "type": "text",
-              "label": "Hausnummer",
-              "placeholder": "z.B. 123",
-              "required": true
-            },
-            {
-              "name": "customerZip",
-              "type": "text",
-              "label": "PLZ",
-              "placeholder": "z.B. 12345",
-              "required": true,
-              "validation": {
-                "pattern": "^[0-9]{5}$",
-                "message": "PLZ muss 5 Ziffern haben"
-              }
-            },
-            {
-              "name": "customerCity",
-              "type": "text",
-              "label": "Ort",
-              "placeholder": "z.B. München",
-              "required": true
-            },
-            {
-              "name": "copyObjectAddress",
-              "type": "checkbox",
-              "label": "Rechnungsadresse übernehmen",
-              "required": false,
-              "options": [
-                {
-                  "value": "copyFromObject",
-                  "label": "Rechnungsadresse von Adresse übernehmen"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Kundenart & Zustimmungen",
-          "fields": [
             {
               "name": "customerType",
               "type": "select",
@@ -1199,7 +1086,24 @@
                 "field": "customerType",
                 "value": "sonstige"
               }
-            },
+            }
+          ]
+        },
+        {
+          "title": "Anmerkungen",
+          "fields": [
+            {
+              "name": "comments",
+              "type": "text",
+              "label": "Anmerkungen",
+              "placeholder": "Weitere Anmerkungen oder Hinweise...",
+              "required": false
+            }
+          ]
+        },
+        {
+          "title": "Zustimmungen",
+          "fields": [
             {
               "name": "acceptTerms",
               "type": "checkbox",
@@ -1210,19 +1114,6 @@
                 {
                   "value": "privacy",
                   "label": "Ich akzeptiere die Datenschutzerklärung"
-                }
-              ]
-            },
-            {
-              "name": "expressService",
-              "type": "checkbox",
-              "label": "Zusatzdienstleistungen",
-              "required": false,
-              "options": [
-                { "value": "express", "label": "Express-Bearbeitung (+50 €)" },
-                {
-                  "value": "print",
-                  "label": "Gedruckter Ausweis per Post (+20 €)"
                 }
               ]
             }
