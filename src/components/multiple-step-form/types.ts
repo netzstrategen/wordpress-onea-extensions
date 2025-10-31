@@ -101,6 +101,7 @@ export interface FormConfig {
 export interface MultiStepFormProps {
   formConfig: FormConfig;
   componentId?: string;
+  productId?: string;
 }
 
 export type FormValues = Record<string, any>;

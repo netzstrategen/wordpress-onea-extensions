@@ -11,6 +11,7 @@ interface UseFormNavigationProps {
   setAllFormValues: (values: FormValues) => void;
   saveData: (values: FormValues, step: number) => void;
   clearData: () => void;
+  productId?: string;
 }
 
 /**
@@ -25,8 +26,37 @@ export function useFormNavigation({
   setAllFormValues,
   saveData,
   clearData,
+  productId,
 }: UseFormNavigationProps) {
   const isLastStep = currentStep === config.steps.length - 1;
+
+  // Helper function to build submission data with labels
+  const buildSubmissionData = useCallback(
+    (values: FormValues) => {
+      const submissionData: Array<{
+        fieldName: string;
+        label: string;
+        value: any;
+      }> = [];
+
+      config.steps.forEach((step) => {
+        step.fieldGroups.forEach((group) => {
+          group.fields.forEach((field) => {
+            if (values[field.name] !== undefined && values[field.name] !== "") {
+              submissionData.push({
+                fieldName: field.name,
+                label: field.label,
+                value: values[field.name],
+              });
+            }
+          });
+        });
+      });
+
+      return submissionData;
+    },
+    [config]
+  );
 
   // Handle next step
   const handleNext = form.handleSubmit(async (data) => {
@@ -41,7 +71,25 @@ export function useFormNavigation({
         form.reset(updatedValues);
       }, 0);
     } else {
+      // Final step - submit the form
       saveData(updatedValues, currentStep);
+
+      // Build structured submission data with labels
+      const submissionData = buildSubmissionData(updatedValues);
+
+      // TODO: Replace with actual API call when endpoint is ready
+      console.log("=== FORM SUBMISSION ===");
+      console.log("Form ID:", config.formId);
+      console.log("Product ID:", productId);
+      console.log(JSON.stringify(submissionData, null, 2));
+      console.log("======================");
+
+      // Simulate API call
+      alert(
+        `Form submitted successfully!\n\nCheck the browser console to see all form data.\n\nTotal fields: ${
+          Object.keys(updatedValues).length
+        }\nProduct ID: ${productId || "N/A"}`
+      );
     }
   });
 
