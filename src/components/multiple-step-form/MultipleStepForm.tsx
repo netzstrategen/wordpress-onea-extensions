@@ -15,6 +15,7 @@ import { FormField } from "./FormField";
 export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   formConfig,
   componentId,
+  productId,
 }) => {
   // Inject dynamic billing period options into form config
   const config = useBillingPeriodOptions(formConfig);
@@ -87,6 +88,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     setAllFormValues,
     saveData,
     clearData,
+    productId,
   });
 
   return (
