@@ -39,6 +39,8 @@ final class Plugin {
 	 */
 	private array $provider_classes = [
 		Providers\ElementorServiceProvider::class,
+		Providers\WooCommerceServiceProvider::class,
+		Providers\FormSubmissionServiceProvider::class,
 	];
 
 	/**

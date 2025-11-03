@@ -16,6 +16,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   formConfig,
   componentId,
   productId,
+  nonce,
 }) => {
   // Inject dynamic billing period options into form config
   const config = useBillingPeriodOptions(formConfig);
@@ -79,6 +80,8 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     handlePrevious,
     handleStepClick,
     handleReset,
+    isSubmitting,
+    submissionError,
   } = useFormNavigation({
     form,
     config,
@@ -89,6 +92,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     saveData,
     clearData,
     productId,
+    nonce,
   });
 
   return (
@@ -159,6 +163,15 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
             </div>
           )}
 
+          {/* Display submission errors */}
+          {submissionError && (
+            <div className="custom-error bg-destructive/15 text-destructive rounded-md border border-destructive/30">
+              <p className="font-medium !mb-0">
+                Fehler beim Absenden: {submissionError}
+              </p>
+            </div>
+          )}
+
           <div className="flex justify-between items-center pt-6">
             <div className="flex gap-2">
               {currentStep > 0 && (
@@ -166,6 +179,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                   className="previous-button"
                   type="button"
                   onClick={handlePrevious}
+                  disabled={isSubmitting}
                 >
                   Zurück
                 </Button>
@@ -175,13 +189,22 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                   className="reset-button bg-destructive/10 hover:bg-destructive/20 text-destructive border-destructive/30"
                   type="button"
                   onClick={handleReset}
+                  disabled={isSubmitting}
                 >
                   Formular zurücksetzen
                 </Button>
               )}
             </div>
-            <Button className="next-button" type="submit">
-              {isLastStep ? "Fertigstellen" : "Weiter"}
+            <Button
+              className="next-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting
+                ? "Wird gesendet..."
+                : isLastStep
+                ? "Fertigstellen"
+                : "Weiter"}
             </Button>
           </div>
         </form>

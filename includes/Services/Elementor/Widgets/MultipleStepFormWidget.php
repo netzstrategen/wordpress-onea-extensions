@@ -170,11 +170,15 @@ class MultipleStepFormWidget extends Widget_Base {
 		// Parse JSON configuration.
 		$form_config = ! empty( $settings['form_config'] ) ? json_decode( $settings['form_config'], true ) : [];
 
+		// Generate nonce for REST API authentication.
+		$nonce = wp_create_nonce( 'wp_rest' );
+
 		// Prepare props for React component.
 		$props = [
 			'componentId' => $this->get_id(),
 			'formConfig'  => $form_config,
 			'productId'   => ! empty( $settings['product_id'] ) ? $settings['product_id'] : '',
+			'nonce'       => $nonce,
 		];
 
 		// Render container for React app.

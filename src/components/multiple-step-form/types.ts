@@ -100,8 +100,19 @@ export interface FormConfig {
 
 export interface MultiStepFormProps {
   formConfig: FormConfig;
-  componentId?: string;
+  componentId: string;
   productId?: string;
+  nonce?: string;
+}
+
+export interface FormSubmissionResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    cart_item_key?: string;
+    cart_url?: string;
+    uploaded_files?: number[];
+  };
 }
 
 export type FormValues = Record<string, any>;

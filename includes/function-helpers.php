@@ -29,3 +29,30 @@ function plugin(): Plugin {
 	}
 	return $plugin;
 }
+
+/**
+ * Custom logging function for ONEA plugin.
+ * Logs to a separate file: wp-content/debug-onea.log
+ *
+ * @param string $message The message to log.
+ * @param string $level   Log level (INFO, ERROR, WARNING, DEBUG).
+ * @return void
+ */
+function onea_log( string $message, string $level = 'INFO' ): void {
+	// Only log if WP_DEBUG_LOG is enabled.
+	if ( ! defined( 'WP_DEBUG_LOG' ) || ! WP_DEBUG_LOG ) {
+		return;
+	}
+
+	$log_file = WP_CONTENT_DIR . '/debug-onea.log';
+	$timestamp = current_time( 'Y-m-d H:i:s' );
+	$formatted_message = sprintf(
+		"[%s] [%s] %s\n",
+		$timestamp,
+		$level,
+		$message
+	);
+
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+	file_put_contents( $log_file, $formatted_message, FILE_APPEND );
+}
