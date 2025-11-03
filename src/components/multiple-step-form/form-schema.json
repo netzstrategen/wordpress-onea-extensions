@@ -5,12 +5,6 @@
     {
       "id": "building-info",
       "title": "Gebäudeinformationen",
-      "customValidations": [
-        {
-          "condition": "numberOfUnits >= 5 || buildingYear >= 1978",
-          "message": "Bei weniger als 5 Wohneinheiten und Baujahr vor 1978 ist die Ausstellung eines Verbrauchsausweises nicht möglich. Bitte Bedarfsausweis beantragen."
-        }
-      ],
       "fieldGroups": [
         {
           "title": "Gebäudeart & Wohneinheiten",
@@ -57,6 +51,10 @@
                   {
                     "condition": "buildingType !== 'mehrfamilienhaus' || numberOfUnits >= 3",
                     "message": "Bei einem Mehrfamilienhaus muss die Anzahl der Wohneinheiten mindestens 3 sein."
+                  },
+                  {
+                    "condition": "numberOfUnits >= 5 || buildingYear >= 1978",
+                    "message": "Bei weniger als 5 Wohneinheiten und Baujahr vor 1978 ist die Ausstellung eines Verbrauchsausweises nicht möglich. Bitte Bedarfsausweis beantragen."
                   }
                 ]
               }

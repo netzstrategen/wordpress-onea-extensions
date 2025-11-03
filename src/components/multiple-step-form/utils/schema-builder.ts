@@ -207,30 +207,6 @@ export function buildStepSchema(
     }
   }
 
-  // Apply step-level custom validation rules
-  if (step.customValidations && Array.isArray(step.customValidations)) {
-    for (const rule of step.customValidations) {
-      schema = schema.refine(
-        (data) => {
-          try {
-            // Merge allValues with current step data to access fields from other steps
-            const completeData = { ...allValues, ...data };
-            const condition = rule.condition.trim();
-            const result = evaluateComplexCondition(condition, completeData);
-            return result;
-          } catch (error) {
-            console.error("Step-level validation error:", error);
-            return true;
-          }
-        },
-        {
-          message: rule.message,
-          path: ["_stepValidation"], // Use a special field name for step-level errors
-        }
-      );
-    }
-  }
-
   return schema;
 }
 

@@ -154,15 +154,6 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
             ))}
           </div>
 
-          {/* Display step-level validation errors */}
-          {form.formState.errors._stepValidation && (
-            <div className="custom-error bg-destructive/15 text-destructive rounded-md border border-destructive/30">
-              <p className="font-medium !mb-0">
-                {form.formState.errors._stepValidation.message as string}
-              </p>
-            </div>
-          )}
-
           {/* Display submission errors */}
           {submissionError && (
             <div className="custom-error bg-destructive/15 text-destructive rounded-md border border-destructive/30">
