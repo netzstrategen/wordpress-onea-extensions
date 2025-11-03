@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The function helpers file provides all necessary PHP functions for the plugin.
  *
@@ -38,14 +39,14 @@ function plugin(): Plugin {
  * @param string $level   Log level (INFO, ERROR, WARNING, DEBUG).
  * @return void
  */
-function onea_log( string $message, string $level = 'INFO' ): void {
+function onea_log(string $message, string $level = 'INFO'): void {
 	// Only log if WP_DEBUG_LOG is enabled.
-	if ( ! defined( 'WP_DEBUG_LOG' ) || ! WP_DEBUG_LOG ) {
+	if (! defined('WP_DEBUG_LOG') || ! WP_DEBUG_LOG) {
 		return;
 	}
 
 	$log_file = WP_CONTENT_DIR . '/debug-onea.log';
-	$timestamp = current_time( 'Y-m-d H:i:s' );
+	$timestamp = current_time('Y-m-d H:i:s');
 	$formatted_message = sprintf(
 		"[%s] [%s] %s\n",
 		$timestamp,
@@ -54,5 +55,5 @@ function onea_log( string $message, string $level = 'INFO' ): void {
 	);
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-	file_put_contents( $log_file, $formatted_message, FILE_APPEND );
+	file_put_contents($log_file, $formatted_message, FILE_APPEND);
 }

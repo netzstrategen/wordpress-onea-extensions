@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WooCommerce Service Provider
  *
@@ -35,12 +36,12 @@ class WooCommerceServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		// Only register services if WooCommerce is active.
-		if ( ! class_exists( 'WooCommerce' ) ) {
+		if (! class_exists('WooCommerce')) {
 			return;
 		}
 
-		foreach ( $this->services as $key => $service_class ) {
-			$this->container->set( $key, new $service_class() );
+		foreach ($this->services as $key => $service_class) {
+			$this->container->set($key, new $service_class());
 		}
 	}
 
@@ -51,12 +52,12 @@ class WooCommerceServiceProvider extends AbstractServiceProvider {
 	 */
 	public function boot(): void {
 		// Only boot services if WooCommerce is active.
-		if ( ! class_exists( 'WooCommerce' ) ) {
+		if (! class_exists('WooCommerce')) {
 			return;
 		}
 
-		foreach ( array_keys( $this->services ) as $service_key ) {
-			$this->boot_service( $service_key );
+		foreach (array_keys($this->services) as $service_key) {
+			$this->boot_service($service_key);
 		}
 	}
 }

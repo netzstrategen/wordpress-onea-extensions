@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Service Container
  *
@@ -31,7 +32,7 @@ class Container implements ContainerInterface {
 	 * @param mixed  $service Service instance.
 	 * @return void
 	 */
-	public function set( string $id, $service ): void {
+	public function set(string $id, $service): void {
 		$this->services[ $id ] = $service;
 	}
 
@@ -42,10 +43,10 @@ class Container implements ContainerInterface {
 	 * @return mixed
 	 * @throws NotFoundException If the service is not found.
 	 */
-	public function get( string $id ) {
-		if ( ! $this->has( $id ) ) {
+	public function get(string $id) {
+		if (! $this->has($id)) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
-			throw new NotFoundException( "Service '{$id}' not found in container." );
+			throw new NotFoundException("Service '{$id}' not found in container.");
 		}
 
 		return $this->services[ $id ];
@@ -57,7 +58,7 @@ class Container implements ContainerInterface {
 	 * @param string $id Service identifier.
 	 * @return bool
 	 */
-	public function has( string $id ): bool {
-		return isset( $this->services[ $id ] );
+	public function has(string $id): bool {
+		return isset($this->services[ $id ]);
 	}
 }

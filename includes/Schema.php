@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin lifecycle management.
  *
@@ -11,7 +12,6 @@ namespace Netzstrategen\Onea;
  * Generic plugin lifetime and maintenance functionality.
  */
 class Schema {
-
 
 	/**
 	 * Registers activation hook callback.

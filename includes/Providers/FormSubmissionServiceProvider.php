@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Form Submission Service Provider
  *
@@ -32,8 +33,8 @@ class FormSubmissionServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		foreach ( $this->services as $key => $service_class ) {
-			$this->container->set( $key, new $service_class() );
+		foreach ($this->services as $key => $service_class) {
+			$this->container->set($key, new $service_class());
 		}
 	}
 
@@ -43,16 +44,16 @@ class FormSubmissionServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function boot(): void {
-		foreach ( array_keys( $this->services ) as $service_key ) {
-			$service = $this->container->get( $service_key );
+		foreach (array_keys($this->services) as $service_key) {
+			$service = $this->container->get($service_key);
 
 			// Inject cart service dependency if available.
-			if ( $service instanceof FormSubmissionService && $this->container->has( 'woocommerce.cart' ) ) {
-				$service->set_cart_service( $this->container->get( 'woocommerce.cart' ) );
+			if ($service instanceof FormSubmissionService && $this->container->has('woocommerce.cart')) {
+				$service->set_cart_service($this->container->get('woocommerce.cart'));
 			}
 
 			// Boot the service.
-			$this->boot_service( $service_key );
+			$this->boot_service($service_key);
 		}
 	}
 }
