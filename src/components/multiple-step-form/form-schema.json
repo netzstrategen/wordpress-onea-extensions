@@ -263,7 +263,7 @@
               "type": "file",
               "label": "Nachweis Primärenergiefaktor (PDF oder Bild)",
               "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
-              "required": true,
+              "required": false,
               "dependsOn": {
                 "field": "mainFuel",
                 "value": [
@@ -278,7 +278,7 @@
           ]
         },
         {
-          "title": "1. Abrechnungsperiode",
+          "title": "Abrechnungsperioden",
           "fields": [
             {
               "name": "billingPeriod1",
@@ -330,12 +330,7 @@
                   }
                 ]
               }
-            }
-          ]
-        },
-        {
-          "title": "2. Abrechnungsperiode",
-          "fields": [
+            },
             {
               "name": "billingPeriod2",
               "type": "select",
@@ -389,12 +384,7 @@
                   }
                 ]
               }
-            }
-          ]
-        },
-        {
-          "title": "3. Abrechnungsperiode",
-          "fields": [
+            },
             {
               "name": "billingPeriod3",
               "type": "select",
