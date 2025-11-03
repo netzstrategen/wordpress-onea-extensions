@@ -26,6 +26,8 @@ export interface FieldValidation {
   customValidation?: string;
   validationMessage?: string;
   customValidations?: CustomValidationRule[];
+  dateNotInPast?: boolean;
+  dateNotInPastMessage?: string;
 }
 
 export interface BaseField {

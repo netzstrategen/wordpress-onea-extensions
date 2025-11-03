@@ -21,6 +21,36 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         );
       }
 
+      // Add date validation for dateNotInPast
+      if (field.validation?.dateNotInPast) {
+        schema = (schema as z.ZodString).refine(
+          (val) => {
+            if (!val) return true; // Skip if empty (handled by required)
+            try {
+              // Parse DD.MM.YYYY format
+              const parts = val.split(".");
+              if (parts.length !== 3) return true; // Invalid format, let pattern handle it
+              const day = parseInt(parts[0], 10);
+              const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+              const year = parseInt(parts[2], 10);
+
+              const inputDate = new Date(year, month, day);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+
+              return inputDate >= today;
+            } catch {
+              return true; // If parsing fails, let pattern validation handle it
+            }
+          },
+          {
+            message:
+              field.validation.dateNotInPastMessage ||
+              "Das Datum darf nicht in der Vergangenheit liegen",
+          }
+        );
+      }
+
       if (field.required) {
         schema = (schema as z.ZodString).min(
           1,
