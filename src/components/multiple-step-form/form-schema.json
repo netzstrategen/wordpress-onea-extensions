@@ -888,6 +888,110 @@
           ]
         },
         {
+          "title": "Klimaanlage",
+          "fields": [
+            {
+              "name": "hasAirConditioning",
+              "type": "radio",
+              "label": "Ist eine Klimaanlage vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "coolingType",
+              "type": "select",
+              "label": "Art der Klimatisierung",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAirConditioning",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "passiveKuehlung", "label": "Passive Kühlung" },
+                { "value": "gelieferteKaelte", "label": "Gelieferte Kälte" },
+                { "value": "kuehlungAusStrom", "label": "Kühlung aus Strom" },
+                { "value": "kuehlungAusWaerme", "label": "Kühlung aus Wärme" },
+                {
+                  "value": "kuehlungAusStromUndWaerme",
+                  "label": "Kühlung aus Strom und Wärme"
+                }
+              ]
+            },
+            {
+              "name": "cooledArea",
+              "type": "number",
+              "label": "Gekühlte Fläche in m²",
+              "placeholder": "z.B. 80",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAirConditioning",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "customValidations": [
+                  {
+                    "condition": "cooledArea <= livingArea",
+                    "message": "Gekühlte Fläche darf nicht größer als Wohnfläche sein"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "hasInspectionRequiredAC",
+              "type": "radio",
+              "label": "Inspektionspflichtige Klimaanlagen vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "dependsOn": {
+                "field": "hasAirConditioning",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "acSystemCount",
+              "type": "number",
+              "label": "Anzahl Klimaanlagen",
+              "placeholder": "z.B. 2",
+              "required": true,
+              "dependsOn": {
+                "field": "hasInspectionRequiredAC",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 1,
+                "message": "Mindestens 1 Klimaanlage erforderlich"
+              }
+            },
+            {
+              "name": "nextInspectionDate",
+              "type": "text",
+              "label": "Datum nächste Inspektion",
+              "placeholder": "TT.MM.JJJJ",
+              "required": true,
+              "dependsOn": {
+                "field": "hasInspectionRequiredAC",
+                "value": "ja"
+              },
+              "validation": {
+                "pattern": "^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.(19|20)\\d{2}$",
+                "message": "Bitte geben Sie ein gültiges Datum im Format TT.MM.JJJJ ein",
+                "dateNotInPast": true,
+                "dateNotInPastMessage": "Das Datum der nächsten Inspektion darf nicht in der Vergangenheit liegen"
+              }
+            }
+          ]
+        },
+        {
           "title": "Erneuerbare Energien",
           "fields": [
             {
@@ -933,59 +1037,6 @@
                 { "value": "warmwasser", "label": "Warmwasser" },
                 { "value": "strom", "label": "Strom (u.A. Kühlung / Lüftung)" }
               ]
-            }
-          ]
-        },
-        {
-          "title": "Klimaanlage",
-          "fields": [
-            {
-              "name": "hasAirConditioning",
-              "type": "radio",
-              "label": "Ist eine Klimaanlage vorhanden?",
-              "required": true,
-              "defaultValue": "nein",
-              "options": [
-                { "value": "ja", "label": "Ja" },
-                { "value": "nein", "label": "Nein" }
-              ]
-            },
-            {
-              "name": "coolingType",
-              "type": "select",
-              "label": "Art der Klimatisierung",
-              "placeholder": "Bitte wählen...",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAirConditioning",
-                "value": "ja"
-              },
-              "options": [
-                { "value": "split", "label": "Split-Klimaanlage" },
-                { "value": "zentral", "label": "Zentrale Klimaanlage" },
-                { "value": "mobil", "label": "Mobile Klimaanlage" },
-                { "value": "sonstige", "label": "Sonstige" }
-              ]
-            },
-            {
-              "name": "cooledArea",
-              "type": "number",
-              "label": "Gekühlte Fläche in m²",
-              "placeholder": "z.B. 80",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAirConditioning",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "customValidations": [
-                  {
-                    "condition": "cooledArea <= livingArea",
-                    "message": "Gekühlte Fläche darf nicht größer als Wohnfläche sein"
-                  }
-                ]
-              }
             }
           ]
         }
