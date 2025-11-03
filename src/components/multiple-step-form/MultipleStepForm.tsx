@@ -4,7 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import type { MultiStepFormProps, FormValues } from "./types";
-import { buildStepSchema, shouldIncludeField } from "./utils/schema-builder";
+import {
+  buildStepSchema,
+  shouldIncludeField,
+  extractDefaultValues,
+} from "./utils/schema-builder";
 import { useFormPersistence } from "./hooks/useFormPersistence";
 import { useBillingPeriodOptions } from "./hooks/useBillingPeriodOptions";
 import { useFormAutoCalculations } from "./hooks/useFormAutoCalculations";
@@ -29,17 +33,24 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     formId: config.formId,
   });
 
+  // Extract default values from form configuration
+  const schemaDefaultValues = useMemo(() => {
+    return extractDefaultValues(config.steps);
+  }, [config.steps]);
+
   // Load saved data before initializing form
   const initialData = useMemo(() => {
     const savedData = loadSavedData();
     if (savedData) {
+      // Merge schema defaults with saved data (saved data takes precedence)
       return {
-        values: savedData.values,
+        values: { ...schemaDefaultValues, ...savedData.values },
         step: savedData.currentStep,
       };
     }
-    return { values: {}, step: 0 };
-  }, [loadSavedData]);
+    // Use schema defaults if no saved data
+    return { values: schemaDefaultValues, step: 0 };
+  }, [loadSavedData, schemaDefaultValues]);
 
   // Initialize state with loaded data
   useEffect(() => {

@@ -121,6 +121,7 @@
               "type": "select",
               "label": "Ist ein beheizter Keller vorhanden?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -136,6 +137,7 @@
               "type": "radio",
               "label": "Wurde das Gebäude umfangreich saniert?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -304,6 +306,7 @@
               "type": "radio",
               "label": "Leerstand?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -358,6 +361,7 @@
               "type": "radio",
               "label": "Leerstand?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -412,6 +416,7 @@
               "type": "radio",
               "label": "Leerstand?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -449,6 +454,7 @@
               "type": "radio",
               "label": "Wurden weitere Brennstoffe verwendet?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -889,6 +895,7 @@
               "type": "radio",
               "label": "Werden erneuerbare Energien genutzt?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -937,6 +944,7 @@
               "type": "radio",
               "label": "Ist eine Klimaanlage vorhanden?",
               "required": true,
+              "defaultValue": "nein",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }

@@ -470,3 +470,23 @@ export function buildFormSchema(
 
   return z.object(shape);
 }
+
+/**
+ * Extract default values from form configuration
+ * Returns an object with field names as keys and their default values
+ */
+export function extractDefaultValues(steps: FormStep[]): FormValues {
+  const defaultValues: FormValues = {};
+
+  for (const step of steps) {
+    for (const group of step.fieldGroups) {
+      for (const field of group.fields) {
+        if (field.defaultValue !== undefined) {
+          defaultValues[field.name] = field.defaultValue;
+        }
+      }
+    }
+  }
+
+  return defaultValues;
+}

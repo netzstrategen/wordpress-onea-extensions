@@ -37,6 +37,7 @@ export interface BaseField {
   readonly?: boolean;
   disabled?: boolean;
   autoSetValue?: boolean;
+  defaultValue?: any;
   validation?: FieldValidation;
   dependsOn?: FieldDependency;
 }
