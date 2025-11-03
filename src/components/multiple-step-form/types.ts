@@ -9,7 +9,8 @@ export interface FieldOption {
 
 export interface FieldDependency {
   field: string;
-  value: string | string[];
+  value?: string | string[];
+  contains?: string; // For checking if an array field contains a specific value
 }
 
 export interface CustomValidationRule {

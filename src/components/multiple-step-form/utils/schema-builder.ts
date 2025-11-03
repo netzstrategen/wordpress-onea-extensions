@@ -410,15 +410,31 @@ export function shouldIncludeField(
     return true;
   }
 
-  const { field: dependencyField, value: dependencyValue } = field.dependsOn;
+  const {
+    field: dependencyField,
+    value: dependencyValue,
+    contains,
+  } = field.dependsOn;
   const currentValue = values[dependencyField];
 
   // Check if the current field's dependency is met
   let isDependencyMet = false;
-  if (Array.isArray(dependencyValue)) {
-    isDependencyMet = dependencyValue.includes(currentValue);
-  } else {
-    isDependencyMet = currentValue === dependencyValue;
+
+  // Handle 'contains' check for array values (e.g., checkbox fields)
+  if (contains !== undefined) {
+    if (Array.isArray(currentValue)) {
+      isDependencyMet = currentValue.includes(contains);
+    } else {
+      isDependencyMet = false;
+    }
+  }
+  // Handle normal value check
+  else if (dependencyValue !== undefined) {
+    if (Array.isArray(dependencyValue)) {
+      isDependencyMet = dependencyValue.includes(currentValue);
+    } else {
+      isDependencyMet = currentValue === dependencyValue;
+    }
   }
 
   // If the dependency is not met, the field should not be included
