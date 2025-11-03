@@ -8,7 +8,6 @@ import { buildStepSchema, shouldIncludeField } from "./utils/schema-builder";
 import { useFormPersistence } from "./hooks/useFormPersistence";
 import { useBillingPeriodOptions } from "./hooks/useBillingPeriodOptions";
 import { useFormAutoCalculations } from "./hooks/useFormAutoCalculations";
-import { useFormValidationWatch } from "./hooks/useFormValidationWatch";
 import { useFormNavigation } from "./hooks/useFormNavigation";
 import { StepIndicator } from "./StepIndicator";
 import { FormField } from "./FormField";
@@ -72,13 +71,6 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     allFormValues,
     setAllFormValues,
     saveData,
-  });
-
-  // Watch for field changes and trigger re-validation for custom validations
-  useFormValidationWatch({
-    form,
-    isInitialized,
-    currentStepConfig,
   });
 
   // Handle navigation (next, previous, step click, reset)

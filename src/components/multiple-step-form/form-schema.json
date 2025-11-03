@@ -77,7 +77,7 @@
                 "customValidations": [
                   {
                     "condition": "buildingYear < 2022",
-                    "message": "Kein Energieausweis notwendig"
+                    "message": "Kein Energieausweis notwendig. Bitte [Bedarfsausweis beantragen](https://onlineenergieausweis.com/verbrauchsausweis-beantragen/)."
                   }
                 ]
               }
