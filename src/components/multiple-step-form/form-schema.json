@@ -447,201 +447,6 @@
           ]
         },
         {
-          "title": "Weitere Brennstoffe",
-          "fields": [
-            {
-              "name": "hasAdditionalFuels",
-              "type": "radio",
-              "label": "Wurden weitere Brennstoffe verwendet?",
-              "required": true,
-              "defaultValue": "nein",
-              "options": [
-                { "value": "ja", "label": "Ja" },
-                { "value": "nein", "label": "Nein" }
-              ]
-            },
-            {
-              "name": "secondFuel",
-              "type": "select",
-              "label": "2. Energieträger",
-              "placeholder": "Bitte wählen...",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "validation": {
-                "customValidations": [
-                  {
-                    "condition": "secondFuel !== mainFuel",
-                    "message": "Die Brennstoffe dürfen nicht gleich sein."
-                  }
-                ]
-              },
-              "options": [
-                { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
-                { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
-                { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
-                { "value": "biogas", "label": "Biogas", "unit": "kWh" },
-                {
-                  "value": "biogasNahe",
-                  "label": "Biogas gebäudenah erzeugt",
-                  "unit": "kWh"
-                },
-                {
-                  "value": "bioOel",
-                  "label": "Bioöl / Pflanzenöl",
-                  "unit": "Liter"
-                },
-                { "value": "strom", "label": "Strom", "unit": "kWh" },
-                { "value": "holz", "label": "Holz", "unit": "Ster" },
-                {
-                  "value": "holzpellets",
-                  "label": "Holzpellets",
-                  "unit": "kg"
-                },
-                {
-                  "value": "holzhackschnitzel",
-                  "label": "Holzhackschnitzel",
-                  "unit": "kg"
-                },
-                { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
-                { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
-                {
-                  "value": "fernwaermeHeizwerkFossil",
-                  "label": "Fernwärme aus Heizwerken, fossil",
-                  "unit": "kWh"
-                },
-                {
-                  "value": "fernwaermeKraftwerkFossil",
-                  "label": "Fernwärme aus Kraftwerken, fossil",
-                  "unit": "kWh"
-                },
-                {
-                  "value": "fernwaermeKraftwerkErneuerbar",
-                  "label": "Fernwärme aus Kraftwerken, erneuerbar",
-                  "unit": "kWh"
-                },
-                {
-                  "value": "fernwaermeHeizwerkErneuerbar",
-                  "label": "Fernwärme aus Heizwerk, erneuerbar",
-                  "unit": "kWh"
-                },
-                {
-                  "value": "nachtstrom",
-                  "label": "Nachtstrom, NT",
-                  "unit": "kWh"
-                }
-              ]
-            },
-            {
-              "name": "secondFuelPrimaryEnergyFactor",
-              "type": "number",
-              "label": "Primärenergiefaktor (2. Energieträger)",
-              "placeholder": "z.B. 0.7",
-              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
-              "required": true,
-              "dependsOn": {
-                "field": "secondFuel",
-                "value": [
-                  "fernwaermeHeizwerkFossil",
-                  "fernwaermeKraftwerkFossil",
-                  "fernwaermeKraftwerkErneuerbar",
-                  "fernwaermeHeizwerkErneuerbar"
-                ]
-              },
-              "validation": {
-                "min": 0,
-                "max": 3,
-                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
-              }
-            },
-            {
-              "name": "secondFuelDocumentation",
-              "type": "file",
-              "label": "Nachweis Primärenergiefaktor (2. Energieträger)",
-              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
-              "required": true,
-              "dependsOn": {
-                "field": "secondFuel",
-                "value": [
-                  "fernwaermeHeizwerkFossil",
-                  "fernwaermeKraftwerkFossil",
-                  "fernwaermeKraftwerkErneuerbar",
-                  "fernwaermeHeizwerkErneuerbar"
-                ]
-              },
-              "accept": "image/*,application/pdf"
-            },
-            {
-              "name": "secondHeatingYear",
-              "type": "number",
-              "label": "Baujahr der 2. Heizungsanlage",
-              "placeholder": "z.B. 2015",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 1900,
-                "max": 2025,
-                "customValidations": [
-                  {
-                    "condition": "secondHeatingYear >= buildingYear",
-                    "message": "Baujahr der 2. Heizungsanlage darf nicht älter als Gebäude sein"
-                  }
-                ]
-              }
-            },
-            {
-              "name": "secondFuelConsumption1",
-              "type": "number",
-              "label": "Verbrauch 2. Brennstoff - 1. Periode",
-              "placeholder": "z.B. 5000",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "message": "Verbrauch muss positiv sein"
-              }
-            },
-            {
-              "name": "secondFuelConsumption2",
-              "type": "number",
-              "label": "Verbrauch 2. Brennstoff - 2. Periode",
-              "placeholder": "z.B. 4800",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "message": "Verbrauch muss positiv sein"
-              }
-            },
-            {
-              "name": "secondFuelConsumption3",
-              "type": "number",
-              "label": "Verbrauch 2. Brennstoff - 3. Periode",
-              "placeholder": "z.B. 5200",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAdditionalFuels",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "message": "Verbrauch muss positiv sein"
-              }
-            }
-          ]
-        },
-        {
           "title": "Warmwasseraufbereitung",
           "fields": [
             {
@@ -808,6 +613,201 @@
               "dependsOn": {
                 "field": "hotWaterPreparation",
                 "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Weitere Brennstoffe",
+          "fields": [
+            {
+              "name": "hasAdditionalFuels",
+              "type": "radio",
+              "label": "Wurden weitere Brennstoffe verwendet?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "secondFuel",
+              "type": "select",
+              "label": "2. Energieträger",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "customValidations": [
+                  {
+                    "condition": "secondFuel !== mainFuel",
+                    "message": "Die Brennstoffe dürfen nicht gleich sein."
+                  }
+                ]
+              },
+              "options": [
+                { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
+                { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
+                { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
+                { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+                {
+                  "value": "biogasNahe",
+                  "label": "Biogas gebäudenah erzeugt",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "bioOel",
+                  "label": "Bioöl / Pflanzenöl",
+                  "unit": "Liter"
+                },
+                { "value": "strom", "label": "Strom", "unit": "kWh" },
+                { "value": "holz", "label": "Holz", "unit": "Ster" },
+                {
+                  "value": "holzpellets",
+                  "label": "Holzpellets",
+                  "unit": "kg"
+                },
+                {
+                  "value": "holzhackschnitzel",
+                  "label": "Holzhackschnitzel",
+                  "unit": "kg"
+                },
+                { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
+                { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
+                {
+                  "value": "fernwaermeHeizwerkFossil",
+                  "label": "Fernwärme aus Heizwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkFossil",
+                  "label": "Fernwärme aus Kraftwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkErneuerbar",
+                  "label": "Fernwärme aus Kraftwerken, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeHeizwerkErneuerbar",
+                  "label": "Fernwärme aus Heizwerk, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "nachtstrom",
+                  "label": "Nachtstrom, NT",
+                  "unit": "kWh"
+                }
+              ]
+            },
+            {
+              "name": "secondFuelPrimaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor (2. Energieträger)",
+              "placeholder": "z.B. 0.7",
+              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "secondFuelDocumentation",
+              "type": "file",
+              "label": "Nachweis Primärenergiefaktor (2. Energieträger)",
+              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
+              "required": false,
+              "dependsOn": {
+                "field": "secondFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "accept": "image/*,application/pdf"
+            },
+            {
+              "name": "secondHeatingYear",
+              "type": "number",
+              "label": "Baujahr der 2. Heizungsanlage",
+              "placeholder": "z.B. 2015",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "customValidations": [
+                  {
+                    "condition": "secondHeatingYear >= buildingYear",
+                    "message": "Baujahr der 2. Heizungsanlage darf nicht älter als Gebäude sein"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "secondFuelConsumption1",
+              "type": "number",
+              "label": "Verbrauch 2. Brennstoff - 1. Periode",
+              "placeholder": "z.B. 5000",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondFuelConsumption2",
+              "type": "number",
+              "label": "Verbrauch 2. Brennstoff - 2. Periode",
+              "placeholder": "z.B. 4800",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondFuelConsumption3",
+              "type": "number",
+              "label": "Verbrauch 2. Brennstoff - 3. Periode",
+              "placeholder": "z.B. 5200",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
               },
               "validation": {
                 "min": 0,
