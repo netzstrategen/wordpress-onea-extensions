@@ -5,6 +5,7 @@
 export interface FieldOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export interface FieldDependency {
@@ -35,6 +36,7 @@ export interface BaseField {
   type: string;
   label: string;
   description?: string;
+  tooltip?: string;
   placeholder?: string;
   required?: boolean;
   readonly?: boolean;

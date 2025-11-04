@@ -188,7 +188,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
               )}
               {currentStep === 0 && (
                 <Button
-                  className="reset-button bg-destructive/10 hover:bg-destructive/20 text-destructive border-destructive/30"
+                  className="reset-button bg-destructive/10 hover:bg-destructive/20  border-destructive/30"
                   type="button"
                   onClick={handleReset}
                   disabled={isSubmitting}

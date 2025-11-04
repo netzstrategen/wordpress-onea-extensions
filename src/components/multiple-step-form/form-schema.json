@@ -244,6 +244,7 @@
               "label": "Primärenergiefaktor",
               "placeholder": "z.B. 0.7",
               "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "tooltip": "Der Primärenergiefaktor berücksichtigt den gesamten Energieaufwand von der Quelle bis zur Nutzung, einschließlich Gewinnung, Umwandlung und Transport. Ein niedriger Wert bedeutet höhere Energieeffizienz.",
               "required": true,
               "dependsOn": {
                 "field": "mainFuel",
@@ -813,6 +814,75 @@
                 "min": 0,
                 "message": "Verbrauch muss positiv sein"
               }
+            },
+            {
+              "name": "secondFuelHotWaterPreparation",
+              "type": "select",
+              "label": "Warmwasseraufbereitung (2. Brennstoff)",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAdditionalFuels",
+                "value": "ja"
+              },
+              "options": [
+                {
+                  "value": "included",
+                  "label": "Im Heizungsverbrauch enthalten"
+                },
+                {
+                  "value": "separate",
+                  "label": "Verbrauch nachfolgend separat eingeben"
+                },
+                {
+                  "value": "central",
+                  "label": "Warmwasseraufbereitung erfolgt zentral"
+                }
+              ]
+            },
+            {
+              "name": "secondFuelHotWaterConsumption1",
+              "type": "number",
+              "label": "Warmwasser Verbrauch 2. Brennstoff - 1. Periode",
+              "placeholder": "z.B. 3000",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuelHotWaterPreparation",
+                "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondFuelHotWaterConsumption2",
+              "type": "number",
+              "label": "Warmwasser Verbrauch 2. Brennstoff - 2. Periode",
+              "placeholder": "z.B. 2900",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuelHotWaterPreparation",
+                "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
+            },
+            {
+              "name": "secondFuelHotWaterConsumption3",
+              "type": "number",
+              "label": "Warmwasser Verbrauch 2. Brennstoff - 3. Periode",
+              "placeholder": "z.B. 3100",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuelHotWaterPreparation",
+                "value": "separate"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Verbrauch muss positiv sein"
+              }
             }
           ]
         }
@@ -1107,7 +1177,11 @@
               "options": [
                 { "value": "verkauf", "label": "Verkauf" },
                 { "value": "vermietung", "label": "Vermietung" },
-                { "value": "modernisierung", "label": "Modernisierung" },
+                {
+                  "value": "modernisierung",
+                  "label": "Modernisierung",
+                  "disabled": true
+                },
                 { "value": "sonstiges", "label": "Sonstiges" }
               ]
             },
@@ -1145,6 +1219,13 @@
               "label": "Anmerkungen",
               "placeholder": "Weitere Anmerkungen oder Hinweise...",
               "required": false
+            },
+            {
+              "name": "additionalDocuments",
+              "type": "file",
+              "label": "Zusätzliche Dokumente",
+              "required": false,
+              "accept": "image/*,application/pdf"
             }
           ]
         }
