@@ -15,6 +15,7 @@
               "label": "Gebäudeart",
               "placeholder": "Bitte wählen...",
               "required": true,
+              "tooltip": "Wählen Sie aus, ob es sich um ein Einfamilienhaus, Mehrfamilienhaus oder ein anderes Gebäude handelt. Wichtig: Für einzelne Wohnungen kann kein Energieausweis erstellt werden, lediglich für gesamte Gebäude.",
               "options": [
                 { "value": "einfamilienhaus", "label": "Einfamilienhaus" },
                 { "value": "zweifamilienhaus", "label": "Zweifamilienhaus" },
@@ -44,6 +45,7 @@
               "placeholder": "z.B. 3",
               "required": true,
               "autoSetValue": true,
+              "tooltip": "Tragen Sie ein, wie viele einzelne Wohnungen Ihr Gebäude enthält. Bei Einfamilienhäusern mit Einliegerwohnung bitte \"Zweifamilienhaus\" auswählen. Ab drei Wohneinheiten bitte \"Mehrfamilienhaus\" auswählen.",
               "validation": {
                 "min": 1,
                 "message": "Mindestens 1 Wohneinheit erforderlich",
@@ -70,6 +72,7 @@
               "label": "Baujahr des Gebäudes",
               "placeholder": "z.B. 1990",
               "required": true,
+              "tooltip": "Geben Sie an, wann Ihr Gebäude ursprünglich gebaut wurde. (Format Bsp.: 1998)",
               "validation": {
                 "min": 1900,
                 "max": 2025,
@@ -88,6 +91,7 @@
               "label": "Baujahr der Heizungsanlage",
               "placeholder": "z.B. 2010",
               "required": true,
+              "tooltip": "Geben Sie an, wann Ihre Heizungsanlage hergestellt wurde. Die Angabe finden Sie in den Unterlagen der Heizung oder auf dem Typenschild (Format Bsp.: 1998)",
               "validation": {
                 "min": 1900,
                 "max": 2025,
@@ -111,6 +115,7 @@
               "label": "Beheizte Wohnfläche in m²",
               "placeholder": "z.B. 120",
               "required": true,
+              "tooltip": "Tragen Sie die beheizte Wohnfläche ohne Keller in Quadratmetern ein.",
               "validation": {
                 "min": 50,
                 "message": "Wohnfläche muss mindestens 50 m² betragen - Kein Energieausweis notwendig"
@@ -149,6 +154,7 @@
               "label": "Jahr der Sanierung",
               "placeholder": "z.B. 2015",
               "required": true,
+              "tooltip": "Tragen Sie das Sanierungsjahr ein. Bei einem längeren Sanierungszeitraum das jüngste Sanierungsjahr eintragen.",
               "dependsOn": {
                 "field": "extensivelyRenovated",
                 "value": "ja"
@@ -182,6 +188,7 @@
               "label": "1. Energieträger",
               "placeholder": "Bitte wählen...",
               "required": true,
+              "tooltip": "Wählen Sie aus, womit Sie hauptsächlich heizen, zum Beispiel Gas, Öl oder Strom",
               "options": [
                 { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
                 { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
@@ -244,7 +251,7 @@
               "label": "Primärenergiefaktor",
               "placeholder": "z.B. 0.7",
               "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
-              "tooltip": "Der Primärenergiefaktor berücksichtigt den gesamten Energieaufwand von der Quelle bis zur Nutzung, einschließlich Gewinnung, Umwandlung und Transport. Ein niedriger Wert bedeutet höhere Energieeffizienz.",
+              "tooltip": "Sofern bekannt, tragen Sie den Primärenergiefaktor Ihres Versorgers ein. Falls unbekannt, tragen Sie den Namen Ihres Versorgers in das Feld ein oder laden die Abrechnung über das Upload-Feld hoch.",
               "required": true,
               "dependsOn": {
                 "field": "mainFuel",
@@ -308,6 +315,7 @@
               "label": "Leerstand?",
               "required": true,
               "defaultValue": "nein",
+              "tooltip": "Den Leerstand berechnen Sie wie folgt: Leerstandsquote= (leerstehende Fläche in qm x Tage leerstehend) geteilt durch (Gesamtwohnfläche in qm x Tage des Gesamtjahres) x 100",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -455,6 +463,7 @@
               "type": "select",
               "label": "Warmwasseraufbereitung",
               "required": true,
+              "tooltip": "Wählen Sie aus, mit welchem Brennstoff Ihre Warmwasseraufbereitung erfolgt ist.",
               "options": [
                 {
                   "value": "included",
@@ -900,6 +909,7 @@
               "type": "checkbox",
               "label": "Gebäudelüftung",
               "required": true,
+              "tooltip": "Geben Sie an, wie Ihr Gebäude belüftet wird.",
               "options": [
                 { "value": "fenster", "label": "Fensterlüftung" },
                 { "value": "schacht", "label": "Schachtlüftung" },
@@ -977,6 +987,7 @@
               "label": "Art der Klimatisierung",
               "placeholder": "Bitte wählen...",
               "required": true,
+              "tooltip": "Wählen Sie die Art der Kühlung aus",
               "dependsOn": {
                 "field": "hasAirConditioning",
                 "value": "ja"
@@ -998,6 +1009,7 @@
               "label": "Gekühlte Fläche in m²",
               "placeholder": "z.B. 80",
               "required": true,
+              "tooltip": "Geben Sie an, wie viele Quadratmeter Wohnfläche durch die Art der Kühlung klimatisiert werden",
               "dependsOn": {
                 "field": "hasAirConditioning",
                 "value": "ja"
@@ -1018,6 +1030,7 @@
               "label": "Inspektionspflichtige Klimaanlagen vorhanden?",
               "required": true,
               "defaultValue": "nein",
+              "tooltip": "Unterliegt die Klimaanlage einer Inspektionspflicht?",
               "dependsOn": {
                 "field": "hasAirConditioning",
                 "value": "ja"
@@ -1161,6 +1174,7 @@
               "type": "file",
               "label": "Außenbild des Gebäudes",
               "required": false,
+              "tooltip": "wird in den Energieausweis übernommen",
               "accept": "image/*"
             }
           ]
