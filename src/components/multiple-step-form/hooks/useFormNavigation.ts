@@ -62,15 +62,16 @@ export function useFormNavigation({
         });
 
         if (result.success) {
-          // Success - redirect to cart or show success message
+          // Success - clear form and localStorage
+          handleReset();
+
+          // Show success message or redirect to cart
           if (result.data?.cart_url) {
             window.location.href = result.data.cart_url;
           } else {
             alert(
               `✓ ${result.message}\n\nDas Produkt wurde zum Warenkorb hinzugefügt.`
             );
-            // Optionally clear form data after successful submission
-            clearData();
           }
         } else {
           // Show error message
