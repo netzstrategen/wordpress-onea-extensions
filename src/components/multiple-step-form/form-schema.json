@@ -1210,6 +1210,11 @@
           ]
         }
       ]
+    },
+    {
+      "id": "summary",
+      "title": "Zusammenfassung",
+      "fieldGroups": []
     }
   ]
 }

@@ -15,6 +15,7 @@ import { useFormAutoCalculations } from "./hooks/useFormAutoCalculations";
 import { useFormNavigation } from "./hooks/useFormNavigation";
 import { StepIndicator } from "./StepIndicator";
 import { FormField } from "./FormField";
+import { FormSummary } from "./FormSummary";
 
 export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   formConfig,
@@ -106,6 +107,15 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     nonce,
   });
 
+  // Check if current step is the summary step
+  const isSummaryStep = currentStepConfig.id === "summary";
+
+  // Handle edit button click in summary - go back to first step
+  const handleEditFromSummary = () => {
+    setCurrentStep(0);
+    saveData(allFormValues, 0);
+  };
+
   return (
     <div className="onea-multiple-step-form" data-component-id={componentId}>
       <div className="form-header mb-8">
@@ -122,48 +132,56 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
             <h3 className="text-xl font-semibold">{currentStepConfig.title}</h3>
           </div>
 
-          {/* Fields rendered in groups */}
-          <div className="space-y-6">
-            {currentStepConfig.fieldGroups.map((group, groupIndex) => (
-              <div
-                key={groupIndex}
-                className="field-group p-6 border border-border rounded-lg bg-card"
-              >
-                {group.title && (
-                  <h4 className="text-base font-semibold mb-4">
-                    {group.title}
-                  </h4>
-                )}
-                {group.description && (
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {group.description}
-                  </p>
-                )}
-                <div className="space-y-4">
-                  {group.fields.map((field) => {
-                    // Collect all fields from current step for nested dependency checking
-                    const allStepFields = currentStepConfig.fieldGroups.flatMap(
-                      (g) => g.fields
-                    );
-                    if (
-                      !shouldIncludeField(field, allFormValues, allStepFields)
-                    ) {
-                      return null;
-                    }
-                    return (
-                      <FormField
-                        key={field.name}
-                        field={field}
-                        form={form}
-                        allFormValues={allFormValues}
-                        currentStepConfig={currentStepConfig}
-                      />
-                    );
-                  })}
+          {/* Show summary on summary step */}
+          {isSummaryStep ? (
+            <FormSummary
+              formValues={allFormValues}
+              config={config}
+              onEdit={handleEditFromSummary}
+            />
+          ) : (
+            /* Fields rendered in groups */
+            <div className="space-y-6">
+              {currentStepConfig.fieldGroups.map((group, groupIndex) => (
+                <div
+                  key={groupIndex}
+                  className="field-group p-6 border border-border rounded-lg bg-card"
+                >
+                  {group.title && (
+                    <h4 className="text-base font-semibold mb-4">
+                      {group.title}
+                    </h4>
+                  )}
+                  {group.description && (
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {group.description}
+                    </p>
+                  )}
+                  <div className="space-y-4">
+                    {group.fields.map((field) => {
+                      // Collect all fields from current step for nested dependency checking
+                      const allStepFields =
+                        currentStepConfig.fieldGroups.flatMap((g) => g.fields);
+                      if (
+                        !shouldIncludeField(field, allFormValues, allStepFields)
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <FormField
+                          key={field.name}
+                          field={field}
+                          form={form}
+                          allFormValues={allFormValues}
+                          currentStepConfig={currentStepConfig}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Display submission errors */}
           {submissionError && (
