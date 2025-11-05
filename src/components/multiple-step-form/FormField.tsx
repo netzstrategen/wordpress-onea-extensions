@@ -259,9 +259,13 @@ function renderFieldInput(
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
-                // For now, store the file object
-                // In production, might want to convert to base64
-                formField.onChange(file);
+                // Store file with metadata that can be serialized
+                const fileWithMeta = Object.assign(file, {
+                  _fileName: file.name,
+                  _fileSize: file.size,
+                  _fileType: file.type,
+                });
+                formField.onChange(fileWithMeta);
               }
             }}
           />

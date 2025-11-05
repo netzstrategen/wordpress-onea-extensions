@@ -14,19 +14,6 @@ export const FormSummary: React.FC<FormSummaryProps> = ({
   config,
   onEdit,
 }) => {
-  // Helper function to get field label by name
-  const getFieldLabel = (fieldName: string): string => {
-    for (const step of config.steps) {
-      for (const group of step.fieldGroups) {
-        const field = group.fields.find((f) => f.name === fieldName);
-        if (field) {
-          return field.label;
-        }
-      }
-    }
-    return fieldName;
-  };
-
   // Helper function to get select option label
   const getSelectLabel = (fieldName: string, value: any): string => {
     for (const step of config.steps) {
@@ -84,8 +71,12 @@ export const FormSummary: React.FC<FormSummaryProps> = ({
     // Handle file type fields - check if it's a file object
     if (field?.type === "file") {
       if (typeof value === "object" && value !== null) {
+        // Check for file metadata properties that persist through serialization
+        if ("_fileName" in value && value._fileName) {
+          return String(value._fileName);
+        }
         // Handle serialized file object with name property
-        if ("name" in value) {
+        if ("name" in value && value.name) {
           return String(value.name);
         }
         // Fallback for other object structures
@@ -154,16 +145,15 @@ export const FormSummary: React.FC<FormSummaryProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <p className="text-sm text-muted-foreground mt-1">
-            Bitte überprüfen Sie Ihre Eingaben, bevor Sie das Formular absenden.
-          </p>
-        </div>
+      <div className="summary-subheading flex items-center justify-between">
+        <p className="text-sm">
+          Bitte überprüfen Sie Ihre Eingaben, bevor Sie das Formular absenden.
+        </p>
+
         <Button
           type="button"
           onClick={onEdit}
-          className="ml-4 bg-transparent border border-border hover:bg-accent"
+          className="ml-4 summary-edit-button"
         >
           Bearbeiten
         </Button>
@@ -175,11 +165,14 @@ export const FormSummary: React.FC<FormSummaryProps> = ({
           {stepSummary.fields.length > 0 ? (
             <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {stepSummary.fields.map((field, fieldIndex) => (
-                <div key={fieldIndex} className="border-b border-border pb-3">
+                <div
+                  key={fieldIndex}
+                  className="summary-field-wrapper border-b border-border"
+                >
                   <dt className="text-sm font-medium text-muted-foreground">
                     {field.label}
                   </dt>
-                  <dd className="mt-1 text-sm font-semibold">{field.value}</dd>
+                  <dd className="text-sm font-semibold">{field.value}</dd>
                 </div>
               ))}
             </dl>
