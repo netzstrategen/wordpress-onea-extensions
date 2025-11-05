@@ -244,8 +244,6 @@
     }
 
     .text-xs {
-      font-size: 0.8rem !important;
-      line-height: 1.1rem !important;
       margin-top: auto !important; // Push text to bottom
       padding-top: 0.5rem !important;
       word-wrap: normal;
@@ -263,11 +261,6 @@
         width: 2rem !important;
         height: 2rem !important;
         font-size: 0.8rem !important;
-      }
-
-      .text-xs {
-        font-size: 0.625rem !important;
-        line-height: 0.875rem !important;
       }
 
       .mx-2 {
