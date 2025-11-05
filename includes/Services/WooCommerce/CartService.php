@@ -57,14 +57,11 @@ class CartService extends AbstractService {
 		$cart_item_data = [
 			'_onea_form_data'      => $form_data,
 			'_onea_uploaded_files' => $file_ids,
-			'_onea_form_id'        => $form_data['form_id'] ?? '',
-			// Generate unique key to ensure same product with different form data creates separate cart items.
-			'_onea_unique_key'     => md5(wp_json_encode($form_data) . wp_json_encode($file_ids)),
+			'_onea_unique_key'     => md5(wp_json_encode($form_data) . wp_json_encode($file_ids)) . time(),
 		];
 
 		// Add to cart.
 		$cart_item_key = WC()->cart->add_to_cart($product_id, 1, 0, [], $cart_item_data);
-
 		if (! $cart_item_key) {
 			return new \WP_Error('cart_error', __('Failed to add product to cart.', 'wp-onea-extensions'));
 		}

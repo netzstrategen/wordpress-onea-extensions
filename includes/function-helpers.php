@@ -33,7 +33,7 @@ function plugin(): Plugin {
 
 /**
  * Custom logging function for ONEA plugin.
- * Logs to a separate file: wp-content/debug-onea.log
+ * Logs to a separate file: wp-content/plugins/wordpress-onea-extensions/debug-onea.log
  *
  * @param string $message The message to log.
  * @param string $level   Log level (INFO, ERROR, WARNING, DEBUG).
@@ -45,7 +45,7 @@ function onea_log(string $message, string $level = 'INFO'): void {
 		return;
 	}
 
-	$log_file = WP_CONTENT_DIR . '/debug-onea.log';
+	$log_file = dirname(__DIR__) . '/debug-onea.log';
 	$timestamp = current_time('Y-m-d H:i:s');
 	$formatted_message = sprintf(
 		"[%s] [%s] %s\n",
