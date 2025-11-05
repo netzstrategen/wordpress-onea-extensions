@@ -65,7 +65,7 @@ export const FormField: React.FC<FormFieldProps> = ({
               <TooltipProvider delayDuration={300}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div className="tooltip-trigger">?</div>
+                    <div className="tooltip-trigger">i</div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="tooltip-content">{field.tooltip}</p>

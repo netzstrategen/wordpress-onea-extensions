@@ -31,7 +31,6 @@
               "name": "buildingTypeOther",
               "type": "text",
               "label": "Sonstige Gebäudeart",
-              "placeholder": "Bitte angeben...",
               "required": true,
               "dependsOn": {
                 "field": "buildingType",
@@ -42,7 +41,6 @@
               "name": "numberOfUnits",
               "type": "number",
               "label": "Anzahl der Wohneinheiten",
-              "placeholder": "z.B. 3",
               "required": true,
               "autoSetValue": true,
               "tooltip": "Tragen Sie ein, wie viele einzelne Wohnungen Ihr Gebäude enthält. Bei Einfamilienhäusern mit Einliegerwohnung bitte \"Zweifamilienhaus\" auswählen. Ab drei Wohneinheiten bitte \"Mehrfamilienhaus\" auswählen.",
@@ -70,7 +68,6 @@
               "name": "buildingYear",
               "type": "number",
               "label": "Baujahr des Gebäudes",
-              "placeholder": "z.B. 1990",
               "required": true,
               "tooltip": "Geben Sie an, wann Ihr Gebäude ursprünglich gebaut wurde. (Format Bsp.: 1998)",
               "validation": {
@@ -89,7 +86,6 @@
               "name": "heatingYear",
               "type": "number",
               "label": "Baujahr der Heizungsanlage",
-              "placeholder": "z.B. 2010",
               "required": true,
               "tooltip": "Geben Sie an, wann Ihre Heizungsanlage hergestellt wurde. Die Angabe finden Sie in den Unterlagen der Heizung oder auf dem Typenschild (Format Bsp.: 1998)",
               "validation": {
@@ -113,7 +109,6 @@
               "name": "livingArea",
               "type": "number",
               "label": "Beheizte Wohnfläche in m²",
-              "placeholder": "z.B. 120",
               "required": true,
               "tooltip": "Tragen Sie die beheizte Wohnfläche ohne Keller in Quadratmetern ein.",
               "validation": {
@@ -152,7 +147,6 @@
               "name": "renovationYear",
               "type": "number",
               "label": "Jahr der Sanierung",
-              "placeholder": "z.B. 2015",
               "required": true,
               "tooltip": "Tragen Sie das Sanierungsjahr ein. Bei einem längeren Sanierungszeitraum das jüngste Sanierungsjahr eintragen.",
               "dependsOn": {
@@ -249,7 +243,6 @@
               "name": "mainFuelPrimaryEnergyFactor",
               "type": "number",
               "label": "Primärenergiefaktor",
-              "placeholder": "z.B. 0.7",
               "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
               "tooltip": "Sofern bekannt, tragen Sie den Primärenergiefaktor Ihres Versorgers ein. Falls unbekannt, tragen Sie den Namen Ihres Versorgers in das Feld ein oder laden die Abrechnung über das Upload-Feld hoch.",
               "required": true,
@@ -302,7 +295,6 @@
               "name": "fuelConsumption1",
               "type": "number",
               "label": "Verbrauch",
-              "placeholder": "z.B. 15000",
               "required": true,
               "validation": {
                 "min": 0,
@@ -325,7 +317,6 @@
               "name": "vacancyPercent1",
               "type": "number",
               "label": "Leerstand in Prozent",
-              "placeholder": "z.B. 10",
               "required": true,
               "dependsOn": {
                 "field": "vacancy1",
@@ -358,7 +349,6 @@
               "name": "fuelConsumption2",
               "type": "number",
               "label": "Verbrauch",
-              "placeholder": "z.B. 14000",
               "required": true,
               "validation": {
                 "min": 0,
@@ -380,7 +370,6 @@
               "name": "vacancyPercent2",
               "type": "number",
               "label": "Leerstand in Prozent",
-              "placeholder": "z.B. 10",
               "required": true,
               "dependsOn": {
                 "field": "vacancy2",
@@ -413,7 +402,6 @@
               "name": "fuelConsumption3",
               "type": "number",
               "label": "Verbrauch",
-              "placeholder": "z.B. 16000",
               "required": true,
               "validation": {
                 "min": 0,
@@ -435,7 +423,6 @@
               "name": "vacancyPercent3",
               "type": "number",
               "label": "Leerstand in Prozent",
-              "placeholder": "z.B. 10",
               "required": true,
               "dependsOn": {
                 "field": "vacancy3",
@@ -549,7 +536,6 @@
               "name": "hotWaterFuelPrimaryEnergyFactor",
               "type": "number",
               "label": "Primärenergiefaktor (Warmwasser)",
-              "placeholder": "z.B. 0.7",
               "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
               "required": true,
               "dependsOn": {
@@ -588,7 +574,6 @@
               "name": "hotWaterConsumption1",
               "type": "number",
               "label": "Warmwasser Verbrauch - 1. Periode",
-              "placeholder": "z.B. 3000",
               "required": true,
               "dependsOn": {
                 "field": "hotWaterPreparation",
@@ -603,7 +588,6 @@
               "name": "hotWaterConsumption2",
               "type": "number",
               "label": "Warmwasser Verbrauch - 2. Periode",
-              "placeholder": "z.B. 2900",
               "required": true,
               "dependsOn": {
                 "field": "hotWaterPreparation",
@@ -618,7 +602,6 @@
               "name": "hotWaterConsumption3",
               "type": "number",
               "label": "Warmwasser Verbrauch - 3. Periode",
-              "placeholder": "z.B. 3100",
               "required": true,
               "dependsOn": {
                 "field": "hotWaterPreparation",
@@ -723,7 +706,6 @@
               "name": "secondFuelPrimaryEnergyFactor",
               "type": "number",
               "label": "Primärenergiefaktor (2. Energieträger)",
-              "placeholder": "z.B. 0.7",
               "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
               "required": true,
               "dependsOn": {
@@ -762,7 +744,6 @@
               "name": "secondHeatingYear",
               "type": "number",
               "label": "Baujahr der 2. Heizungsanlage",
-              "placeholder": "z.B. 2015",
               "required": true,
               "dependsOn": {
                 "field": "hasAdditionalFuels",
@@ -783,7 +764,6 @@
               "name": "secondFuelConsumption1",
               "type": "number",
               "label": "Verbrauch 2. Brennstoff - 1. Periode",
-              "placeholder": "z.B. 5000",
               "required": true,
               "dependsOn": {
                 "field": "hasAdditionalFuels",
@@ -798,7 +778,6 @@
               "name": "secondFuelConsumption2",
               "type": "number",
               "label": "Verbrauch 2. Brennstoff - 2. Periode",
-              "placeholder": "z.B. 4800",
               "required": true,
               "dependsOn": {
                 "field": "hasAdditionalFuels",
@@ -813,7 +792,6 @@
               "name": "secondFuelConsumption3",
               "type": "number",
               "label": "Verbrauch 2. Brennstoff - 3. Periode",
-              "placeholder": "z.B. 5200",
               "required": true,
               "dependsOn": {
                 "field": "hasAdditionalFuels",
@@ -852,7 +830,6 @@
               "name": "secondFuelHotWaterConsumption1",
               "type": "number",
               "label": "Warmwasser Verbrauch 2. Brennstoff - 1. Periode",
-              "placeholder": "z.B. 3000",
               "required": true,
               "dependsOn": {
                 "field": "secondFuelHotWaterPreparation",
@@ -867,7 +844,6 @@
               "name": "secondFuelHotWaterConsumption2",
               "type": "number",
               "label": "Warmwasser Verbrauch 2. Brennstoff - 2. Periode",
-              "placeholder": "z.B. 2900",
               "required": true,
               "dependsOn": {
                 "field": "secondFuelHotWaterPreparation",
@@ -882,7 +858,6 @@
               "name": "secondFuelHotWaterConsumption3",
               "type": "number",
               "label": "Warmwasser Verbrauch 2. Brennstoff - 3. Periode",
-              "placeholder": "z.B. 3100",
               "required": true,
               "dependsOn": {
                 "field": "secondFuelHotWaterPreparation",
@@ -948,7 +923,6 @@
               "name": "windowReplacementYear",
               "type": "number",
               "label": "Jahr des Fenstertausches",
-              "placeholder": "z.B. 2010",
               "required": true,
               "dependsOn": {
                 "field": "energyMeasures",
@@ -1007,7 +981,6 @@
               "name": "cooledArea",
               "type": "number",
               "label": "Gekühlte Fläche in m²",
-              "placeholder": "z.B. 80",
               "required": true,
               "tooltip": "Geben Sie an, wie viele Quadratmeter Wohnfläche durch die Art der Kühlung klimatisiert werden",
               "dependsOn": {
@@ -1044,7 +1017,6 @@
               "name": "acSystemCount",
               "type": "number",
               "label": "Anzahl Klimaanlagen",
-              "placeholder": "z.B. 2",
               "required": true,
               "dependsOn": {
                 "field": "hasInspectionRequiredAC",
@@ -1059,7 +1031,6 @@
               "name": "nextInspectionDate",
               "type": "text",
               "label": "Datum nächste Inspektion",
-              "placeholder": "TT.MM.JJJJ",
               "required": true,
               "dependsOn": {
                 "field": "hasInspectionRequiredAC",
@@ -1136,14 +1107,12 @@
               "name": "objectStreet",
               "type": "text",
               "label": "Straße & Hausnummer",
-              "placeholder": "Straße & Hausnummer",
               "required": true
             },
             {
               "name": "objectZip",
               "type": "text",
               "label": "PLZ",
-              "placeholder": "z.B. 12345",
               "required": true,
               "validation": {
                 "pattern": "^[0-9]{5}$",
@@ -1154,7 +1123,6 @@
               "name": "objectCity",
               "type": "text",
               "label": "Ort",
-              "placeholder": "z.B. München",
               "required": true
             }
           ]
@@ -1215,7 +1183,6 @@
               "name": "customerTypeOther",
               "type": "text",
               "label": "Bitte angeben",
-              "placeholder": "Art des Kunden",
               "required": true,
               "dependsOn": {
                 "field": "customerType",
@@ -1231,7 +1198,6 @@
               "name": "comments",
               "type": "text",
               "label": "Anmerkungen",
-              "placeholder": "Weitere Anmerkungen oder Hinweise...",
               "required": false
             },
             {

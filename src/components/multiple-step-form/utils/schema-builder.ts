@@ -75,8 +75,10 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
       break;
 
     case "number":
-      // Create a more lenient number schema that allows undefined during typing
-      let numberSchema = z.number();
+      // Create a number schema with proper required handling
+      let numberSchema = z.number({
+        message: `${field.label} ist erforderlich`,
+      });
 
       if (field.validation?.min !== undefined) {
         numberSchema = numberSchema.min(
@@ -92,19 +94,19 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         );
       }
 
-      // Use z.union to allow undefined during typing, but validate when value is present
+      // Handle required vs optional number fields
       if (field.required) {
         schema = z.preprocess((val) => {
           if (val === "" || val === null || val === undefined) return undefined;
           const num = Number(val);
           return isNaN(num) ? undefined : num;
-        }, z.union([z.undefined(), numberSchema]));
+        }, numberSchema);
       } else {
         schema = z.preprocess((val) => {
           if (val === "" || val === null || val === undefined) return undefined;
           const num = Number(val);
           return isNaN(num) ? undefined : num;
-        }, z.union([z.undefined(), numberSchema]).optional());
+        }, numberSchema.optional());
       }
       break;
 
