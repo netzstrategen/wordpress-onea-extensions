@@ -52,6 +52,8 @@ export function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       // Final step - submit the form
       saveData(updatedValues, currentStep);
@@ -96,6 +98,8 @@ export function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [
     currentStep,
