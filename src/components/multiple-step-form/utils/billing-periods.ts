@@ -8,8 +8,8 @@ interface BillingPeriodOption {
 }
 
 /**
- * Generate billing period options for the last 3 years
- * Starting from the current month and going back 36 months
+ * Generate billing period options for the last 18 months
+ * Starting from the current month and going back 18 months
  *
  * @returns Array of billing period options sorted from newest to oldest
  */
@@ -20,8 +20,8 @@ export function generateBillingPeriodOptions(): BillingPeriodOption[] {
   const currentYear = today.getFullYear();
 
   // Generate periods going backwards from the previous month (last complete month)
-  // Each period is 12 months long, and we generate periods going back 36 months
-  for (let i = 0; i < 36; i++) {
+  // Each period is 12 months long, and we generate periods going back 18 months
+  for (let i = 0; i < 18; i++) {
     // Calculate the end month for this period (going backwards from previous month)
     const endMonthIndex = currentMonth - 1 - i;
     const endYear = currentYear + Math.floor(endMonthIndex / 12);

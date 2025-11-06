@@ -52,6 +52,8 @@ export function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       // Final step - submit the form
       saveData(updatedValues, currentStep);
@@ -62,15 +64,16 @@ export function useFormNavigation({
         });
 
         if (result.success) {
-          // Success - redirect to cart or show success message
+          // Success - clear form and localStorage
+          handleReset();
+
+          // Show success message or redirect to cart
           if (result.data?.cart_url) {
             window.location.href = result.data.cart_url;
           } else {
             alert(
               `✓ ${result.message}\n\nDas Produkt wurde zum Warenkorb hinzugefügt.`
             );
-            // Optionally clear form data after successful submission
-            clearData();
           }
         } else {
           // Show error message
@@ -95,6 +98,8 @@ export function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [
     currentStep,

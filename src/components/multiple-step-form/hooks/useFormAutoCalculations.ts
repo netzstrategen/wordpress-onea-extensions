@@ -98,6 +98,12 @@ export function useFormAutoCalculations({
           ) {
             unitsValue = 3;
           }
+        } else if (
+          buildingType === "wohnteilGemischt" ||
+          buildingType === "sonstiges"
+        ) {
+          // Always reset to 1 for these building types
+          unitsValue = 1;
         }
 
         if (unitsValue !== undefined) {

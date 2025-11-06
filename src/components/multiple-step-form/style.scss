@@ -142,6 +142,9 @@
   }
 
   .previous-button {
+    background-color: #f5f5f5 !important;
+    border: 1px solid var(--ast-border-color) !important;
+
     &:hover,
     &:focus,
     &[data-highlighted] {
@@ -162,6 +165,9 @@
   }
 
   .reset-button {
+    background-color: #fecaca !important;
+    border: 1px solid #fecaca !important;
+
     &:hover,
     &:focus,
     &[data-highlighted] {
@@ -172,6 +178,26 @@
     }
   }
 
+  .summary-edit-button {
+    background-color: #f5f5f5 !important;
+    border: 1px solid var(--ast-border-color) !important;
+
+    &:hover,
+    &:focus,
+    &[data-highlighted] {
+      background-color: var(--ast-global-color-0) !important;
+      border: 1px solid var(--ast-global-color-0) !important;
+    }
+  }
+
+  .summary-subheading {
+    margin-bottom: 1rem;
+
+    p {
+      margin-bottom: 0 !important;
+    }
+  }
+
   .select-trigger {
     &:hover,
     &:focus {
@@ -179,38 +205,91 @@
     }
   }
 
+  .tooltip-content {
+    padding: 1.5rem !important;
+    border-radius: calc(var(--radius) * 1.5);
+    text-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 300px;
+  }
+
+  [data-slot="tooltip-content"] span svg {
+    display: none !important;
+  }
+
+  .tooltip-trigger {
+    margin-left: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 100%;
+    border: 1px solid var(--ast-border-color);
+    background-color: var(--ast-border-color);
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
   .step-indicator {
     margin-bottom: 2rem;
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: calc(var(--radius) * 1.5);
 
     .w-10 {
       width: 2.5rem !important;
       height: 2.5rem !important;
     }
 
-    @media (max-width: 640px) {
-      margin-bottom: 1.5rem;
+    .text-xs {
+      margin-top: auto !important; // Push text to bottom
+      padding-top: 0.5rem !important;
+      word-wrap: normal;
+      overflow-wrap: normal;
+      max-width: 100% !important;
+    }
 
+    .mx-2 {
+      margin-left: 0.375rem !important;
+      margin-right: 0.375rem !important;
+    }
+
+    @media (max-width: 1024px) {
       .w-10 {
         width: 2rem !important;
         height: 2rem !important;
-        font-size: 0.75rem !important;
-      }
-
-      .text-xs {
-        font-size: 0.625rem !important;
-        line-height: 0.875rem !important;
-        max-width: 4rem;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
+        font-size: 0.8rem !important;
       }
 
       .mx-2 {
         margin-left: 0.25rem !important;
         margin-right: 0.25rem !important;
       }
+    }
+
+    @media (max-width: 640px) {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+
+      .w-10 {
+        width: 1.75rem !important;
+        height: 1.75rem !important;
+        font-size: 0.7rem !important;
+      }
+
+      .text-xs {
+        display: none !important; // Hide step text on mobile
+      }
+
+      .mx-2 {
+        margin-left: 0.15rem !important;
+        margin-right: 0.15rem !important;
+      }
 
       .mt-5 {
-        margin-top: 1rem !important;
+        margin-top: 0.875rem !important;
       }
 
       .mt-2 {
@@ -221,7 +300,13 @@
 
   .onea-multiple-step-form {
     max-width: 100%;
+    width: 100% !important;
     overflow-x: hidden;
+    padding: 2rem;
+
+    @media (max-width: 640px) {
+      padding: 1rem;
+    }
 
     .custom-error {
       padding: 1rem;
@@ -236,8 +321,19 @@
       margin-left: 0.15rem !important;
     }
 
+    .summary-field-wrapper {
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+      dd {
+        margin-top: 0.25rem !important;
+        margin-bottom: 0.25rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+
     .field-group {
-      background: hsl(var(--card));
+      background: #f5f5f5 !important;
       border: 1px solid hsl(var(--border));
       border-radius: calc(var(--radius) * 1.5);
       padding: 1.5rem;
@@ -279,6 +375,7 @@
     textarea,
     button[role="combobox"] {
       margin-top: 0.5rem;
+      background-color: white !important;
     }
 
     // Disabled select field (rendered as a div)
@@ -325,7 +422,7 @@
       transition: all 0.2s;
       padding: 10px !important;
       margin-top: -0.5rem !important;
-      background-color: transparent !important;
+      background-color: white !important;
       border-color: var(--ast-border-color) !important;
 
       &:hover {

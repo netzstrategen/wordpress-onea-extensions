@@ -5,11 +5,13 @@
 export interface FieldOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export interface FieldDependency {
   field: string;
-  value: string | string[];
+  value?: string | string[];
+  contains?: string; // For checking if an array field contains a specific value
 }
 
 export interface CustomValidationRule {
@@ -25,6 +27,8 @@ export interface FieldValidation {
   customValidation?: string;
   validationMessage?: string;
   customValidations?: CustomValidationRule[];
+  dateNotInPast?: boolean;
+  dateNotInPastMessage?: string;
 }
 
 export interface BaseField {
@@ -32,11 +36,13 @@ export interface BaseField {
   type: string;
   label: string;
   description?: string;
+  tooltip?: string;
   placeholder?: string;
   required?: boolean;
   readonly?: boolean;
   disabled?: boolean;
   autoSetValue?: boolean;
+  defaultValue?: any;
   validation?: FieldValidation;
   dependsOn?: FieldDependency;
 }

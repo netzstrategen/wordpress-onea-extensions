@@ -18,6 +18,12 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { FormField as FormFieldType, FormStep } from "./types";
 import { formatPeriodLabel } from "./utils/billing-periods";
 import { getConsumptionFieldUnit } from "./utils/consumption-fields";
@@ -54,6 +60,18 @@ export const FormField: React.FC<FormFieldProps> = ({
               <span className="consumption-unit text-muted-foreground font-normal">
                 (in {consumptionUnit})
               </span>
+            )}
+            {field.tooltip && (
+              <TooltipProvider delayDuration={300}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="tooltip-trigger">i</div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="tooltip-content">{field.tooltip}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </FormLabel>
 
@@ -145,7 +163,11 @@ function renderFieldInput(
             <SelectContent>
               {field.options && field.options.length > 0 ? (
                 field.options.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    disabled={option.disabled}
+                  >
                     {option.label}
                     {(option as any).unit && (
                       <span className="text-muted-foreground">
@@ -237,9 +259,13 @@ function renderFieldInput(
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
-                // For now, store the file object
-                // In production, might want to convert to base64
-                formField.onChange(file);
+                // Store file with metadata that can be serialized
+                const fileWithMeta = Object.assign(file, {
+                  _fileName: file.name,
+                  _fileSize: file.size,
+                  _fileType: file.type,
+                });
+                formField.onChange(fileWithMeta);
               }
             }}
           />

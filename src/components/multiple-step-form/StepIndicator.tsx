@@ -14,7 +14,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
 }) => {
   return (
     <div className="step-indicator">
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between">
         {steps.map((step, index) => {
           const isCompleted = index < currentStep;
           const isCurrent = index === currentStep;
@@ -28,7 +28,6 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                 }`}
                 onClick={() => isClickable && onStepClick(index)}
               >
-                {/* Step Number Circle */}
                 <div
                   className={`
                     w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm
@@ -44,8 +43,6 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                 >
                   {isCompleted ? "✓" : index + 1}
                 </div>
-
-                {/* Step Title */}
                 <div
                   className={`
                     text-xs mt-2 text-center
@@ -57,17 +54,6 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
                   {step.title}
                 </div>
               </div>
-
-              {/* Connector Line */}
-              {index < steps.length - 1 && (
-                <div
-                  className={`
-                    flex-1 h-0.5 mx-2 mt-5
-                    transition-colors duration-200
-                    ${isCompleted ? "bg-green-500" : "bg-gray-200"}
-                  `}
-                />
-              )}
             </React.Fragment>
           );
         })}
