@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Main Plugin Class
  *
@@ -39,6 +40,8 @@ final class Plugin {
 	 */
 	private array $provider_classes = [
 		Providers\ElementorServiceProvider::class,
+		Providers\WooCommerceServiceProvider::class,
+		Providers\FormSubmissionServiceProvider::class,
 	];
 
 	/**
@@ -80,8 +83,8 @@ final class Plugin {
 	 * @return void
 	 */
 	private function register_providers(): void {
-		foreach ( $this->provider_classes as $provider_class ) {
-			$this->register_provider( $provider_class );
+		foreach ($this->provider_classes as $provider_class) {
+			$this->register_provider($provider_class);
 		}
 	}
 
@@ -92,18 +95,18 @@ final class Plugin {
 	 * @return ServiceProviderInterface The registered provider.
 	 * @throws ContainerException If provider cannot be instantiated.
 	 */
-	private function register_provider( $provider ): ServiceProviderInterface {
+	private function register_provider($provider): ServiceProviderInterface {
 		// If it's a class name, instantiate it.
-		if ( is_string( $provider ) ) {
-			if ( ! class_exists( $provider ) ) {
+		if (is_string($provider)) {
+			if (! class_exists($provider)) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
-				throw new ContainerException( "Service provider class {$provider} does not exist." );
+				throw new ContainerException("Service provider class {$provider} does not exist.");
 			}
-			$provider = new $provider( self::$container );
+			$provider = new $provider(self::$container);
 		}
 
 		// Check if it implements the interface.
-		if ( ! $provider instanceof ServiceProviderInterface ) {
+		if (! $provider instanceof ServiceProviderInterface) {
 			throw new ContainerException(
 				sprintf(
 					'Service provider must implement %s',
@@ -127,11 +130,11 @@ final class Plugin {
 	 * @return void
 	 */
 	private function boot_providers(): void {
-		if ( $this->booted ) {
+		if ($this->booted) {
 			return;
 		}
 
-		foreach ( $this->providers as $provider ) {
+		foreach ($this->providers as $provider) {
 			$provider->boot();
 		}
 

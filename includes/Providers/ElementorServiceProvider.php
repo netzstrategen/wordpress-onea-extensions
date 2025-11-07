@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Elementor Service Provider
  *
@@ -35,8 +36,8 @@ class ElementorServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		foreach ( $this->services as $key => $service_class ) {
-			$this->container->set( $key, new $service_class() );
+		foreach ($this->services as $key => $service_class) {
+			$this->container->set($key, new $service_class());
 		}
 	}
 
@@ -46,8 +47,8 @@ class ElementorServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function boot(): void {
-		foreach ( array_keys( $this->services ) as $service_key ) {
-			$this->boot_service( $service_key );
+		foreach (array_keys($this->services) as $service_key) {
+			$this->boot_service($service_key);
 		}
 	}
 }

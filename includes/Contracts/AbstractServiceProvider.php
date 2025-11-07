@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base Service Provider
  *
@@ -56,10 +57,10 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface {
 	 * @return void
 	 * @throws \RuntimeException If service doesn't implement ServiceInterface.
 	 */
-	protected function boot_service( string $service_id ): void {
-		$service = $this->container->get( $service_id );
+	protected function boot_service(string $service_id): void {
+		$service = $this->container->get($service_id);
 
-		if ( ! $service instanceof ServiceInterface ) {
+		if (! $service instanceof ServiceInterface) {
 			throw new \RuntimeException(
 				sprintf(
 					'Service "%s" must implement %s',

@@ -5,11 +5,13 @@
 export interface FieldOption {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export interface FieldDependency {
   field: string;
-  value: string | string[];
+  value?: string | string[];
+  contains?: string; // For checking if an array field contains a specific value
 }
 
 export interface CustomValidationRule {
@@ -25,6 +27,8 @@ export interface FieldValidation {
   customValidation?: string;
   validationMessage?: string;
   customValidations?: CustomValidationRule[];
+  dateNotInPast?: boolean;
+  dateNotInPastMessage?: string;
 }
 
 export interface BaseField {
@@ -32,11 +36,13 @@ export interface BaseField {
   type: string;
   label: string;
   description?: string;
+  tooltip?: string;
   placeholder?: string;
   required?: boolean;
   readonly?: boolean;
   disabled?: boolean;
   autoSetValue?: boolean;
+  defaultValue?: any;
   validation?: FieldValidation;
   dependsOn?: FieldDependency;
 }
@@ -100,8 +106,19 @@ export interface FormConfig {
 
 export interface MultiStepFormProps {
   formConfig: FormConfig;
-  componentId?: string;
+  componentId: string;
   productId?: string;
+  nonce?: string;
+}
+
+export interface FormSubmissionResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    cart_item_key?: string;
+    cart_url?: string;
+    uploaded_files?: number[];
+  };
 }
 
 export type FormValues = Record<string, any>;

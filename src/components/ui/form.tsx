@@ -152,6 +152,59 @@ const FormMessage = React.forwardRef<
     return null;
   }
 
+  // Ensure body is a string for link parsing
+  const bodyStr = typeof body === "string" ? body : String(body);
+
+  // Check if the message contains a link pattern [text](url)
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const hasLink = linkPattern.test(bodyStr);
+
+  if (hasLink) {
+    // Parse the message and convert markdown-style links to HTML
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+
+    while ((match = regex.exec(bodyStr)) !== null) {
+      // Add text before the link
+      if (match.index > lastIndex) {
+        parts.push(bodyStr.substring(lastIndex, match.index));
+      }
+
+      // Add the link
+      parts.push(
+        <a
+          key={match.index}
+          href={match[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:no-underline"
+        >
+          {match[1]}
+        </a>
+      );
+
+      lastIndex = regex.lastIndex;
+    }
+
+    // Add remaining text
+    if (lastIndex < bodyStr.length) {
+      parts.push(bodyStr.substring(lastIndex));
+    }
+
+    return (
+      <p
+        ref={ref}
+        id={formMessageId}
+        className={cn("text-sm font-medium text-destructive", className)}
+        {...props}
+      >
+        {parts}
+      </p>
+    );
+  }
+
   return (
     <p
       ref={ref}

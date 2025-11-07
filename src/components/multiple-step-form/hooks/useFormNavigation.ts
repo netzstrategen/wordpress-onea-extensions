@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import type { FormValues, FormConfig } from "../types";
+import { useFormSubmission } from "./useFormSubmission";
 
 interface UseFormNavigationProps {
   form: UseFormReturn<any>;
@@ -12,6 +13,7 @@ interface UseFormNavigationProps {
   saveData: (values: FormValues, step: number) => void;
   clearData: () => void;
   productId?: string;
+  nonce?: string;
 }
 
 /**
@@ -27,36 +29,16 @@ export function useFormNavigation({
   saveData,
   clearData,
   productId,
+  nonce,
 }: UseFormNavigationProps) {
   const isLastStep = currentStep === config.steps.length - 1;
 
-  // Helper function to build submission data with labels
-  const buildSubmissionData = useCallback(
-    (values: FormValues) => {
-      const submissionData: Array<{
-        fieldName: string;
-        label: string;
-        value: any;
-      }> = [];
-
-      config.steps.forEach((step) => {
-        step.fieldGroups.forEach((group) => {
-          group.fields.forEach((field) => {
-            if (values[field.name] !== undefined && values[field.name] !== "") {
-              submissionData.push({
-                fieldName: field.name,
-                label: field.label,
-                value: values[field.name],
-              });
-            }
-          });
-        });
-      });
-
-      return submissionData;
-    },
-    [config]
-  );
+  // Initialize form submission hook
+  const { submitFormData, isSubmitting, error } = useFormSubmission({
+    config,
+    productId,
+    nonce,
+  });
 
   // Handle next step
   const handleNext = form.handleSubmit(async (data) => {
@@ -70,26 +52,37 @@ export function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       // Final step - submit the form
       saveData(updatedValues, currentStep);
 
-      // Build structured submission data with labels
-      const submissionData = buildSubmissionData(updatedValues);
+      try {
+        const result = await submitFormData({
+          formValues: updatedValues,
+        });
 
-      // TODO: Replace with actual API call when endpoint is ready
-      console.log("=== FORM SUBMISSION ===");
-      console.log("Form ID:", config.formId);
-      console.log("Product ID:", productId);
-      console.log(JSON.stringify(submissionData, null, 2));
-      console.log("======================");
+        if (result.success) {
+          // Success - clear form and localStorage
+          handleReset();
 
-      // Simulate API call
-      alert(
-        `Form submitted successfully!\n\nCheck the browser console to see all form data.\n\nTotal fields: ${
-          Object.keys(updatedValues).length
-        }\nProduct ID: ${productId || "N/A"}`
-      );
+          // Show success message or redirect to cart
+          if (result.data?.cart_url) {
+            window.location.href = result.data.cart_url;
+          } else {
+            alert(
+              `✓ ${result.message}\n\nDas Produkt wurde zum Warenkorb hinzugefügt.`
+            );
+          }
+        } else {
+          // Show error message
+          alert(`✗ Fehler: ${result.message}`);
+        }
+      } catch (err) {
+        console.error("Form submission error:", err);
+        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+      }
     }
   });
 
@@ -105,6 +98,8 @@ export function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [
     currentStep,
@@ -186,5 +181,7 @@ export function useFormNavigation({
     handlePrevious,
     handleStepClick,
     handleReset,
+    isSubmitting,
+    submissionError: error,
   };
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Multiple Step Form Elementor Widget
  *
@@ -31,7 +32,7 @@ class MultipleStepFormWidget extends Widget_Base {
 	 * @return string
 	 */
 	public function get_title(): string {
-		return __( 'Multiple Step Form', 'wp-onea-extensions' );
+		return __('Multiple Step Form', 'wp-onea-extensions');
 	}
 
 	/**
@@ -79,7 +80,7 @@ class MultipleStepFormWidget extends Widget_Base {
 		$this->start_controls_section(
 			'content_section',
 			[
-				'label' => __( 'Form Configuration', 'wp-onea-extensions' ),
+				'label' => __('Form Configuration', 'wp-onea-extensions'),
 				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -87,18 +88,18 @@ class MultipleStepFormWidget extends Widget_Base {
 		$this->add_control(
 			'product_id',
 			[
-				'label'       => __( 'Product ID', 'wp-onea-extensions' ),
+				'label'       => __('Product ID', 'wp-onea-extensions'),
 				'type'        => \Elementor\Controls_Manager::TEXT,
 				'default'     => '',
-				'placeholder' => __( 'Enter product ID', 'wp-onea-extensions' ),
-				'description' => __( 'Enter the WooCommerce product ID to associate with this form', 'wp-onea-extensions' ),
+				'placeholder' => __('Enter product ID', 'wp-onea-extensions'),
+				'description' => __('Enter the WooCommerce product ID to associate with this form', 'wp-onea-extensions'),
 			]
 		);
 
 		$this->add_control(
 			'form_config',
 			[
-				'label'       => __( 'Form Configuration (JSON)', 'wp-onea-extensions' ),
+				'label'       => __('Form Configuration (JSON)', 'wp-onea-extensions'),
 				'type'        => \Elementor\Controls_Manager::TEXTAREA,
 				'rows'        => 10,
 				'default'     => wp_json_encode(
@@ -150,8 +151,8 @@ class MultipleStepFormWidget extends Widget_Base {
 					],
 					JSON_PRETTY_PRINT
 				),
-				'placeholder' => __( 'Enter JSON configuration for the form', 'wp-onea-extensions' ),
-				'description' => __( 'Paste your form configuration in JSON format', 'wp-onea-extensions' ),
+				'placeholder' => __('Enter JSON configuration for the form', 'wp-onea-extensions'),
+				'description' => __('Paste your form configuration in JSON format', 'wp-onea-extensions'),
 			]
 		);
 
@@ -168,25 +169,29 @@ class MultipleStepFormWidget extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 
 		// Parse JSON configuration.
-		$form_config = ! empty( $settings['form_config'] ) ? json_decode( $settings['form_config'], true ) : [];
+		$form_config = ! empty($settings['form_config']) ? json_decode($settings['form_config'], true) : [];
+
+		// Generate nonce for REST API authentication.
+		$nonce = wp_create_nonce('wp_rest');
 
 		// Prepare props for React component.
 		$props = [
 			'componentId' => $this->get_id(),
 			'formConfig'  => $form_config,
-			'productId'   => ! empty( $settings['product_id'] ) ? $settings['product_id'] : '',
+			'productId'   => ! empty($settings['product_id']) ? $settings['product_id'] : '',
+			'nonce'       => $nonce,
 		];
 
 		// Render container for React app.
 		?>
 		<div
 			class="onea-multiple-step-form-root"
-			data-props="<?php echo esc_attr( wp_json_encode( $props ) ); ?>"
+			data-props="<?php echo esc_attr(wp_json_encode($props)); ?>"
 		>
 			<!-- React component will mount here -->
 		</div>
 		<?php
-		wp_enqueue_script( 'onea-multiple-step-form' );
-		wp_enqueue_style( 'onea-multiple-step-form' );
+		wp_enqueue_script('onea-multiple-step-form');
+		wp_enqueue_style('onea-multiple-step-form');
 	}
 }

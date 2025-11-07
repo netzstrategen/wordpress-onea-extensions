@@ -21,6 +21,9 @@ interdiff*.txt
 # Temporary files.
 tmp*
 
+# Debug logs.
+debug-onea.log
+
 # Development.
 node_modules
 npm-debug.log

@@ -21,6 +21,36 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         );
       }
 
+      // Add date validation for dateNotInPast
+      if (field.validation?.dateNotInPast) {
+        schema = (schema as z.ZodString).refine(
+          (val) => {
+            if (!val) return true; // Skip if empty (handled by required)
+            try {
+              // Parse DD.MM.YYYY format
+              const parts = val.split(".");
+              if (parts.length !== 3) return true; // Invalid format, let pattern handle it
+              const day = parseInt(parts[0], 10);
+              const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+              const year = parseInt(parts[2], 10);
+
+              const inputDate = new Date(year, month, day);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+
+              return inputDate >= today;
+            } catch {
+              return true; // If parsing fails, let pattern validation handle it
+            }
+          },
+          {
+            message:
+              field.validation.dateNotInPastMessage ||
+              "Das Datum darf nicht in der Vergangenheit liegen",
+          }
+        );
+      }
+
       if (field.required) {
         schema = (schema as z.ZodString).min(
           1,
@@ -45,8 +75,9 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
       break;
 
     case "number":
+      // Create a number schema with proper required handling
       let numberSchema = z.number({
-        message: `${field.label} muss eine Zahl sein`,
+        message: `${field.label} ist erforderlich`,
       });
 
       if (field.validation?.min !== undefined) {
@@ -63,15 +94,18 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         );
       }
 
+      // Handle required vs optional number fields
       if (field.required) {
         schema = z.preprocess((val) => {
           if (val === "" || val === null || val === undefined) return undefined;
-          return Number(val);
+          const num = Number(val);
+          return isNaN(num) ? undefined : num;
         }, numberSchema);
       } else {
         schema = z.preprocess((val) => {
           if (val === "" || val === null || val === undefined) return undefined;
-          return Number(val);
+          const num = Number(val);
+          return isNaN(num) ? undefined : num;
         }, numberSchema.optional());
       }
       break;
@@ -202,30 +236,6 @@ export function buildStepSchema(
         {
           message: rule.message,
           path: [field.name],
-        }
-      );
-    }
-  }
-
-  // Apply step-level custom validation rules
-  if (step.customValidations && Array.isArray(step.customValidations)) {
-    for (const rule of step.customValidations) {
-      schema = schema.refine(
-        (data) => {
-          try {
-            // Merge allValues with current step data to access fields from other steps
-            const completeData = { ...allValues, ...data };
-            const condition = rule.condition.trim();
-            const result = evaluateComplexCondition(condition, completeData);
-            return result;
-          } catch (error) {
-            console.error("Step-level validation error:", error);
-            return true;
-          }
-        },
-        {
-          message: rule.message,
-          path: ["_stepValidation"], // Use a special field name for step-level errors
         }
       );
     }
@@ -432,15 +442,31 @@ export function shouldIncludeField(
     return true;
   }
 
-  const { field: dependencyField, value: dependencyValue } = field.dependsOn;
+  const {
+    field: dependencyField,
+    value: dependencyValue,
+    contains,
+  } = field.dependsOn;
   const currentValue = values[dependencyField];
 
   // Check if the current field's dependency is met
   let isDependencyMet = false;
-  if (Array.isArray(dependencyValue)) {
-    isDependencyMet = dependencyValue.includes(currentValue);
-  } else {
-    isDependencyMet = currentValue === dependencyValue;
+
+  // Handle 'contains' check for array values (e.g., checkbox fields)
+  if (contains !== undefined) {
+    if (Array.isArray(currentValue)) {
+      isDependencyMet = currentValue.includes(contains);
+    } else {
+      isDependencyMet = false;
+    }
+  }
+  // Handle normal value check
+  else if (dependencyValue !== undefined) {
+    if (Array.isArray(dependencyValue)) {
+      isDependencyMet = dependencyValue.includes(currentValue);
+    } else {
+      isDependencyMet = currentValue === dependencyValue;
+    }
   }
 
   // If the dependency is not met, the field should not be included
@@ -491,4 +517,24 @@ export function buildFormSchema(
   }
 
   return z.object(shape);
+}
+
+/**
+ * Extract default values from form configuration
+ * Returns an object with field names as keys and their default values
+ */
+export function extractDefaultValues(steps: FormStep[]): FormValues {
+  const defaultValues: FormValues = {};
+
+  for (const step of steps) {
+    for (const group of step.fieldGroups) {
+      for (const field of group.fields) {
+        if (field.defaultValue !== undefined) {
+          defaultValues[field.name] = field.defaultValue;
+        }
+      }
+    }
+  }
+
+  return defaultValues;
 }
