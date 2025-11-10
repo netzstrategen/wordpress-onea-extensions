@@ -60,6 +60,11 @@ class OrderMetaService extends AbstractService {
 	 * @return array Modified formatted meta data.
 	 */
 	public function format_order_item_meta(array $formatted_meta, $item): array {
+		// Only show in admin area, not in emails or thank you page.
+		if (! is_admin()) {
+			return $formatted_meta;
+		}
+
 		// Only process product items.
 		if (! $item instanceof WC_Order_Item_Product) {
 			return $formatted_meta;

@@ -6981,6 +6981,540 @@ function getElementRef(element) {
 
 /***/ }),
 
+/***/ "./node_modules/.pnpm/@radix-ui+react-tooltip@1.2.8_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18.3_d4s3skutltvxkbr2sejqqykjri/node_modules/@radix-ui/react-tooltip/dist/index.mjs":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/.pnpm/@radix-ui+react-tooltip@1.2.8_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18.3_d4s3skutltvxkbr2sejqqykjri/node_modules/@radix-ui/react-tooltip/dist/index.mjs ***!
+  \*********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Arrow: () => (/* binding */ Arrow2),
+/* harmony export */   Content: () => (/* binding */ Content2),
+/* harmony export */   Portal: () => (/* binding */ Portal),
+/* harmony export */   Provider: () => (/* binding */ Provider),
+/* harmony export */   Root: () => (/* binding */ Root3),
+/* harmony export */   Tooltip: () => (/* binding */ Tooltip),
+/* harmony export */   TooltipArrow: () => (/* binding */ TooltipArrow),
+/* harmony export */   TooltipContent: () => (/* binding */ TooltipContent),
+/* harmony export */   TooltipPortal: () => (/* binding */ TooltipPortal),
+/* harmony export */   TooltipProvider: () => (/* binding */ TooltipProvider),
+/* harmony export */   TooltipTrigger: () => (/* binding */ TooltipTrigger),
+/* harmony export */   Trigger: () => (/* binding */ Trigger),
+/* harmony export */   createTooltipScope: () => (/* binding */ createTooltipScope)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var _radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @radix-ui/primitive */ "./node_modules/.pnpm/@radix-ui+primitive@1.1.3/node_modules/@radix-ui/primitive/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_compose_refs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @radix-ui/react-compose-refs */ "./node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.2_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-compose-refs/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @radix-ui/react-context */ "./node_modules/.pnpm/@radix-ui+react-context@1.1.2_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-context/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_dismissable_layer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @radix-ui/react-dismissable-layer */ "./node_modules/.pnpm/@radix-ui+react-dismissable-layer@1.1.11_@types+react-dom@18.3.7_@types+react@18.3.26__@types_u3omdtktiyciorlc3biczl6lty/node_modules/@radix-ui/react-dismissable-layer/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_id__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @radix-ui/react-id */ "./node_modules/.pnpm/@radix-ui+react-id@1.1.1_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-id/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @radix-ui/react-popper */ "./node_modules/.pnpm/@radix-ui+react-popper@1.2.8_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18.3._j4adou5czefutbu467ky4i42f4/node_modules/@radix-ui/react-popper/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_portal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @radix-ui/react-portal */ "./node_modules/.pnpm/@radix-ui+react-portal@1.1.9_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18.3._eovg7vmkm7qeukhntcywmaf2ge/node_modules/@radix-ui/react-portal/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_presence__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @radix-ui/react-presence */ "./node_modules/.pnpm/@radix-ui+react-presence@1.1.5_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18._d3zxqxru2ebh7buoqxxfn57g3a/node_modules/@radix-ui/react-presence/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_primitive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @radix-ui/react-primitive */ "./node_modules/.pnpm/@radix-ui+react-primitive@2.1.3_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18_sjt62okyttvaimrvcayonjudb4/node_modules/@radix-ui/react-primitive/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_slot__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @radix-ui/react-slot */ "./node_modules/.pnpm/@radix-ui+react-slot@1.2.3_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-slot/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_use_controllable_state__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @radix-ui/react-use-controllable-state */ "./node_modules/.pnpm/@radix-ui+react-use-controllable-state@1.2.2_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-use-controllable-state/dist/index.mjs");
+/* harmony import */ var _radix_ui_react_visually_hidden__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @radix-ui/react-visually-hidden */ "./node_modules/.pnpm/@radix-ui+react-visually-hidden@1.2.3_@types+react-dom@18.3.7_@types+react@18.3.26__@types+re_3qpkckdo2zaskqfnq3cplxrx2q/node_modules/@radix-ui/react-visually-hidden/dist/index.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+"use client";
+
+// src/tooltip.tsx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var [createTooltipContext, createTooltipScope] = (0,_radix_ui_react_context__WEBPACK_IMPORTED_MODULE_3__.createContextScope)("Tooltip", [
+  _radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__.createPopperScope
+]);
+var usePopperScope = (0,_radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__.createPopperScope)();
+var PROVIDER_NAME = "TooltipProvider";
+var DEFAULT_DELAY_DURATION = 700;
+var TOOLTIP_OPEN = "tooltip.open";
+var [TooltipProviderContextProvider, useTooltipProviderContext] = createTooltipContext(PROVIDER_NAME);
+var TooltipProvider = (props) => {
+  const {
+    __scopeTooltip,
+    delayDuration = DEFAULT_DELAY_DURATION,
+    skipDelayDuration = 300,
+    disableHoverableContent = false,
+    children
+  } = props;
+  const isOpenDelayedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(true);
+  const isPointerInTransitRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const skipDelayTimerRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(0);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    const skipDelayTimer = skipDelayTimerRef.current;
+    return () => window.clearTimeout(skipDelayTimer);
+  }, []);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(
+    TooltipProviderContextProvider,
+    {
+      scope: __scopeTooltip,
+      isOpenDelayedRef,
+      delayDuration,
+      onOpen: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+        window.clearTimeout(skipDelayTimerRef.current);
+        isOpenDelayedRef.current = false;
+      }, []),
+      onClose: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+        window.clearTimeout(skipDelayTimerRef.current);
+        skipDelayTimerRef.current = window.setTimeout(
+          () => isOpenDelayedRef.current = true,
+          skipDelayDuration
+        );
+      }, [skipDelayDuration]),
+      isPointerInTransitRef,
+      onPointerInTransitChange: react__WEBPACK_IMPORTED_MODULE_0__.useCallback((inTransit) => {
+        isPointerInTransitRef.current = inTransit;
+      }, []),
+      disableHoverableContent,
+      children
+    }
+  );
+};
+TooltipProvider.displayName = PROVIDER_NAME;
+var TOOLTIP_NAME = "Tooltip";
+var [TooltipContextProvider, useTooltipContext] = createTooltipContext(TOOLTIP_NAME);
+var Tooltip = (props) => {
+  const {
+    __scopeTooltip,
+    children,
+    open: openProp,
+    defaultOpen,
+    onOpenChange,
+    disableHoverableContent: disableHoverableContentProp,
+    delayDuration: delayDurationProp
+  } = props;
+  const providerContext = useTooltipProviderContext(TOOLTIP_NAME, props.__scopeTooltip);
+  const popperScope = usePopperScope(__scopeTooltip);
+  const [trigger, setTrigger] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const contentId = (0,_radix_ui_react_id__WEBPACK_IMPORTED_MODULE_5__.useId)();
+  const openTimerRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(0);
+  const disableHoverableContent = disableHoverableContentProp ?? providerContext.disableHoverableContent;
+  const delayDuration = delayDurationProp ?? providerContext.delayDuration;
+  const wasOpenDelayedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const [open, setOpen] = (0,_radix_ui_react_use_controllable_state__WEBPACK_IMPORTED_MODULE_11__.useControllableState)({
+    prop: openProp,
+    defaultProp: defaultOpen ?? false,
+    onChange: (open2) => {
+      if (open2) {
+        providerContext.onOpen();
+        document.dispatchEvent(new CustomEvent(TOOLTIP_OPEN));
+      } else {
+        providerContext.onClose();
+      }
+      onOpenChange?.(open2);
+    },
+    caller: TOOLTIP_NAME
+  });
+  const stateAttribute = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    return open ? wasOpenDelayedRef.current ? "delayed-open" : "instant-open" : "closed";
+  }, [open]);
+  const handleOpen = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+    window.clearTimeout(openTimerRef.current);
+    openTimerRef.current = 0;
+    wasOpenDelayedRef.current = false;
+    setOpen(true);
+  }, [setOpen]);
+  const handleClose = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+    window.clearTimeout(openTimerRef.current);
+    openTimerRef.current = 0;
+    setOpen(false);
+  }, [setOpen]);
+  const handleDelayedOpen = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+    window.clearTimeout(openTimerRef.current);
+    openTimerRef.current = window.setTimeout(() => {
+      wasOpenDelayedRef.current = true;
+      setOpen(true);
+      openTimerRef.current = 0;
+    }, delayDuration);
+  }, [delayDuration, setOpen]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    return () => {
+      if (openTimerRef.current) {
+        window.clearTimeout(openTimerRef.current);
+        openTimerRef.current = 0;
+      }
+    };
+  }, []);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__.Root, { ...popperScope, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(
+    TooltipContextProvider,
+    {
+      scope: __scopeTooltip,
+      contentId,
+      open,
+      stateAttribute,
+      trigger,
+      onTriggerChange: setTrigger,
+      onTriggerEnter: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+        if (providerContext.isOpenDelayedRef.current) handleDelayedOpen();
+        else handleOpen();
+      }, [providerContext.isOpenDelayedRef, handleDelayedOpen, handleOpen]),
+      onTriggerLeave: react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+        if (disableHoverableContent) {
+          handleClose();
+        } else {
+          window.clearTimeout(openTimerRef.current);
+          openTimerRef.current = 0;
+        }
+      }, [handleClose, disableHoverableContent]),
+      onOpen: handleOpen,
+      onClose: handleClose,
+      disableHoverableContent,
+      children
+    }
+  ) });
+};
+Tooltip.displayName = TOOLTIP_NAME;
+var TRIGGER_NAME = "TooltipTrigger";
+var TooltipTrigger = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeTooltip, ...triggerProps } = props;
+    const context = useTooltipContext(TRIGGER_NAME, __scopeTooltip);
+    const providerContext = useTooltipProviderContext(TRIGGER_NAME, __scopeTooltip);
+    const popperScope = usePopperScope(__scopeTooltip);
+    const ref = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+    const composedRefs = (0,_radix_ui_react_compose_refs__WEBPACK_IMPORTED_MODULE_2__.useComposedRefs)(forwardedRef, ref, context.onTriggerChange);
+    const isPointerDownRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+    const hasPointerMoveOpenedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+    const handlePointerUp = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => isPointerDownRef.current = false, []);
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+      return () => document.removeEventListener("pointerup", handlePointerUp);
+    }, [handlePointerUp]);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__.Anchor, { asChild: true, ...popperScope, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(
+      _radix_ui_react_primitive__WEBPACK_IMPORTED_MODULE_9__.Primitive.button,
+      {
+        "aria-describedby": context.open ? context.contentId : void 0,
+        "data-state": context.stateAttribute,
+        ...triggerProps,
+        ref: composedRefs,
+        onPointerMove: (0,_radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__.composeEventHandlers)(props.onPointerMove, (event) => {
+          if (event.pointerType === "touch") return;
+          if (!hasPointerMoveOpenedRef.current && !providerContext.isPointerInTransitRef.current) {
+            context.onTriggerEnter();
+            hasPointerMoveOpenedRef.current = true;
+          }
+        }),
+        onPointerLeave: (0,_radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__.composeEventHandlers)(props.onPointerLeave, () => {
+          context.onTriggerLeave();
+          hasPointerMoveOpenedRef.current = false;
+        }),
+        onPointerDown: (0,_radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__.composeEventHandlers)(props.onPointerDown, () => {
+          if (context.open) {
+            context.onClose();
+          }
+          isPointerDownRef.current = true;
+          document.addEventListener("pointerup", handlePointerUp, { once: true });
+        }),
+        onFocus: (0,_radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__.composeEventHandlers)(props.onFocus, () => {
+          if (!isPointerDownRef.current) context.onOpen();
+        }),
+        onBlur: (0,_radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__.composeEventHandlers)(props.onBlur, context.onClose),
+        onClick: (0,_radix_ui_primitive__WEBPACK_IMPORTED_MODULE_1__.composeEventHandlers)(props.onClick, context.onClose)
+      }
+    ) });
+  }
+);
+TooltipTrigger.displayName = TRIGGER_NAME;
+var PORTAL_NAME = "TooltipPortal";
+var [PortalProvider, usePortalContext] = createTooltipContext(PORTAL_NAME, {
+  forceMount: void 0
+});
+var TooltipPortal = (props) => {
+  const { __scopeTooltip, forceMount, children, container } = props;
+  const context = useTooltipContext(PORTAL_NAME, __scopeTooltip);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(PortalProvider, { scope: __scopeTooltip, forceMount, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_presence__WEBPACK_IMPORTED_MODULE_8__.Presence, { present: forceMount || context.open, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_portal__WEBPACK_IMPORTED_MODULE_7__.Portal, { asChild: true, container, children }) }) });
+};
+TooltipPortal.displayName = PORTAL_NAME;
+var CONTENT_NAME = "TooltipContent";
+var TooltipContent = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(
+  (props, forwardedRef) => {
+    const portalContext = usePortalContext(CONTENT_NAME, props.__scopeTooltip);
+    const { forceMount = portalContext.forceMount, side = "top", ...contentProps } = props;
+    const context = useTooltipContext(CONTENT_NAME, props.__scopeTooltip);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_presence__WEBPACK_IMPORTED_MODULE_8__.Presence, { present: forceMount || context.open, children: context.disableHoverableContent ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(TooltipContentImpl, { side, ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(TooltipContentHoverable, { side, ...contentProps, ref: forwardedRef }) });
+  }
+);
+var TooltipContentHoverable = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((props, forwardedRef) => {
+  const context = useTooltipContext(CONTENT_NAME, props.__scopeTooltip);
+  const providerContext = useTooltipProviderContext(CONTENT_NAME, props.__scopeTooltip);
+  const ref = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const composedRefs = (0,_radix_ui_react_compose_refs__WEBPACK_IMPORTED_MODULE_2__.useComposedRefs)(forwardedRef, ref);
+  const [pointerGraceArea, setPointerGraceArea] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const { trigger, onClose } = context;
+  const content = ref.current;
+  const { onPointerInTransitChange } = providerContext;
+  const handleRemoveGraceArea = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+    setPointerGraceArea(null);
+    onPointerInTransitChange(false);
+  }, [onPointerInTransitChange]);
+  const handleCreateGraceArea = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(
+    (event, hoverTarget) => {
+      const currentTarget = event.currentTarget;
+      const exitPoint = { x: event.clientX, y: event.clientY };
+      const exitSide = getExitSideFromRect(exitPoint, currentTarget.getBoundingClientRect());
+      const paddedExitPoints = getPaddedExitPoints(exitPoint, exitSide);
+      const hoverTargetPoints = getPointsFromRect(hoverTarget.getBoundingClientRect());
+      const graceArea = getHull([...paddedExitPoints, ...hoverTargetPoints]);
+      setPointerGraceArea(graceArea);
+      onPointerInTransitChange(true);
+    },
+    [onPointerInTransitChange]
+  );
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    return () => handleRemoveGraceArea();
+  }, [handleRemoveGraceArea]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (trigger && content) {
+      const handleTriggerLeave = (event) => handleCreateGraceArea(event, content);
+      const handleContentLeave = (event) => handleCreateGraceArea(event, trigger);
+      trigger.addEventListener("pointerleave", handleTriggerLeave);
+      content.addEventListener("pointerleave", handleContentLeave);
+      return () => {
+        trigger.removeEventListener("pointerleave", handleTriggerLeave);
+        content.removeEventListener("pointerleave", handleContentLeave);
+      };
+    }
+  }, [trigger, content, handleCreateGraceArea, handleRemoveGraceArea]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (pointerGraceArea) {
+      const handleTrackPointerGrace = (event) => {
+        const target = event.target;
+        const pointerPosition = { x: event.clientX, y: event.clientY };
+        const hasEnteredTarget = trigger?.contains(target) || content?.contains(target);
+        const isPointerOutsideGraceArea = !isPointInPolygon(pointerPosition, pointerGraceArea);
+        if (hasEnteredTarget) {
+          handleRemoveGraceArea();
+        } else if (isPointerOutsideGraceArea) {
+          handleRemoveGraceArea();
+          onClose();
+        }
+      };
+      document.addEventListener("pointermove", handleTrackPointerGrace);
+      return () => document.removeEventListener("pointermove", handleTrackPointerGrace);
+    }
+  }, [trigger, content, pointerGraceArea, onClose, handleRemoveGraceArea]);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(TooltipContentImpl, { ...props, ref: composedRefs });
+});
+var [VisuallyHiddenContentContextProvider, useVisuallyHiddenContentContext] = createTooltipContext(TOOLTIP_NAME, { isInside: false });
+var Slottable = (0,_radix_ui_react_slot__WEBPACK_IMPORTED_MODULE_10__.createSlottable)("TooltipContent");
+var TooltipContentImpl = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeTooltip,
+      children,
+      "aria-label": ariaLabel,
+      onEscapeKeyDown,
+      onPointerDownOutside,
+      ...contentProps
+    } = props;
+    const context = useTooltipContext(CONTENT_NAME, __scopeTooltip);
+    const popperScope = usePopperScope(__scopeTooltip);
+    const { onClose } = context;
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+      document.addEventListener(TOOLTIP_OPEN, onClose);
+      return () => document.removeEventListener(TOOLTIP_OPEN, onClose);
+    }, [onClose]);
+    react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+      if (context.trigger) {
+        const handleScroll = (event) => {
+          const target = event.target;
+          if (target?.contains(context.trigger)) onClose();
+        };
+        window.addEventListener("scroll", handleScroll, { capture: true });
+        return () => window.removeEventListener("scroll", handleScroll, { capture: true });
+      }
+    }, [context.trigger, onClose]);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(
+      _radix_ui_react_dismissable_layer__WEBPACK_IMPORTED_MODULE_4__.DismissableLayer,
+      {
+        asChild: true,
+        disableOutsidePointerEvents: false,
+        onEscapeKeyDown,
+        onPointerDownOutside,
+        onFocusOutside: (event) => event.preventDefault(),
+        onDismiss: onClose,
+        children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)(
+          _radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__.Content,
+          {
+            "data-state": context.stateAttribute,
+            ...popperScope,
+            ...contentProps,
+            ref: forwardedRef,
+            style: {
+              ...contentProps.style,
+              // re-namespace exposed content custom properties
+              ...{
+                "--radix-tooltip-content-transform-origin": "var(--radix-popper-transform-origin)",
+                "--radix-tooltip-content-available-width": "var(--radix-popper-available-width)",
+                "--radix-tooltip-content-available-height": "var(--radix-popper-available-height)",
+                "--radix-tooltip-trigger-width": "var(--radix-popper-anchor-width)",
+                "--radix-tooltip-trigger-height": "var(--radix-popper-anchor-height)"
+              }
+            },
+            children: [
+              /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(Slottable, { children }),
+              /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(VisuallyHiddenContentContextProvider, { scope: __scopeTooltip, isInside: true, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_visually_hidden__WEBPACK_IMPORTED_MODULE_12__.Root, { id: context.contentId, role: "tooltip", children: ariaLabel || children }) })
+            ]
+          }
+        )
+      }
+    );
+  }
+);
+TooltipContent.displayName = CONTENT_NAME;
+var ARROW_NAME = "TooltipArrow";
+var TooltipArrow = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeTooltip, ...arrowProps } = props;
+    const popperScope = usePopperScope(__scopeTooltip);
+    const visuallyHiddenContentContext = useVisuallyHiddenContentContext(
+      ARROW_NAME,
+      __scopeTooltip
+    );
+    return visuallyHiddenContentContext.isInside ? null : /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_radix_ui_react_popper__WEBPACK_IMPORTED_MODULE_6__.Arrow, { ...popperScope, ...arrowProps, ref: forwardedRef });
+  }
+);
+TooltipArrow.displayName = ARROW_NAME;
+function getExitSideFromRect(point, rect) {
+  const top = Math.abs(rect.top - point.y);
+  const bottom = Math.abs(rect.bottom - point.y);
+  const right = Math.abs(rect.right - point.x);
+  const left = Math.abs(rect.left - point.x);
+  switch (Math.min(top, bottom, right, left)) {
+    case left:
+      return "left";
+    case right:
+      return "right";
+    case top:
+      return "top";
+    case bottom:
+      return "bottom";
+    default:
+      throw new Error("unreachable");
+  }
+}
+function getPaddedExitPoints(exitPoint, exitSide, padding = 5) {
+  const paddedExitPoints = [];
+  switch (exitSide) {
+    case "top":
+      paddedExitPoints.push(
+        { x: exitPoint.x - padding, y: exitPoint.y + padding },
+        { x: exitPoint.x + padding, y: exitPoint.y + padding }
+      );
+      break;
+    case "bottom":
+      paddedExitPoints.push(
+        { x: exitPoint.x - padding, y: exitPoint.y - padding },
+        { x: exitPoint.x + padding, y: exitPoint.y - padding }
+      );
+      break;
+    case "left":
+      paddedExitPoints.push(
+        { x: exitPoint.x + padding, y: exitPoint.y - padding },
+        { x: exitPoint.x + padding, y: exitPoint.y + padding }
+      );
+      break;
+    case "right":
+      paddedExitPoints.push(
+        { x: exitPoint.x - padding, y: exitPoint.y - padding },
+        { x: exitPoint.x - padding, y: exitPoint.y + padding }
+      );
+      break;
+  }
+  return paddedExitPoints;
+}
+function getPointsFromRect(rect) {
+  const { top, right, bottom, left } = rect;
+  return [
+    { x: left, y: top },
+    { x: right, y: top },
+    { x: right, y: bottom },
+    { x: left, y: bottom }
+  ];
+}
+function isPointInPolygon(point, polygon) {
+  const { x, y } = point;
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const ii = polygon[i];
+    const jj = polygon[j];
+    const xi = ii.x;
+    const yi = ii.y;
+    const xj = jj.x;
+    const yj = jj.y;
+    const intersect = yi > y !== yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi;
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+function getHull(points) {
+  const newPoints = points.slice();
+  newPoints.sort((a, b) => {
+    if (a.x < b.x) return -1;
+    else if (a.x > b.x) return 1;
+    else if (a.y < b.y) return -1;
+    else if (a.y > b.y) return 1;
+    else return 0;
+  });
+  return getHullPresorted(newPoints);
+}
+function getHullPresorted(points) {
+  if (points.length <= 1) return points.slice();
+  const upperHull = [];
+  for (let i = 0; i < points.length; i++) {
+    const p = points[i];
+    while (upperHull.length >= 2) {
+      const q = upperHull[upperHull.length - 1];
+      const r = upperHull[upperHull.length - 2];
+      if ((q.x - r.x) * (p.y - r.y) >= (q.y - r.y) * (p.x - r.x)) upperHull.pop();
+      else break;
+    }
+    upperHull.push(p);
+  }
+  upperHull.pop();
+  const lowerHull = [];
+  for (let i = points.length - 1; i >= 0; i--) {
+    const p = points[i];
+    while (lowerHull.length >= 2) {
+      const q = lowerHull[lowerHull.length - 1];
+      const r = lowerHull[lowerHull.length - 2];
+      if ((q.x - r.x) * (p.y - r.y) >= (q.y - r.y) * (p.x - r.x)) lowerHull.pop();
+      else break;
+    }
+    lowerHull.push(p);
+  }
+  lowerHull.pop();
+  if (upperHull.length === 1 && lowerHull.length === 1 && upperHull[0].x === lowerHull[0].x && upperHull[0].y === lowerHull[0].y) {
+    return upperHull;
+  } else {
+    return upperHull.concat(lowerHull);
+  }
+}
+var Provider = TooltipProvider;
+var Root3 = Tooltip;
+var Trigger = TooltipTrigger;
+var Portal = TooltipPortal;
+var Content2 = TooltipContent;
+var Arrow2 = TooltipArrow;
+
+//# sourceMappingURL=index.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/.pnpm/@radix-ui+react-use-callback-ref@1.1.1_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-use-callback-ref/dist/index.mjs":
 /*!******************************************************************************************************************************************************************!*\
   !*** ./node_modules/.pnpm/@radix-ui+react-use-callback-ref@1.1.1_@types+react@18.3.26_react@18.3.1/node_modules/@radix-ui/react-use-callback-ref/dist/index.mjs ***!
@@ -30887,10 +31421,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ui_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/ui/select */ "./src/components/ui/select.tsx");
 /* harmony import */ var _components_ui_radio_group__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/components/ui/radio-group */ "./src/components/ui/radio-group.tsx");
 /* harmony import */ var _components_ui_checkbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/components/ui/checkbox */ "./src/components/ui/checkbox.tsx");
-/* harmony import */ var _utils_billing_periods__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils/billing-periods */ "./src/components/multiple-step-form/utils/billing-periods.ts");
-/* harmony import */ var _utils_consumption_fields__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/consumption-fields */ "./src/components/multiple-step-form/utils/consumption-fields.ts");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/components/ui/tooltip */ "./src/components/ui/tooltip.tsx");
+/* harmony import */ var _utils_billing_periods__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/billing-periods */ "./src/components/multiple-step-form/utils/billing-periods.ts");
+/* harmony import */ var _utils_consumption_fields__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils/consumption-fields */ "./src/components/multiple-step-form/utils/consumption-fields.ts");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__);
+
 
 
 
@@ -30906,26 +31442,42 @@ const FormField = ({
   allFormValues,
   currentStepConfig
 }) => {
-  const consumptionUnit = (0,_utils_consumption_fields__WEBPACK_IMPORTED_MODULE_7__.getConsumptionFieldUnit)(field.name, allFormValues, currentStepConfig);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormField, {
+  const consumptionUnit = (0,_utils_consumption_fields__WEBPACK_IMPORTED_MODULE_8__.getConsumptionFieldUnit)(field.name, allFormValues, currentStepConfig);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormField, {
     control: form.control,
     name: field.name,
     render: ({
       field: formField
-    }) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormLabel, {
-        children: [field.label, field.required && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+    }) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormLabel, {
+        children: [field.label, field.required && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
           className: "text-red-500 ml-1",
           children: "*"
-        }), consumptionUnit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
+        }), consumptionUnit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
           className: "consumption-unit text-muted-foreground font-normal",
           children: ["(in ", consumptionUnit, ")"]
+        }), field.tooltip && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.TooltipProvider, {
+          delayDuration: 300,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.Tooltip, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.TooltipTrigger, {
+              asChild: true,
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                className: "tooltip-trigger",
+                children: "i"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.TooltipContent, {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("p", {
+                className: "tooltip-content",
+                children: field.tooltip
+              })
+            })]
+          })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormControl, {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormControl, {
         children: renderFieldInput(field, formField, allFormValues)
-      }), field.description && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormDescription, {
+      }), field.description && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormDescription, {
         children: field.description
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormMessage, {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormMessage, {})]
     })
   });
 };
@@ -30937,7 +31489,7 @@ function renderFieldInput(field, formField, allFormValues) {
   switch (field.type) {
     case "text":
     case "email":
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_input__WEBPACK_IMPORTED_MODULE_2__.Input, {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_input__WEBPACK_IMPORTED_MODULE_2__.Input, {
         ...formField,
         type: field.type,
         placeholder: field.placeholder
@@ -30945,14 +31497,14 @@ function renderFieldInput(field, formField, allFormValues) {
     case "number":
       // Handle disabled number field (e.g., numberOfUnits for einfamilienhaus/zweifamilienhaus)
       if (shouldDisableNumberOfUnits) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
           className: "flex h-10 w-full items-center justify-between rounded-md border border-input bg-muted px-3 py-2 text-sm",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
             children: formField.value || ""
           })
         });
       }
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_input__WEBPACK_IMPORTED_MODULE_2__.Input, {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_input__WEBPACK_IMPORTED_MODULE_2__.Input, {
         ...formField,
         type: "number",
         placeholder: field.placeholder,
@@ -30965,10 +31517,10 @@ function renderFieldInput(field, formField, allFormValues) {
       if (field.type === "select") {
         // Handle disabled select fields (auto-calculated billing periods)
         if (field.disabled) {
-          const displayLabel = formField.value ? (0,_utils_billing_periods__WEBPACK_IMPORTED_MODULE_6__.formatPeriodLabel)(formField.value) : field.placeholder || "";
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          const displayLabel = formField.value ? (0,_utils_billing_periods__WEBPACK_IMPORTED_MODULE_7__.formatPeriodLabel)(formField.value) : field.placeholder || "";
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
             className: "flex h-10 w-full items-center justify-between rounded-md border border-input bg-muted px-3 py-2 text-sm",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
               className: formField.value ? "" : "text-muted-foreground",
               children: displayLabel
             })
@@ -30976,22 +31528,23 @@ function renderFieldInput(field, formField, allFormValues) {
         }
 
         // Normal select field
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.Select, {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.Select, {
           onValueChange: formField.onChange,
           value: formField.value,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectTrigger, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectTrigger, {
             className: "select-trigger",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectValue, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectValue, {
               placeholder: field.placeholder || "Bitte auswählen..."
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectContent, {
-            children: field.options && field.options.length > 0 ? field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectContent, {
+            children: field.options && field.options.length > 0 ? field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
               value: option.value,
-              children: [option.label, option.unit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("span", {
+              disabled: option.disabled,
+              children: [option.label, option.unit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
                 className: "text-muted-foreground",
                 children: [" ", "(", option.unit, ")"]
               })]
-            }, option.value)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+            }, option.value)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
               value: "no-options",
               disabled: true,
               children: "Keine Optionen verf\xFCgbar"
@@ -31002,16 +31555,16 @@ function renderFieldInput(field, formField, allFormValues) {
       return null;
     case "radio":
       if (field.type === "radio") {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_radio_group__WEBPACK_IMPORTED_MODULE_4__.RadioGroup, {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_radio_group__WEBPACK_IMPORTED_MODULE_4__.RadioGroup, {
           onValueChange: formField.onChange,
           value: formField.value,
           className: "flex flex-row px-4",
-          children: field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+          children: field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
             className: "flex items-center space-x-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_radio_group__WEBPACK_IMPORTED_MODULE_4__.RadioGroupItem, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_radio_group__WEBPACK_IMPORTED_MODULE_4__.RadioGroupItem, {
               value: option.value,
               id: `${field.name}-${option.value}`
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("label", {
               htmlFor: `${field.name}-${option.value}`,
               className: "text-sm font-normal cursor-pointer",
               children: option.label
@@ -31022,11 +31575,11 @@ function renderFieldInput(field, formField, allFormValues) {
       return null;
     case "checkbox":
       if (field.type === "checkbox") {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
           className: "space-y-2",
-          children: field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+          children: field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
             className: "flex items-center space-x-2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_checkbox__WEBPACK_IMPORTED_MODULE_5__.Checkbox, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_checkbox__WEBPACK_IMPORTED_MODULE_5__.Checkbox, {
               id: `${field.name}-${option.value}`,
               checked: formField.value?.includes(option.value),
               onCheckedChange: checked => {
@@ -31037,7 +31590,7 @@ function renderFieldInput(field, formField, allFormValues) {
                   formField.onChange(currentValues.filter(val => val !== option.value));
                 }
               }
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("label", {
               htmlFor: `${field.name}-${option.value}`,
               className: "text-sm font-normal cursor-pointer",
               children: option.label
@@ -31048,15 +31601,19 @@ function renderFieldInput(field, formField, allFormValues) {
       return null;
     case "file":
       if (field.type === "file") {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_ui_input__WEBPACK_IMPORTED_MODULE_2__.Input, {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_input__WEBPACK_IMPORTED_MODULE_2__.Input, {
           type: "file",
           accept: field.accept,
           onChange: e => {
             const file = e.target.files?.[0];
             if (file) {
-              // For now, store the file object
-              // In production, might want to convert to base64
-              formField.onChange(file);
+              // Store file with metadata that can be serialized
+              const fileWithMeta = Object.assign(file, {
+                _fileName: file.name,
+                _fileSize: file.size,
+                _fileType: file.type
+              });
+              formField.onChange(fileWithMeta);
             }
           }
         });
@@ -31066,6 +31623,197 @@ function renderFieldInput(field, formField, allFormValues) {
       return null;
   }
 }
+
+/***/ }),
+
+/***/ "./src/components/multiple-step-form/FormSummary.tsx":
+/*!***********************************************************!*\
+  !*** ./src/components/multiple-step-form/FormSummary.tsx ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormSummary: () => (/* binding */ FormSummary)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_ui_button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/ui/button */ "./src/components/ui/button.tsx");
+/* harmony import */ var _utils_billing_periods__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/billing-periods */ "./src/components/multiple-step-form/utils/billing-periods.ts");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+const FormSummary = ({
+  formValues,
+  config,
+  onEdit
+}) => {
+  // Helper function to get select option label
+  const getSelectLabel = (fieldName, value) => {
+    for (const step of config.steps) {
+      for (const group of step.fieldGroups) {
+        const field = group.fields.find(f => f.name === fieldName);
+        if (field && field.type === "select" && field.options) {
+          const option = field.options.find(opt => opt.value === value);
+          return option?.label || value;
+        }
+      }
+    }
+    return value;
+  };
+
+  // Helper function to format value for display
+  const formatValue = (fieldName, value) => {
+    if (value === undefined || value === null || value === "") {
+      return "-";
+    }
+
+    // Handle arrays (checkboxes)
+    if (Array.isArray(value)) {
+      if (value.length === 0) return "-";
+      // Capitalize each item
+      return value.map(v => String(v).charAt(0).toUpperCase() + String(v).slice(1)).join(", ");
+    }
+
+    // Handle booleans
+    if (typeof value === "boolean") {
+      return value ? "Ja" : "Nein";
+    }
+
+    // Handle files
+    if (value instanceof FileList) {
+      const fileCount = value.length;
+      if (fileCount === 0) return "-";
+      const fileNames = Array.from(value).map(f => f.name).join(", ");
+      return fileNames;
+    }
+    if (value instanceof File) {
+      return value.name;
+    }
+
+    // Get the field to check its type
+    const field = config.steps.flatMap(s => s.fieldGroups).flatMap(g => g.fields).find(f => f.name === fieldName);
+
+    // Handle file type fields - check if it's a file object
+    if (field?.type === "file") {
+      if (typeof value === "object" && value !== null) {
+        // Check for file metadata properties that persist through serialization
+        if ("_fileName" in value && value._fileName) {
+          return String(value._fileName);
+        }
+        // Handle serialized file object with name property
+        if ("name" in value && value.name) {
+          return String(value.name);
+        }
+        // Fallback for other object structures
+        return "-";
+      }
+      return String(value);
+    }
+
+    // Handle billing period fields - format them to human-readable dates
+    if (fieldName.startsWith("billingPeriod") && typeof value === "string") {
+      const formatted = (0,_utils_billing_periods__WEBPACK_IMPORTED_MODULE_2__.formatPeriodLabel)(value);
+      return formatted || value;
+    }
+
+    // Handle select fields - get the label and capitalize
+    if (field?.type === "select") {
+      const label = getSelectLabel(fieldName, value);
+      return label.charAt(0).toUpperCase() + label.slice(1);
+    }
+
+    // Handle numbers - display as-is without formatting
+    if (field?.type === "number" && typeof value === "number") {
+      return String(value);
+    }
+
+    // Default: capitalize first letter
+    const stringValue = String(value);
+    return stringValue.charAt(0).toUpperCase() + stringValue.slice(1);
+  };
+
+  // Group values by step
+  const stepSummaries = config.steps.filter(step => step.id !== "summary") // Don't include summary step itself
+  .map(step => {
+    const stepFields = [];
+    step.fieldGroups.forEach(group => {
+      group.fields.forEach(field => {
+        // Skip fields that have dependencies and aren't shown
+        if (field.dependsOn) {
+          const dependentValue = formValues[field.dependsOn.field];
+
+          // Handle 'contains' check for array values (e.g., checkbox fields)
+          if (field.dependsOn.contains !== undefined) {
+            if (!Array.isArray(dependentValue) || !dependentValue.includes(field.dependsOn.contains)) {
+              return;
+            }
+          }
+          // Handle normal value check
+          else if (field.dependsOn.value !== undefined) {
+            if (Array.isArray(field.dependsOn.value)) {
+              if (!field.dependsOn.value.includes(dependentValue)) {
+                return;
+              }
+            } else if (dependentValue !== field.dependsOn.value) {
+              return;
+            }
+          }
+        }
+        const value = formValues[field.name];
+        if (value !== undefined && value !== "" && value !== null) {
+          stepFields.push({
+            label: field.label,
+            value: formatValue(field.name, value)
+          });
+        }
+      });
+    });
+    return {
+      title: step.title,
+      fields: stepFields
+    };
+  });
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    className: "space-y-6",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "summary-subheading flex items-center justify-between",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        className: "text-sm",
+        children: "Bitte \xFCberpr\xFCfen Sie Ihre Eingaben, bevor Sie das Formular absenden."
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        type: "button",
+        onClick: onEdit,
+        className: "ml-4 summary-edit-button",
+        children: "Bearbeiten"
+      })]
+    }), stepSummaries.map((stepSummary, index) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      className: "field-group",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h4", {
+        className: "text-base font-semibold mb-4",
+        children: stepSummary.title
+      }), stepSummary.fields.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("dl", {
+        className: "grid grid-cols-1 gap-4 sm:grid-cols-2",
+        children: stepSummary.fields.map((field, fieldIndex) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "summary-field-wrapper border-b border-border",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("dt", {
+            className: "text-sm font-medium text-muted-foreground",
+            children: field.label
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("dd", {
+            className: "text-sm font-semibold",
+            children: field.value
+          })]
+        }, fieldIndex))
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        className: "text-sm text-muted-foreground",
+        children: "Keine Daten eingegeben"
+      })]
+    }, index))]
+  });
+};
 
 /***/ }),
 
@@ -31093,8 +31841,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hooks_useFormNavigation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./hooks/useFormNavigation */ "./src/components/multiple-step-form/hooks/useFormNavigation.ts");
 /* harmony import */ var _StepIndicator__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./StepIndicator */ "./src/components/multiple-step-form/StepIndicator.tsx");
 /* harmony import */ var _FormField__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./FormField */ "./src/components/multiple-step-form/FormField.tsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _FormSummary__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./FormSummary */ "./src/components/multiple-step-form/FormSummary.tsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__);
+
 
 
 
@@ -31127,20 +31877,30 @@ const MultiStepForm = ({
     formId: config.formId
   });
 
+  // Extract default values from form configuration
+  const schemaDefaultValues = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return (0,_utils_schema_builder__WEBPACK_IMPORTED_MODULE_5__.extractDefaultValues)(config.steps);
+  }, [config.steps]);
+
   // Load saved data before initializing form
   const initialData = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
     const savedData = loadSavedData();
     if (savedData) {
+      // Merge schema defaults with saved data (saved data takes precedence)
       return {
-        values: savedData.values,
+        values: {
+          ...schemaDefaultValues,
+          ...savedData.values
+        },
         step: savedData.currentStep
       };
     }
+    // Use schema defaults if no saved data
     return {
-      values: {},
+      values: schemaDefaultValues,
       step: 0
     };
-  }, [loadSavedData]);
+  }, [loadSavedData, schemaDefaultValues]);
 
   // Initialize state with loaded data
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
@@ -31195,87 +31955,107 @@ const MultiStepForm = ({
     productId,
     nonce
   });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+
+  // Check if current step is the summary step
+  const isSummaryStep = currentStepConfig.id === "summary";
+
+  // Handle edit button click in summary - go back to first step
+  const handleEditFromSummary = () => {
+    setCurrentStep(0);
+    saveData(allFormValues, 0);
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
     className: "onea-multiple-step-form",
     "data-component-id": componentId,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
       className: "form-header mb-8",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h2", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h2", {
         className: "text-2xl font-bold",
         children: config.title
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_StepIndicator__WEBPACK_IMPORTED_MODULE_10__.StepIndicator, {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_StepIndicator__WEBPACK_IMPORTED_MODULE_10__.StepIndicator, {
       steps: config.steps,
       currentStep: currentStep,
       onStepClick: handleStepClick
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_3__.Form, {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_3__.Form, {
       ...form,
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("form", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("form", {
         onSubmit: handleNext,
         className: "space-y-6 mt-8",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
           className: "step-header mb-6",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h3", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h3", {
             className: "text-xl font-semibold",
             children: currentStepConfig.title
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        }), isSummaryStep ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_FormSummary__WEBPACK_IMPORTED_MODULE_12__.FormSummary, {
+          formValues: allFormValues,
+          config: config,
+          onEdit: handleEditFromSummary
+        }) :
+        /*#__PURE__*/
+        /* Fields rendered in groups */
+        (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
           className: "space-y-6",
-          children: currentStepConfig.fieldGroups.map((group, groupIndex) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-            className: "field-group p-6 border border-border rounded-lg bg-card",
-            children: [group.title && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("h4", {
-              className: "text-base font-semibold mb-4",
-              children: group.title
-            }), group.description && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("p", {
-              className: "text-sm text-muted-foreground mb-4",
-              children: group.description
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-              className: "space-y-4",
-              children: group.fields.map(field => {
-                // Collect all fields from current step for nested dependency checking
-                const allStepFields = currentStepConfig.fieldGroups.flatMap(g => g.fields);
-                if (!(0,_utils_schema_builder__WEBPACK_IMPORTED_MODULE_5__.shouldIncludeField)(field, allFormValues, allStepFields)) {
-                  return null;
-                }
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_FormField__WEBPACK_IMPORTED_MODULE_11__.FormField, {
-                  field: field,
-                  form: form,
-                  allFormValues: allFormValues,
-                  currentStepConfig: currentStepConfig
-                }, field.name);
-              })
-            })]
-          }, groupIndex))
-        }), form.formState.errors._stepValidation && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-          className: "custom-error bg-destructive/15 text-destructive rounded-md border border-destructive/30",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("p", {
-            className: "font-medium !mb-0",
-            children: form.formState.errors._stepValidation.message
+          children: currentStepConfig.fieldGroups.map((group, groupIndex) => {
+            // Collect all fields from current step for nested dependency checking
+            const allStepFields = currentStepConfig.fieldGroups.flatMap(g => g.fields);
+
+            // Check if at least one field in this group should be visible
+            const hasVisibleFields = group.fields.some(field => (0,_utils_schema_builder__WEBPACK_IMPORTED_MODULE_5__.shouldIncludeField)(field, allFormValues, allStepFields));
+
+            // If no fields are visible, don't render the fieldGroup at all
+            if (!hasVisibleFields) {
+              return null;
+            }
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              className: "field-group p-6 border border-border rounded-lg bg-card",
+              children: [group.title && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h4", {
+                className: "text-base font-semibold mb-4",
+                children: group.title
+              }), group.description && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+                className: "text-sm text-muted-foreground mb-4",
+                children: group.description
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+                className: "space-y-4",
+                children: group.fields.map(field => {
+                  if (!(0,_utils_schema_builder__WEBPACK_IMPORTED_MODULE_5__.shouldIncludeField)(field, allFormValues, allStepFields)) {
+                    return null;
+                  }
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_FormField__WEBPACK_IMPORTED_MODULE_11__.FormField, {
+                    field: field,
+                    form: form,
+                    allFormValues: allFormValues,
+                    currentStepConfig: currentStepConfig
+                  }, field.name);
+                })
+              })]
+            }, groupIndex);
           })
-        }), submissionError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+        }), submissionError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
           className: "custom-error bg-destructive/15 text-destructive rounded-md border border-destructive/30",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("p", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("p", {
             className: "font-medium !mb-0",
             children: ["Fehler beim Absenden: ", submissionError]
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
           className: "flex justify-between items-center pt-6",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
             className: "flex gap-2",
-            children: [currentStep > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
+            children: [currentStep > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
               className: "previous-button",
               type: "button",
               onClick: handlePrevious,
               disabled: isSubmitting,
               children: "Zur\xFCck"
-            }), currentStep === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
-              className: "reset-button bg-destructive/10 hover:bg-destructive/20 text-destructive border-destructive/30",
+            }), currentStep === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
+              className: "reset-button bg-destructive/10 hover:bg-destructive/20  border-destructive/30",
               type: "button",
               onClick: handleReset,
               disabled: isSubmitting,
               children: "Formular zur\xFCcksetzen"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_components_ui_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
             className: "next-button",
             type: "submit",
             disabled: isSubmitting,
@@ -31314,13 +32094,13 @@ const StepIndicator = ({
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
     className: "step-indicator",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "flex items-center justify-between",
+      className: "flex items-start justify-between",
       children: steps.map((step, index) => {
         const isCompleted = index < currentStep;
         const isCurrent = index === currentStep;
         const isClickable = index < currentStep;
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
             className: `flex flex-col items-center flex-1 ${isClickable ? "cursor-pointer" : "cursor-default"}`,
             onClick: () => isClickable && onStepClick(index),
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
@@ -31337,13 +32117,7 @@ const StepIndicator = ({
                   `,
               children: step.title
             })]
-          }), index < steps.length - 1 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-            className: `
-                    flex-1 h-0.5 mx-2 mt-5
-                    transition-colors duration-200
-                    ${isCompleted ? "bg-green-500" : "bg-gray-200"}
-                  `
-          })]
+          })
         }, step.id);
       })
     })
@@ -31496,6 +32270,9 @@ function useFormAutoCalculations({
           if (currentUnits === undefined || currentUnits === 1 || currentUnits === 2) {
             unitsValue = 3;
           }
+        } else if (buildingType === "wohnteilGemischt" || buildingType === "sonstiges") {
+          // Always reset to 1 for these building types
+          unitsValue = 1;
         }
         if (unitsValue !== undefined) {
           // Use batch update
@@ -31609,6 +32386,10 @@ function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     } else {
       // Final step - submit the form
       saveData(updatedValues, currentStep);
@@ -31617,13 +32398,14 @@ function useFormNavigation({
           formValues: updatedValues
         });
         if (result.success) {
-          // Success - redirect to cart or show success message
+          // Success - clear form and localStorage
+          handleReset();
+
+          // Show success message or redirect to cart
           if (result.data?.cart_url) {
             window.location.href = result.data.cart_url;
           } else {
             alert(`✓ ${result.message}\n\nDas Produkt wurde zum Warenkorb hinzugefügt.`);
-            // Optionally clear form data after successful submission
-            clearData();
           }
         } else {
           // Show error message
@@ -31651,6 +32433,10 @@ function useFormNavigation({
       setTimeout(() => {
         form.reset(updatedValues);
       }, 0);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
   }, [currentStep, form, allFormValues, setAllFormValues, setCurrentStep, saveData]);
 
@@ -32009,8 +32795,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /**
- * Generate billing period options for the last 3 years
- * Starting from the current month and going back 36 months
+ * Generate billing period options for the last 18 months
+ * Starting from the current month and going back 18 months
  *
  * @returns Array of billing period options sorted from newest to oldest
  */
@@ -32021,8 +32807,8 @@ function generateBillingPeriodOptions() {
   const currentYear = today.getFullYear();
 
   // Generate periods going backwards from the previous month (last complete month)
-  // Each period is 12 months long, and we generate periods going back 36 months
-  for (let i = 0; i < 36; i++) {
+  // Each period is 12 months long, and we generate periods going back 18 months
+  for (let i = 0; i < 18; i++) {
     // Calculate the end month for this period (going backwards from previous month)
     const endMonthIndex = currentMonth - 1 - i;
     const endYear = currentYear + Math.floor(endMonthIndex / 12);
@@ -32151,6 +32937,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   buildFieldSchema: () => (/* binding */ buildFieldSchema),
 /* harmony export */   buildFormSchema: () => (/* binding */ buildFormSchema),
 /* harmony export */   buildStepSchema: () => (/* binding */ buildStepSchema),
+/* harmony export */   extractDefaultValues: () => (/* binding */ extractDefaultValues),
 /* harmony export */   shouldIncludeField: () => (/* binding */ shouldIncludeField)
 /* harmony export */ });
 /* harmony import */ var zod__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! zod */ "./node_modules/.pnpm/zod@4.1.12/node_modules/zod/v4/classic/external.js");
@@ -32166,26 +32953,53 @@ function buildFieldSchema(field) {
   switch (field.type) {
     case "text":
       schema = zod__WEBPACK_IMPORTED_MODULE_0__.string();
+      if (field.required) {
+        const errorMessage = field.validation?.message || `${field.label} ist erforderlich`;
+        schema = schema.min(1, errorMessage);
+      }
       if (field.validation?.pattern) {
         schema = schema.regex(new RegExp(field.validation.pattern), field.validation.message || "Ungültiges Format");
       }
-      if (field.required) {
-        schema = schema.min(1, `${field.label} ist erforderlich`);
-      } else {
+
+      // Add date validation for dateNotInPast
+      if (field.validation?.dateNotInPast) {
+        schema = schema.refine(val => {
+          if (!val) return true; // Skip if empty (handled by required)
+          try {
+            // Parse DD.MM.YYYY format
+            const parts = val.split(".");
+            if (parts.length !== 3) return true; // Invalid format, let pattern handle it
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+            const year = parseInt(parts[2], 10);
+            const inputDate = new Date(year, month, day);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return inputDate >= today;
+          } catch {
+            return true; // If parsing fails, let pattern validation handle it
+          }
+        }, {
+          message: field.validation.dateNotInPastMessage || "Das Datum darf nicht in der Vergangenheit liegen"
+        });
+      }
+      if (!field.required) {
         schema = schema.optional();
       }
       break;
     case "email":
       schema = zod__WEBPACK_IMPORTED_MODULE_0__.string().email("Ungültige E-Mail-Adresse");
       if (field.required) {
-        schema = schema.min(1, `${field.label} ist erforderlich`);
+        const errorMessage = field.validation?.message || `${field.label} ist erforderlich`;
+        schema = schema.min(1, errorMessage);
       } else {
         schema = schema.optional();
       }
       break;
     case "number":
+      // Create a number schema with proper required handling
       let numberSchema = zod__WEBPACK_IMPORTED_MODULE_0__.number({
-        message: `${field.label} muss eine Zahl sein`
+        message: `${field.label} ist erforderlich`
       });
       if (field.validation?.min !== undefined) {
         numberSchema = numberSchema.min(field.validation.min, field.validation.message || `Mindestwert ist ${field.validation.min}`);
@@ -32193,15 +33007,19 @@ function buildFieldSchema(field) {
       if (field.validation?.max !== undefined) {
         numberSchema = numberSchema.max(field.validation.max, field.validation.message || `Maximalwert ist ${field.validation.max}`);
       }
+
+      // Handle required vs optional number fields
       if (field.required) {
         schema = zod__WEBPACK_IMPORTED_MODULE_0__.preprocess(val => {
           if (val === "" || val === null || val === undefined) return undefined;
-          return Number(val);
+          const num = Number(val);
+          return isNaN(num) ? undefined : num;
         }, numberSchema);
       } else {
         schema = zod__WEBPACK_IMPORTED_MODULE_0__.preprocess(val => {
           if (val === "" || val === null || val === undefined) return undefined;
-          return Number(val);
+          const num = Number(val);
+          return isNaN(num) ? undefined : num;
         }, numberSchema.optional());
       }
       break;
@@ -32238,7 +33056,8 @@ function buildFieldSchema(field) {
     case "checkbox":
       schema = zod__WEBPACK_IMPORTED_MODULE_0__.array(zod__WEBPACK_IMPORTED_MODULE_0__.string());
       if (field.required) {
-        schema = schema.min(1, `Bitte wählen Sie mindestens eine Option für ${field.label}`);
+        const errorMessage = field.validation?.message || `Bitte wählen Sie mindestens eine Option für ${field.label}`;
+        schema = schema.min(1, errorMessage);
       } else {
         schema = schema.optional();
       }
@@ -32314,30 +33133,6 @@ function buildStepSchema(step, allValues = {}) {
       }, {
         message: rule.message,
         path: [field.name]
-      });
-    }
-  }
-
-  // Apply step-level custom validation rules
-  if (step.customValidations && Array.isArray(step.customValidations)) {
-    for (const rule of step.customValidations) {
-      schema = schema.refine(data => {
-        try {
-          // Merge allValues with current step data to access fields from other steps
-          const completeData = {
-            ...allValues,
-            ...data
-          };
-          const condition = rule.condition.trim();
-          const result = evaluateComplexCondition(condition, completeData);
-          return result;
-        } catch (error) {
-          console.error("Step-level validation error:", error);
-          return true;
-        }
-      }, {
-        message: rule.message,
-        path: ["_stepValidation"] // Use a special field name for step-level errors
       });
     }
   }
@@ -32501,16 +33296,29 @@ function shouldIncludeField(field, values, allFields) {
   }
   const {
     field: dependencyField,
-    value: dependencyValue
+    value: dependencyValue,
+    contains
   } = field.dependsOn;
   const currentValue = values[dependencyField];
 
   // Check if the current field's dependency is met
   let isDependencyMet = false;
-  if (Array.isArray(dependencyValue)) {
-    isDependencyMet = dependencyValue.includes(currentValue);
-  } else {
-    isDependencyMet = currentValue === dependencyValue;
+
+  // Handle 'contains' check for array values (e.g., checkbox fields)
+  if (contains !== undefined) {
+    if (Array.isArray(currentValue)) {
+      isDependencyMet = currentValue.includes(contains);
+    } else {
+      isDependencyMet = false;
+    }
+  }
+  // Handle normal value check
+  else if (dependencyValue !== undefined) {
+    if (Array.isArray(dependencyValue)) {
+      isDependencyMet = dependencyValue.includes(currentValue);
+    } else {
+      isDependencyMet = currentValue === dependencyValue;
+    }
   }
 
   // If the dependency is not met, the field should not be included
@@ -32553,6 +33361,32 @@ function buildFormSchema(steps, allValues = {}) {
     }
   }
   return zod__WEBPACK_IMPORTED_MODULE_0__.object(shape);
+}
+
+/**
+ * Extract default values from form configuration
+ * Returns an object with field names as keys and their default values
+ */
+function extractDefaultValues(steps) {
+  const defaultValues = {};
+  for (const step of steps) {
+    for (const group of step.fieldGroups) {
+      for (const field of group.fields) {
+        if (field.defaultValue !== undefined) {
+          defaultValues[field.name] = field.defaultValue;
+        }
+        // Ensure checkbox fields default to empty array instead of undefined
+        else if (field.type === "checkbox") {
+          defaultValues[field.name] = [];
+        }
+        // Ensure text and email fields default to empty string instead of undefined
+        else if (field.type === "text" || field.type === "email") {
+          defaultValues[field.name] = "";
+        }
+      }
+    }
+  }
+  return defaultValues;
 }
 
 /***/ }),
@@ -32782,6 +33616,48 @@ const FormMessage = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(({
   const body = error ? String(error?.message) : children;
   if (!body) {
     return null;
+  }
+
+  // Ensure body is a string for link parsing
+  const bodyStr = typeof body === "string" ? body : String(body);
+
+  // Check if the message contains a link pattern [text](url)
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const hasLink = linkPattern.test(bodyStr);
+  if (hasLink) {
+    // Parse the message and convert markdown-style links to HTML
+    const parts = [];
+    let lastIndex = 0;
+    const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+    while ((match = regex.exec(bodyStr)) !== null) {
+      // Add text before the link
+      if (match.index > lastIndex) {
+        parts.push(bodyStr.substring(lastIndex, match.index));
+      }
+
+      // Add the link
+      parts.push(/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+        href: match[2],
+        target: "_blank",
+        rel: "noopener noreferrer",
+        className: "underline hover:no-underline",
+        children: match[1]
+      }, match.index));
+      lastIndex = regex.lastIndex;
+    }
+
+    // Add remaining text
+    if (lastIndex < bodyStr.length) {
+      parts.push(bodyStr.substring(lastIndex));
+    }
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+      ref: ref,
+      id: formMessageId,
+      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_3__.cn)("text-sm font-medium text-destructive", className),
+      ...props,
+      children: parts
+    });
   }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
     ref: ref,
@@ -33061,6 +33937,81 @@ const SelectSeparator = react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(({
   ...props
 }));
 SelectSeparator.displayName = _radix_ui_react_select__WEBPACK_IMPORTED_MODULE_1__.Separator.displayName;
+
+
+/***/ }),
+
+/***/ "./src/components/ui/tooltip.tsx":
+/*!***************************************!*\
+  !*** ./src/components/ui/tooltip.tsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Tooltip: () => (/* binding */ Tooltip),
+/* harmony export */   TooltipContent: () => (/* binding */ TooltipContent),
+/* harmony export */   TooltipProvider: () => (/* binding */ TooltipProvider),
+/* harmony export */   TooltipTrigger: () => (/* binding */ TooltipTrigger)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @radix-ui/react-tooltip */ "./node_modules/.pnpm/@radix-ui+react-tooltip@1.2.8_@types+react-dom@18.3.7_@types+react@18.3.26__@types+react@18.3_d4s3skutltvxkbr2sejqqykjri/node_modules/@radix-ui/react-tooltip/dist/index.mjs");
+/* harmony import */ var _lib_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/lib/utils */ "./src/lib/utils.ts");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__);
+"use client";
+
+
+
+
+
+function TooltipProvider({
+  delayDuration = 0,
+  ...props
+}) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__.Provider, {
+    "data-slot": "tooltip-provider",
+    delayDuration: delayDuration,
+    ...props
+  });
+}
+function Tooltip({
+  ...props
+}) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(TooltipProvider, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__.Root, {
+      "data-slot": "tooltip",
+      ...props
+    })
+  });
+}
+function TooltipTrigger({
+  ...props
+}) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__.Trigger, {
+    "data-slot": "tooltip-trigger",
+    ...props
+  });
+}
+function TooltipContent({
+  className,
+  sideOffset = 0,
+  children,
+  ...props
+}) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__.Portal, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__.Content, {
+      "data-slot": "tooltip-content",
+      sideOffset: sideOffset,
+      className: (0,_lib_utils__WEBPACK_IMPORTED_MODULE_2__.cn)("bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance", className),
+      ...props,
+      children: [children, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_radix_ui_react_tooltip__WEBPACK_IMPORTED_MODULE_1__.Arrow, {
+        className: "bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+      })]
+    })
+  });
+}
 
 
 /***/ }),
