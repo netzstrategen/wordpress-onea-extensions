@@ -118,12 +118,25 @@ export const FormSummary: React.FC<FormSummaryProps> = ({
           // Skip fields that have dependencies and aren't shown
           if (field.dependsOn) {
             const dependentValue = formValues[field.dependsOn.field];
-            if (Array.isArray(field.dependsOn.value)) {
-              if (!field.dependsOn.value.includes(dependentValue)) {
+
+            // Handle 'contains' check for array values (e.g., checkbox fields)
+            if (field.dependsOn.contains !== undefined) {
+              if (
+                !Array.isArray(dependentValue) ||
+                !dependentValue.includes(field.dependsOn.contains)
+              ) {
                 return;
               }
-            } else if (dependentValue !== field.dependsOn.value) {
-              return;
+            }
+            // Handle normal value check
+            else if (field.dependsOn.value !== undefined) {
+              if (Array.isArray(field.dependsOn.value)) {
+                if (!field.dependsOn.value.includes(dependentValue)) {
+                  return;
+                }
+              } else if (dependentValue !== field.dependsOn.value) {
+                return;
+              }
             }
           }
 

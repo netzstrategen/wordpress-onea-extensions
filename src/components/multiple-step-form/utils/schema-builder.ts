@@ -14,6 +14,12 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
     case "text":
       schema = z.string();
 
+      if (field.required) {
+        const errorMessage =
+          field.validation?.message || `${field.label} ist erforderlich`;
+        schema = (schema as z.ZodString).min(1, errorMessage);
+      }
+
       if (field.validation?.pattern) {
         schema = (schema as z.ZodString).regex(
           new RegExp(field.validation.pattern),
@@ -51,12 +57,7 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
         );
       }
 
-      if (field.required) {
-        schema = (schema as z.ZodString).min(
-          1,
-          `${field.label} ist erforderlich`
-        );
-      } else {
+      if (!field.required) {
         schema = schema.optional();
       }
       break;
@@ -65,10 +66,9 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
       schema = z.string().email("Ungültige E-Mail-Adresse");
 
       if (field.required) {
-        schema = (schema as z.ZodString).min(
-          1,
-          `${field.label} ist erforderlich`
-        );
+        const errorMessage =
+          field.validation?.message || `${field.label} ist erforderlich`;
+        schema = (schema as z.ZodString).min(1, errorMessage);
       } else {
         schema = schema.optional();
       }
@@ -145,10 +145,10 @@ export function buildFieldSchema(field: FormField): z.ZodTypeAny {
       schema = z.array(z.string());
 
       if (field.required) {
-        schema = (schema as z.ZodArray<z.ZodString>).min(
-          1,
-          `Bitte wählen Sie mindestens eine Option für ${field.label}`
-        );
+        const errorMessage =
+          field.validation?.message ||
+          `Bitte wählen Sie mindestens eine Option für ${field.label}`;
+        schema = (schema as z.ZodArray<z.ZodString>).min(1, errorMessage);
       } else {
         schema = schema.optional();
       }
@@ -531,6 +531,14 @@ export function extractDefaultValues(steps: FormStep[]): FormValues {
       for (const field of group.fields) {
         if (field.defaultValue !== undefined) {
           defaultValues[field.name] = field.defaultValue;
+        }
+        // Ensure checkbox fields default to empty array instead of undefined
+        else if (field.type === "checkbox") {
+          defaultValues[field.name] = [];
+        }
+        // Ensure text and email fields default to empty string instead of undefined
+        else if (field.type === "text" || field.type === "email") {
+          defaultValues[field.name] = "";
         }
       }
     }
