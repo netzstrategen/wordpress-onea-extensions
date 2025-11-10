@@ -1,0 +1,1442 @@
+{
+  "formId": "bedarfsausweis",
+  "title": "Bedarfsausweis erstellen",
+  "steps": [
+    {
+      "id": "building-info",
+      "title": "Allgemeine Gebäudeinformationen",
+      "fieldGroups": [
+        {
+          "title": "Gebäudeart & Wohneinheiten",
+          "fields": [
+            {
+              "name": "buildingType",
+              "type": "select",
+              "label": "Gebäudeart",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "tooltip": "Wählen Sie aus, ob es sich um ein Einfamilienhaus, Mehrfamilienhaus oder ein anderes Gebäude handelt. Wichtig: Für einzelne Wohnungen kann kein Energieausweis erstellt werden, lediglich für gesamte Gebäude.",
+              "options": [
+                { "value": "einfamilienhaus", "label": "Einfamilienhaus" },
+                { "value": "zweifamilienhaus", "label": "Zweifamilienhaus" },
+                { "value": "mehrfamilienhaus", "label": "Mehrfamilienhaus" },
+                {
+                  "value": "wohnteilGemischt",
+                  "label": "Wohnteil eines gemischt genutzten Gebäudes"
+                },
+                { "value": "sonstiges", "label": "Sonstiges" }
+              ]
+            },
+            {
+              "name": "buildingTypeOther",
+              "type": "text",
+              "label": "Sonstige Gebäudeart",
+              "required": true,
+              "dependsOn": {
+                "field": "buildingType",
+                "value": "sonstiges"
+              }
+            },
+            {
+              "name": "numberOfUnits",
+              "type": "number",
+              "label": "Anzahl der Wohneinheiten",
+              "required": true,
+              "autoSetValue": true,
+              "tooltip": "Tragen Sie ein, wie viele einzelne Wohnungen Ihr Gebäude enthält. Bei Einfamilienhäusern mit Einliegerwohnung bitte \"Zweifamilienhaus\" auswählen. Ab drei Wohneinheiten bitte \"Mehrfamilienhaus\" auswählen.",
+              "validation": {
+                "min": 1,
+                "message": "Mindestens 1 Wohneinheit erforderlich"
+              }
+            },
+            {
+              "name": "livingArea",
+              "type": "number",
+              "label": "Wohnfläche in m²",
+              "required": true,
+              "validation": {
+                "min": 1,
+                "message": "Wohnfläche muss mindestens 1 m² betragen"
+              }
+            },
+            {
+              "name": "averageFloorHeight",
+              "type": "number",
+              "label": "Durchschnittliche Vollgeschosshöhe in m",
+              "placeholder": "z.B. 2,95",
+              "required": true,
+              "validation": {
+                "min": 2,
+                "max": 5,
+                "message": "Geschosshöhe muss zwischen 2 und 5 Metern liegen"
+              }
+            },
+            {
+              "name": "numberOfHeatedFloors",
+              "type": "number",
+              "label": "Anzahl beheizter Vollgeschosse (ohne Keller/Dach)",
+              "required": true,
+              "validation": {
+                "min": 1,
+                "message": "Mindestens 1 Vollgeschoss erforderlich"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Baujahre",
+          "fields": [
+            {
+              "name": "buildingYear",
+              "type": "number",
+              "label": "Baujahr des Gebäudes",
+              "required": true,
+              "tooltip": "Geben Sie an, wann Ihr Gebäude ursprünglich gebaut wurde. (Format Bsp.: 1998)",
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr muss zwischen 1900 und heute liegen",
+                "customValidations": [
+                  {
+                    "condition": "buildingYear < 2022",
+                    "message": "Kein Energieausweis notwendig. Bitte [Bedarfsausweis beantragen](https://onlineenergieausweis.com/verbrauchsausweis-beantragen/)."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "title": "Sanierung",
+          "fields": [
+            {
+              "name": "extensivelyRenovated",
+              "type": "radio",
+              "label": "Wurde das Gebäude umfangreich saniert?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "renovationYear",
+              "type": "number",
+              "label": "Jahr der Sanierung",
+              "required": true,
+              "tooltip": "Tragen Sie das Sanierungsjahr ein. Bei einem längeren Sanierungszeitraum das jüngste Sanierungsjahr eintragen.",
+              "dependsOn": {
+                "field": "extensivelyRenovated",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Das Jahr der Sanierung darf nicht vor dem Baujahr des Gebäudes liegen.",
+                "customValidations": [
+                  {
+                    "condition": "renovationYear >= buildingYear",
+                    "message": "Das Jahr der Sanierung darf nicht vor dem Baujahr des Gebäudes liegen."
+                  }
+                ]
+              }
+            },
+            {
+              "name": "insulationStandard",
+              "type": "radio",
+              "label": "Dämmstandard des Hauses",
+              "required": true,
+              "defaultValue": "normal",
+              "options": [
+                { "value": "normal", "label": "Normal" },
+                {
+                  "value": "niedrigenergiehaus",
+                  "label": "Niedrigenergiehaus"
+                },
+                { "value": "passivhaus", "label": "Passivhaus" }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Fensterangaben",
+          "fields": [
+            {
+              "name": "windowYear",
+              "type": "number",
+              "label": "Baujahr Fenster",
+              "required": true,
+              "tooltip": "Das Baujahr der Fenster darf nicht älter sein als das Gebäude",
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr Fenster muss zwischen 1900 und heute liegen",
+                "customValidations": [
+                  {
+                    "condition": "windowYear >= buildingYear",
+                    "message": "Die Fenster dürfen nicht älter als das Gebäude sein"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "windowMaterialGlazing",
+              "type": "select",
+              "label": "Material + Verglasung",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "tooltip": "Wahl soll auf die meistverbaute Variante fallen",
+              "options": [
+                {
+                  "value": "holzEinfach",
+                  "label": "Holzfenster, einfach verglast"
+                },
+                {
+                  "value": "holzZweifach",
+                  "label": "Holzfenster, zweifach verglast (Kasten/Verbund)"
+                },
+                {
+                  "value": "holzWaermeschutz",
+                  "label": "Holzfenster, Wärmeschutzglas"
+                },
+                {
+                  "value": "kunststoffZweifach",
+                  "label": "Kunststofffenster, zweifach verglast"
+                },
+                {
+                  "value": "kunststoffWaermeschutz",
+                  "label": "Kunststofffenster, Wärmeschutzglas"
+                },
+                {
+                  "value": "aluZweifachBis83",
+                  "label": "Alu-/Stahlfenster, zweifach verglast bis Bj. 83"
+                },
+                {
+                  "value": "aluZweifachAb84",
+                  "label": "Alu-/Stahlfenster, zweifach verglast - ab Bj. 84"
+                },
+                {
+                  "value": "aluWaermeschutz",
+                  "label": "Alu-/Stahlfenster, Wärmeschutzglas"
+                },
+                {
+                  "value": "passivhaus",
+                  "label": "Passivhausfenster u. Türen (3-fach)"
+                },
+                { "value": "metalltüren", "label": "Metalltüren" }
+              ]
+            },
+            {
+              "name": "windowUValueKnown",
+              "type": "radio",
+              "label": "U-Wert bekannt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "windowUValue",
+              "type": "number",
+              "label": "U-Wert",
+              "placeholder": "z.B. 0,95",
+              "required": true,
+              "dependsOn": {
+                "field": "windowUValueKnown",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 10,
+                "message": "U-Wert muss zwischen 0 und 10 liegen"
+              }
+            },
+            {
+              "name": "windowOrientationNorth",
+              "type": "number",
+              "label": "Fensterausrichtung Nord (m²)",
+              "required": false,
+              "validation": {
+                "min": 0,
+                "message": "Fläche muss positiv sein"
+              }
+            },
+            {
+              "name": "windowOrientationEast",
+              "type": "number",
+              "label": "Fensterausrichtung Ost (m²)",
+              "required": false,
+              "validation": {
+                "min": 0,
+                "message": "Fläche muss positiv sein"
+              }
+            },
+            {
+              "name": "windowOrientationSouth",
+              "type": "number",
+              "label": "Fensterausrichtung Süd (m²)",
+              "required": false,
+              "validation": {
+                "min": 0,
+                "message": "Fläche muss positiv sein"
+              }
+            },
+            {
+              "name": "windowOrientationWest",
+              "type": "number",
+              "label": "Fensterausrichtung West (m²)",
+              "required": false,
+              "validation": {
+                "min": 0,
+                "message": "Fläche muss positiv sein"
+              }
+            },
+            {
+              "name": "hasWindowVentilation",
+              "type": "radio",
+              "label": "Fensterlüftung vorhanden?",
+              "required": true,
+              "defaultValue": "ja",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "hasShaftVentilation",
+              "type": "radio",
+              "label": "Schachtlüftung vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Keller",
+          "fields": [
+            {
+              "name": "basementCeilingConstruction",
+              "type": "checkbox",
+              "label": "Aufbau Kellerdecke/Bodenplatte",
+              "required": true,
+              "options": [
+                {
+                  "value": "ziegel",
+                  "label": "Ziegel- oder Hohlsteinkonstruktion"
+                },
+                { "value": "holz", "label": "Holzkonstruktion" },
+                { "value": "stahlbeton", "label": "Stahlbeton" }
+              ]
+            },
+            {
+              "name": "basementCeilingUValueKnown",
+              "type": "radio",
+              "label": "U-Wert bekannt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "basementCeilingUValue",
+              "type": "number",
+              "label": "U-Wert",
+              "placeholder": "z.B. 0,95",
+              "required": true,
+              "dependsOn": {
+                "field": "basementCeilingUValueKnown",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 10,
+                "message": "U-Wert muss zwischen 0 und 10 liegen"
+              }
+            },
+            {
+              "name": "hasBasement",
+              "type": "radio",
+              "label": "Kellergeschoss vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "basementHeatingLevel",
+              "type": "select",
+              "label": "Beheizungsgrad",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasBasement",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "unbeheizt", "label": "Unbeheizt" },
+                { "value": "teilweise", "label": "Teilweise beheizt" },
+                { "value": "voll", "label": "Voll beheizt" }
+              ]
+            },
+            {
+              "name": "basementArea",
+              "type": "number",
+              "label": "Kellerfläche in m²",
+              "required": true,
+              "dependsOn": {
+                "field": "hasBasement",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Kellerfläche muss positiv sein"
+              }
+            },
+            {
+              "name": "hasBasementInsulation",
+              "type": "radio",
+              "label": "Kellerdämmung",
+              "required": true,
+              "defaultValue": "nein",
+              "dependsOn": {
+                "field": "hasBasement",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "basementInsulationThickness",
+              "type": "number",
+              "label": "Dicke in cm",
+              "required": true,
+              "dependsOn": {
+                "field": "hasBasementInsulation",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Dicke muss positiv sein"
+              }
+            },
+            {
+              "name": "basementInsulationAreaPercent",
+              "type": "number",
+              "label": "Fläche in %",
+              "required": true,
+              "dependsOn": {
+                "field": "hasBasementInsulation",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100,
+                "message": "Fläche muss zwischen 0 und 100 Prozent liegen"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Dach",
+          "fields": [
+            {
+              "name": "roofAreaKnown",
+              "type": "radio",
+              "label": "Dachfläche bekannt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "roofArea",
+              "type": "number",
+              "label": "Dachfläche in m²",
+              "required": true,
+              "dependsOn": {
+                "field": "roofAreaKnown",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Dachfläche muss positiv sein"
+              }
+            },
+            {
+              "name": "hasAttic",
+              "type": "radio",
+              "label": "Dachgeschoss vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "tooltip": "Nein = Flachdach",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "roofType",
+              "type": "select",
+              "label": "Dachform",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAttic",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "sattel", "label": "Sattel" },
+                { "value": "pult", "label": "Pult" }
+              ]
+            },
+            {
+              "name": "roofPitch",
+              "type": "number",
+              "label": "Neigungsgrad in °",
+              "required": true,
+              "dependsOn": {
+                "field": "hasAttic",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 90,
+                "message": "Neigungsgrad muss zwischen 0 und 90 Grad liegen"
+              }
+            },
+            {
+              "name": "topFloorCeilingType",
+              "type": "radio",
+              "label": "Oberste Geschossdecke",
+              "required": true,
+              "options": [
+                { "value": "massivdecke", "label": "Massivdecke" },
+                { "value": "holzbalken", "label": "Holzbalken" }
+              ]
+            },
+            {
+              "name": "aboveTopFloorCeiling",
+              "type": "radio",
+              "label": "Über der obersten Geschossdecke liegt?",
+              "required": true,
+              "options": [
+                {
+                  "value": "unbeheizterDachraum",
+                  "label": "Unbeheizter Dachraum"
+                },
+                { "value": "nichts", "label": "Nichts (außen)" }
+              ]
+            },
+            {
+              "name": "roofUValueKnown",
+              "type": "radio",
+              "label": "U-Wert Dach oder oberste Geschossdecke bekannt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "roofUValue",
+              "type": "number",
+              "label": "U-Wert",
+              "placeholder": "z.B. 0,95",
+              "required": true,
+              "dependsOn": {
+                "field": "roofUValueKnown",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 10,
+                "message": "U-Wert muss zwischen 0 und 10 liegen"
+              }
+            },
+            {
+              "name": "hasRoofInsulation",
+              "type": "radio",
+              "label": "Dachdämmung",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "roofInsulationThickness",
+              "type": "number",
+              "label": "Dicke in cm",
+              "required": true,
+              "dependsOn": {
+                "field": "hasRoofInsulation",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Dicke muss positiv sein"
+              }
+            },
+            {
+              "name": "roofInsulationAreaPercent",
+              "type": "number",
+              "label": "Fläche in %",
+              "required": true,
+              "dependsOn": {
+                "field": "hasRoofInsulation",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100,
+                "message": "Fläche muss zwischen 0 und 100 Prozent liegen"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "extended-building-info",
+      "title": "Erweiterte Gebäudeinformationen",
+      "fieldGroups": [
+        {
+          "title": "Gebäudeform",
+          "fields": [
+            {
+              "name": "buildingShape",
+              "type": "select",
+              "label": "Gebäudeform",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "tooltip": "Bitte wählen Sie die passende Gebäudeform und tragen Sie die zugehörigen Wandlängen in Metern ein. Nicht zutreffende Felder können leer bleiben.",
+              "options": [
+                { "value": "rechteck", "label": "Rechteck" },
+                { "value": "lForm", "label": "L-Form" },
+                { "value": "tForm", "label": "T-Form" },
+                { "value": "uForm", "label": "U-Form" }
+              ]
+            },
+            {
+              "name": "floorPlanUpload",
+              "type": "file",
+              "label": "Grundriss hochladen",
+              "required": false,
+              "accept": "image/*,application/pdf"
+            },
+            {
+              "name": "wallLengthA",
+              "type": "number",
+              "label": "Wandlänge a (in Metern)",
+              "required": true,
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthB",
+              "type": "number",
+              "label": "Wandlänge b (in Metern)",
+              "required": true,
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthC",
+              "type": "number",
+              "label": "Wandlänge c (in Metern)",
+              "required": false,
+              "dependsOn": {
+                "field": "buildingShape",
+                "value": ["lForm", "tForm", "uForm"]
+              },
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthD",
+              "type": "number",
+              "label": "Wandlänge d (in Metern)",
+              "required": false,
+              "dependsOn": {
+                "field": "buildingShape",
+                "value": ["lForm", "tForm", "uForm"]
+              },
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthE",
+              "type": "number",
+              "label": "Wandlänge e (in Metern)",
+              "required": false,
+              "dependsOn": {
+                "field": "buildingShape",
+                "value": ["tForm", "uForm"]
+              },
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthF",
+              "type": "number",
+              "label": "Wandlänge f (in Metern)",
+              "required": false,
+              "dependsOn": {
+                "field": "buildingShape",
+                "value": ["tForm", "uForm"]
+              },
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthG",
+              "type": "number",
+              "label": "Wandlänge g (in Metern)",
+              "required": false,
+              "dependsOn": {
+                "field": "buildingShape",
+                "value": ["uForm"]
+              },
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "wallLengthH",
+              "type": "number",
+              "label": "Wandlänge h (in Metern)",
+              "required": false,
+              "dependsOn": {
+                "field": "buildingShape",
+                "value": ["uForm"]
+              },
+              "validation": {
+                "min": 0,
+                "message": "Wandlänge muss positiv sein"
+              }
+            },
+            {
+              "name": "buildingAttachment",
+              "type": "select",
+              "label": "Anbau an Gebäudeseiten?",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "freistehend", "label": "Freistehend" },
+                { "value": "einseitig", "label": "Einseitig angebaut" },
+                { "value": "zweiseitig", "label": "Zweiseitig angebaut" }
+              ]
+            },
+            {
+              "name": "sideAOrientation",
+              "type": "select",
+              "label": "Himmelsrichtung Seite A",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "nord", "label": "Nord" },
+                { "value": "nordost", "label": "Nordost" },
+                { "value": "ost", "label": "Ost" },
+                { "value": "suedost", "label": "Südost" },
+                { "value": "sued", "label": "Süd" },
+                { "value": "suedwest", "label": "Südwest" },
+                { "value": "west", "label": "West" },
+                { "value": "nordwest", "label": "Nordwest" }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Bauweise & Wandflächen",
+          "fields": [
+            {
+              "name": "constructionType",
+              "type": "select",
+              "label": "Bauweise",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                {
+                  "value": "massiveKonstruktion",
+                  "label": "Massive Konstruktion"
+                },
+                { "value": "holzkonstruktion", "label": "Holzkonstruktion" },
+                {
+                  "value": "massivZweischalig",
+                  "label": "Massiv, zweischalig, ohne Dämmung"
+                },
+                {
+                  "value": "massivwandBis20Vollziegel",
+                  "label": "Massivwand bis 20 cm Vollziegel, Naturstein, KS"
+                },
+                {
+                  "value": "massivwand2030Vollziegel",
+                  "label": "Massivwand 20-30 cm Vollziegel, Naturstein, KS"
+                },
+                {
+                  "value": "massivwandUeber30Vollziegel",
+                  "label": "Massivwand über 30 cm Vollziegel, Naturstein, KS"
+                },
+                {
+                  "value": "sonstMassivwandBis20",
+                  "label": "Sonst. Massivwand bis 20 cm"
+                },
+                {
+                  "value": "sonstMassivwandUeber20",
+                  "label": "Sonst. Massivwand über 20 cm"
+                },
+                { "value": "holzMassiv", "label": "Holz massiv (Blockbohlen)" },
+                {
+                  "value": "fachwerkLehm",
+                  "label": "Fachwerk mit Lehmfachung"
+                },
+                {
+                  "value": "fachwerkVollziegel",
+                  "label": "Fachwerk mit Vollziegelfachung"
+                },
+                { "value": "stahlbeton", "label": "Stahlbeton" }
+              ]
+            },
+            {
+              "name": "wallUValueKnown",
+              "type": "radio",
+              "label": "U-Wert der Wandflächen bekannt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "wallUValue",
+              "type": "number",
+              "label": "U-Wert",
+              "placeholder": "z.B. 0,95",
+              "required": true,
+              "dependsOn": {
+                "field": "wallUValueKnown",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 10,
+                "message": "U-Wert muss zwischen 0 und 10 liegen"
+              }
+            },
+            {
+              "name": "hasFacadeInsulation",
+              "type": "radio",
+              "label": "Fassadendämmung vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "facadeInsulationThickness",
+              "type": "number",
+              "label": "Dicke in cm",
+              "required": true,
+              "dependsOn": {
+                "field": "hasFacadeInsulation",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Dicke muss positiv sein"
+              }
+            },
+            {
+              "name": "facadeInsulationAreaPercent",
+              "type": "number",
+              "label": "Fläche in %",
+              "required": true,
+              "dependsOn": {
+                "field": "hasFacadeInsulation",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "max": 100,
+                "message": "Fläche muss zwischen 0 und 100 Prozent liegen"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "building-technology",
+      "title": "Gebäudetechnik",
+      "fieldGroups": [
+        {
+          "title": "Heizungsanlage",
+          "fields": [
+            {
+              "name": "heatingYear",
+              "type": "number",
+              "label": "Baujahr der Heizung",
+              "required": true,
+              "tooltip": "Das Baujahr der Heizung darf nicht älter sein als das Gebäude",
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr muss zwischen 1900 und heute liegen",
+                "customValidations": [
+                  {
+                    "condition": "heatingYear >= buildingYear",
+                    "message": "Die Heizung darf nicht älter als das Gebäude sein"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "heatingSystemType",
+              "type": "select",
+              "label": "Typ der Heizungsanlage",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                {
+                  "value": "niedertemperaturkessel",
+                  "label": "Niedertemperaturkessel"
+                },
+                { "value": "brennwertgeraet", "label": "Brennwertgerät" },
+                {
+                  "value": "nachtspeicher",
+                  "label": "Nachtspeicher-/Elektroheizung"
+                },
+                { "value": "kwk", "label": "Kraft-Wärme-Kopplung" },
+                { "value": "hellstrahler", "label": "Hellstrahler" },
+                { "value": "fernheizung", "label": "Fernheizung" },
+                { "value": "dunkelstrahler", "label": "Dunkelstrahler" },
+                { "value": "luftheizung", "label": "Luftheizung" },
+                { "value": "brennstoffzelle", "label": "Brennstoffzelle" },
+                { "value": "solarkollektor", "label": "Solarkollektor" },
+                {
+                  "value": "sorptionsGaswaermepumpe",
+                  "label": "Sorptions-Gaswärmepumpe"
+                },
+                { "value": "waermepumpe", "label": "Wärmepumpe" },
+                {
+                  "value": "ofenWechselbrand",
+                  "label": "Ofen oder Wechselbrand"
+                },
+                { "value": "standardkessel", "label": "Standardkessel" }
+              ]
+            },
+            {
+              "name": "fuelType",
+              "type": "select",
+              "label": "Verwendeter Brennstoff",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "biogas", "label": "Biogas" },
+                { "value": "biooeel", "label": "Bioöl" },
+                { "value": "braunkohle", "label": "Braunkohle" },
+                {
+                  "value": "fernwaermeKWK",
+                  "label": "Nah-/Fernwärme aus 70% KWK"
+                },
+                {
+                  "value": "fernwaermeHeizwerk",
+                  "label": "Nah-/Fernwärme aus Heizwerken"
+                },
+                { "value": "erdgas", "label": "Erdgas" },
+                { "value": "fluessiggas", "label": "Flüssiggas" },
+                { "value": "holzhackschnitzel", "label": "Holzhackschnitzel" },
+                { "value": "holz", "label": "Holz" },
+                { "value": "steinkohle", "label": "Steinkohle" },
+                { "value": "stromNT", "label": "Strom (NT)" },
+                { "value": "heizoel", "label": "Heizöl" },
+                { "value": "holzpellets", "label": "Holzpellets" },
+                { "value": "strom", "label": "Strom" }
+              ]
+            },
+            {
+              "name": "primaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor",
+              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "required": true,
+              "dependsOn": {
+                "field": "fuelType",
+                "value": ["fernwaermeKWK", "fernwaermeHeizwerk"]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "primaryEnergyFactorDocumentation",
+              "type": "file",
+              "label": "Nachweis Primärenergiefaktor (PDF oder Bild)",
+              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
+              "required": false,
+              "dependsOn": {
+                "field": "fuelType",
+                "value": ["fernwaermeKWK", "fernwaermeHeizwerk"]
+              },
+              "accept": "image/*,application/pdf"
+            },
+            {
+              "name": "heatingCircuitTemperature",
+              "type": "select",
+              "label": "Heizungskreistemperatur",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "90-70", "label": "90°/70°" },
+                { "value": "70-55", "label": "70°/55°" },
+                { "value": "55-45", "label": "55°/45°" },
+                { "value": "35-28", "label": "35°/28°" }
+              ]
+            },
+            {
+              "name": "heatingDistributionInsulated",
+              "type": "radio",
+              "label": "Heizungsverteilung gedämmt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "hasBufferStorage",
+              "type": "radio",
+              "label": "Pufferspeicher vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "systemTypeAndLocation",
+              "type": "select",
+              "label": "Art der Anlage und Aufstellungsort",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "einzelgeraet", "label": "Einzelgerät/Ofen" },
+                {
+                  "value": "zentralUnbeheizt",
+                  "label": "Zentralheizung im Unbeheizten"
+                },
+                {
+                  "value": "zentralBeheizt",
+                  "label": "Zentralheizung/Etagenheizung im Beheizten"
+                },
+                { "value": "fernheizung", "label": "Fernheizung" }
+              ]
+            },
+            {
+              "name": "heatingSurfaceType",
+              "type": "checkbox",
+              "label": "Heizflächenart",
+              "required": true,
+              "options": [
+                { "value": "heizkoerper", "label": "Heizkörper" },
+                {
+                  "value": "flaechenheizung",
+                  "label": "Flächenheizung (Fußbodenheizung)"
+                }
+              ]
+            },
+            {
+              "name": "heatingDistributionType",
+              "type": "radio",
+              "label": "Heizungsverteilungsart",
+              "required": true,
+              "options": [
+                { "value": "dezentral", "label": "Dezentral" },
+                { "value": "gebaeudezentral", "label": "Gebäudezentral" },
+                { "value": "wohnungszentral", "label": "Wohnungszentral" }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Warmwasseraufbereitung",
+          "fields": [
+            {
+              "name": "hotWaterYear",
+              "type": "number",
+              "label": "Baujahr Warmwasseraufbereitung",
+              "required": true,
+              "tooltip": "Das Baujahr der Warmwasseraufbereitung darf nicht älter sein als das Gebäude",
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr muss zwischen 1900 und heute liegen",
+                "customValidations": [
+                  {
+                    "condition": "hotWaterYear >= buildingYear",
+                    "message": "Die Warmwasseraufbereitung darf nicht älter als das Gebäude sein"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "hotWaterDistributionType",
+              "type": "radio",
+              "label": "Warmwasserverteilungsart",
+              "required": true,
+              "options": [
+                { "value": "dezentral", "label": "Dezentral" },
+                { "value": "gebaeudezentral", "label": "Gebäudezentral" },
+                { "value": "wohnungszentral", "label": "Wohnungszentral" }
+              ]
+            },
+            {
+              "name": "hotWaterDistributionInsulated",
+              "type": "radio",
+              "label": "Warmwasserverteilung gedämmt?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "hasHotWaterCirculation",
+              "type": "radio",
+              "label": "Warmwasserzirkulation vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "hotWaterStorageLocation",
+              "type": "radio",
+              "label": "Standort Warmwasserspeicher",
+              "required": true,
+              "options": [
+                { "value": "innerhalb", "label": "Innerhalb" },
+                { "value": "keller", "label": "Keller" },
+                { "value": "dach", "label": "Dach" }
+              ]
+            },
+            {
+              "name": "hotWaterTechnology",
+              "type": "select",
+              "label": "Warmwassertechnik",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "kombiErzeuger", "label": "Kombi-Erzeuger" },
+                {
+                  "value": "elektroSpeicher",
+                  "label": "Elektro-Speicher, elektrischer Heizstab"
+                },
+                {
+                  "value": "elektroDurchlauf",
+                  "label": "Elektro-Durchlauferhitzer"
+                },
+                {
+                  "value": "direktBrennstoffNT",
+                  "label": "Direkt brennstoffbeheizter Speicher (NT)"
+                },
+                {
+                  "value": "direktBrennstoffBW",
+                  "label": "Direkt brennstoffbeheizter Speicher (BW)"
+                },
+                {
+                  "value": "gasDurchlaufNT",
+                  "label": "Gas-Durchlauferhitzer (NT)"
+                },
+                {
+                  "value": "gasDurchlaufBW",
+                  "label": "Gas-Durchlauferhitzer (BW)"
+                },
+                { "value": "solarkollektor", "label": "Solarkollektor" },
+                { "value": "waermepumpe", "label": "Wärmepumpe" },
+                {
+                  "value": "indirektSpeicher",
+                  "label": "Indirekt beheizter Speicher (nur WW)"
+                },
+                { "value": "fernwaerme", "label": "Fernwärme" }
+              ]
+            },
+            {
+              "name": "hotWaterSolar",
+              "type": "radio",
+              "label": "Erfolgt die Warmwasseraufbereitung durch Solar?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Kühlung & Lüftung",
+          "fields": [
+            {
+              "name": "hasCooling",
+              "type": "radio",
+              "label": "Kühlung vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "cooledArea",
+              "type": "number",
+              "label": "Gekühlte Fläche in m²",
+              "required": true,
+              "dependsOn": {
+                "field": "hasCooling",
+                "value": "ja"
+              },
+              "validation": {
+                "min": 0,
+                "message": "Fläche muss positiv sein"
+              }
+            },
+            {
+              "name": "hasVentilationSystem",
+              "type": "radio",
+              "label": "Lüftungsanlage vorhanden?",
+              "required": true,
+              "defaultValue": "nein",
+              "options": [
+                { "value": "ja", "label": "Ja" },
+                { "value": "nein", "label": "Nein" }
+              ]
+            },
+            {
+              "name": "ventilationSystemType",
+              "type": "select",
+              "label": "Typ der Lüftungsanlage",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "hasVentilationSystem",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "freieLueftung", "label": "Freie Lüftung" },
+                { "value": "abluftanlage", "label": "Abluftanlage" },
+                {
+                  "value": "zuAbluftMitWRG",
+                  "label": "Zu-/Abluft mit Wärmerückgewinnung"
+                },
+                {
+                  "value": "zuAbluftOhneWRG",
+                  "label": "Zu-/Abluft ohne Wärmerückgewinnung"
+                },
+                { "value": "abluftwaermepumpe", "label": "Abluftwärmepumpe" }
+              ]
+            },
+            {
+              "name": "ventilationSystemYear",
+              "type": "number",
+              "label": "Baujahr Lüftungsanlage",
+              "required": true,
+              "dependsOn": {
+                "field": "hasVentilationSystem",
+                "value": "ja"
+              },
+              "tooltip": "Das Baujahr der Lüftungsanlage darf nicht älter sein als das Gebäude",
+              "validation": {
+                "min": 1900,
+                "max": 2025,
+                "message": "Baujahr muss zwischen 1900 und heute liegen",
+                "customValidations": [
+                  {
+                    "condition": "ventilationSystemYear >= buildingYear",
+                    "message": "Die Lüftungsanlage darf nicht älter als das Gebäude sein"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "ventilationSystemLocation",
+              "type": "radio",
+              "label": "Standort Lüftungsanlage",
+              "required": true,
+              "dependsOn": {
+                "field": "hasVentilationSystem",
+                "value": "ja"
+              },
+              "options": [
+                { "value": "innerhalb", "label": "Innerhalb" },
+                { "value": "keller", "label": "Keller" },
+                { "value": "dach", "label": "Dach" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "customer-info",
+      "title": "Bestell- & Kundendaten",
+      "fieldGroups": [
+        {
+          "title": "Objektadresse für den Energieausweis",
+          "fields": [
+            {
+              "name": "objectStreet",
+              "type": "text",
+              "label": "Straße & Hausnummer",
+              "required": true
+            },
+            {
+              "name": "objectZip",
+              "type": "text",
+              "label": "PLZ",
+              "required": true,
+              "validation": {
+                "pattern": "^[0-9]{5}$",
+                "message": "PLZ muss 5 Ziffern haben"
+              }
+            },
+            {
+              "name": "objectCity",
+              "type": "text",
+              "label": "Ort",
+              "required": true
+            }
+          ]
+        },
+        {
+          "title": "Bild-Uploads",
+          "fields": [
+            {
+              "name": "heatingPhoto",
+              "type": "file",
+              "label": "Foto der Heizungsanlage (Pflicht)",
+              "required": true,
+              "accept": "image/*"
+            },
+            {
+              "name": "buildingPhoto",
+              "type": "file",
+              "label": "Außenbild des Gebäudes",
+              "required": false,
+              "tooltip": "wird in den Energieausweis übernommen",
+              "accept": "image/*"
+            }
+          ]
+        },
+        {
+          "title": "Ausstellungsgrund & Kundenart",
+          "fields": [
+            {
+              "name": "purpose",
+              "type": "select",
+              "label": "Ausstellungsgrund",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "options": [
+                { "value": "verkauf", "label": "Verkauf" },
+                { "value": "vermietung", "label": "Vermietung" },
+                {
+                  "value": "modernisierung",
+                  "label": "Modernisierung",
+                  "disabled": true
+                },
+                { "value": "sonstiges", "label": "Sonstiges" }
+              ]
+            },
+            {
+              "name": "customerType",
+              "type": "select",
+              "label": "Kundenart",
+              "required": true,
+              "options": [
+                { "value": "privat", "label": "Privater Eigentümer" },
+                { "value": "makler", "label": "Makler" },
+                { "value": "verwalter", "label": "Hausverwalter" },
+                { "value": "sonstige", "label": "Sonstige" }
+              ]
+            },
+            {
+              "name": "customerTypeOther",
+              "type": "text",
+              "label": "Bitte angeben",
+              "required": true,
+              "dependsOn": {
+                "field": "customerType",
+                "value": "sonstige"
+              }
+            }
+          ]
+        },
+        {
+          "title": "Anmerkungen",
+          "fields": [
+            {
+              "name": "comments",
+              "type": "text",
+              "label": "Anmerkungen",
+              "required": false
+            },
+            {
+              "name": "additionalDocuments",
+              "type": "file",
+              "label": "Zusätzliche Dokumente",
+              "required": false,
+              "accept": "image/*,application/pdf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "title": "Zusammenfassung",
+      "fieldGroups": []
+    }
+  ]
+}
