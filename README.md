@@ -7,20 +7,25 @@ This plugin works with **simplified PSR-11 compliant** service container and **S
 ### Directory Structure
 
 ```
-src/
+includes/
 ├── Contracts/              # Interfaces and Abstract Classes
 │   ├── ServiceInterface.php
 │   ├── AbstractService.php
 │   ├── ServiceProviderInterface.php
 │   └── AbstractServiceProvider.php
 ├── Providers/              # Service Providers
-│   └── ElementorServiceProvider.php
+│   ├── ElementorServiceProvider.php
+│   ├── FormSubmissionServiceProvider.php
+│   └── WooCommerceServiceProvider.php
 ├── Services/               # Business Logic
-│   └── Elementor/
-│       ├── ElementorWidgetsService.php
-│       ├── EnergieausweisWidget.php
-│       └── Widgets/
-│           └── ExampleWidget.php
+│   ├── Elementor/
+│   │   ├── ElementorWidgetsService.php
+│   │   └── Widgets/
+│   ├── FormSubmission/
+│   │   └── FormSubmissionService.php
+│   └── WooCommerce/
+│       ├── CartService.php
+│       └── OrderMetaService.php
 ├── Exceptions/             # Custom Exceptions
 │   ├── ContainerException.php
 │   └── NotFoundException.php
@@ -28,6 +33,29 @@ src/
 ├── Plugin.php              # Main Plugin Class
 ├── Schema.php              # Plugin Lifecycle (activation/deactivation)
 └── function-helpers.php    # Helper Functions
+
+src/
+└── components/             # React Components
+    ├── multiple-step-form/ # Multi-step Form Component
+    │   ├── index.tsx
+    │   ├── MultipleStepForm.tsx
+    │   ├── FormField.tsx
+    │   ├── FormSummary.tsx
+    │   ├── StepIndicator.tsx
+    │   ├── form-schema.json
+    │   ├── types.ts
+    │   ├── style.scss
+    │   ├── hooks/
+    │   └── utils/
+    └── ui/                 # Shadcn UI Components
+        ├── button.tsx
+        ├── checkbox.tsx
+        ├── form.tsx
+        ├── input.tsx
+        ├── label.tsx
+        ├── radio-group.tsx
+        ├── select.tsx
+        └── tooltip.tsx
 ```
 
 ### Key Features
@@ -199,7 +227,7 @@ class CustomServiceProvider extends AbstractServiceProvider {
 
 ### Step 3: Register Provider in Plugin
 
-In `src/Plugin.php`, add your provider:
+In `includes/Plugin.php`, add your provider:
 
 ```php
 protected array $providers = [
@@ -208,18 +236,120 @@ protected array $providers = [
 ];
 ```
 
+## WooCommerce Integration
+
+### Form Data with Products
+
+The plugin provides functionality to attach form data to WooCommerce products, allowing multiple instances of the same product with different form submissions to appear as separate line items in orders.
+
+#### Features
+
+- **Cart Uniqueness**: Each product with different form data is treated as a unique cart item
+- **Minimal Database Storage**: Form data is stored as hidden order meta (2 entries per item)
+- **Dynamic Display**: Form fields are formatted for display on page load
+- **File Uploads**: Support for file attachments with download links in orders
+
+#### Services
+
+**CartService** (`includes/Services/WooCommerce/CartService.php`):
+- `add_product_with_form_data()`: Add products to cart with form data and file uploads
+- `add_unique_cart_item_data()`: Ensures unique cart items using MD5 hash with timestamp
+
+**OrderMetaService** (`includes/Services/WooCommerce/OrderMetaService.php`):
+- `save_order_item_meta()`: Saves `_onea_form_data` and `_onea_uploaded_files` as hidden meta
+- `format_order_item_meta()`: Dynamically formats form data for display in orders
+
+#### Usage Example
+
+```php
+use function Netzstrategen\Onea\plugin;
+
+$cart_service = plugin()::container()->get('woocommerce.cart');
+
+$form_data = [
+    'name' => ['value' => 'John Doe', 'label' => 'Name'],
+    'plz' => ['value' => '12345', 'label' => 'ZIP Code'],
+    'form_id' => '123',
+];
+
+$uploaded_files = [
+    'document' => 456, // Attachment ID
+];
+
+$cart_service->add_product_with_form_data(
+    product_id: 100,
+    quantity: 1,
+    form_data: $form_data,
+    uploaded_files: $uploaded_files
+);
+```
+
+## Form Submission API
+
+### REST Endpoint
+
+**Endpoint**: `POST /wp-json/onea/v1/submit-form`
+
+**FormSubmissionService** (`includes/Services/FormSubmission/FormSubmissionService.php`):
+- Handles form submissions via REST API
+- Processes file uploads
+- Adds product to WooCommerce cart with form data
+- Returns cart redirect URL
+
+**Request Body**:
+```json
+{
+    "formData": {
+        "name": {"value": "John Doe", "label": "Name"},
+        "email": {"value": "john@example.com", "label": "Email"},
+        "plz": {"value": "12345", "label": "ZIP Code"}
+    },
+    "uploadedFiles": {
+        "document": [123, 456]
+    },
+    "formId": "123",
+    "productId": 100
+}
+```
+
+**Response**:
+```json
+{
+    "success": true,
+    "redirect_url": "https://example.com/cart/"
+}
+```
+
 ## Development
 
 ### Requirements
 
 - PHP 8.1+
 - WordPress 6.0+
+- WooCommerce 8.0+
 - Composer
+- Node.js 18+ & pnpm
 
 ### Installation
 
+**PHP Dependencies**:
 ```bash
 composer install
+```
+
+**JavaScript Dependencies**:
+```bash
+pnpm install
+```
+
+**Build Assets**:
+```bash
+pnpm run build
+```
+
+**Development Mode**:
+```bash
+pnpm run start
 ```
 
 ### Code Standards
@@ -235,3 +365,16 @@ Auto-fix violations:
 ```bash
 ./vendor/bin/phpcbf --standard=phpcs.ruleset.xml
 ```
+
+### Debug Logging
+
+The plugin includes a custom logging function for debugging:
+
+```php
+use function Netzstrategen\Onea\onea_log;
+
+onea_log('Debug message', 'DEBUG');
+onea_log('Error occurred', 'ERROR');
+```
+
+Logs are written to: `wordpress-onea-extensions/debug-onea.log` (requires `WP_DEBUG_LOG` enabled)
