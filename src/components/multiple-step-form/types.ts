@@ -6,6 +6,7 @@ export interface FieldOption {
   value: string;
   label: string;
   disabled?: boolean;
+  image?: string; // For image-select type
 }
 
 export interface FieldDependency {
@@ -75,13 +76,19 @@ export interface FileField extends BaseField {
   accept?: string;
 }
 
+export interface ImageSelectField extends BaseField {
+  type: "image-select";
+  options: FieldOption[];
+}
+
 export type FormField =
   | TextField
   | NumberField
   | SelectField
   | RadioField
   | CheckboxField
-  | FileField;
+  | FileField
+  | ImageSelectField;
 
 export interface FieldGroup {
   title?: string;
@@ -109,6 +116,12 @@ export interface MultiStepFormProps {
   componentId: string;
   productId?: string;
   nonce?: string;
+  buildingImages?: {
+    rechteck?: string;
+    lForm?: string;
+    tForm?: string;
+    uForm?: string;
+  };
 }
 
 export interface FormSubmissionResponse {

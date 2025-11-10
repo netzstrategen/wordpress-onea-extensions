@@ -622,16 +622,32 @@
           "fields": [
             {
               "name": "buildingShape",
-              "type": "select",
+              "type": "image-select",
               "label": "Gebäudeform",
               "placeholder": "Bitte wählen...",
               "required": true,
               "tooltip": "Bitte wählen Sie die passende Gebäudeform und tragen Sie die zugehörigen Wandlängen in Metern ein. Nicht zutreffende Felder können leer bleiben.",
               "options": [
-                { "value": "rechteck", "label": "Rechteck" },
-                { "value": "lForm", "label": "L-Form" },
-                { "value": "tForm", "label": "T-Form" },
-                { "value": "uForm", "label": "U-Form" }
+                {
+                  "value": "rechteck",
+                  "label": "Rechteck",
+                  "image": "rechteck"
+                },
+                {
+                  "value": "lForm",
+                  "label": "L-Form",
+                  "image": "lForm"
+                },
+                {
+                  "value": "tForm",
+                  "label": "T-Form",
+                  "image": "tForm"
+                },
+                {
+                  "value": "uForm",
+                  "label": "U-Form",
+                  "image": "uForm"
+                }
               ]
             },
             {

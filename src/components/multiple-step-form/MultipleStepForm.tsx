@@ -22,6 +22,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
   componentId,
   productId,
   nonce,
+  buildingImages,
 }) => {
   // Inject dynamic billing period options into form config
   const config = useBillingPeriodOptions(formConfig);
@@ -174,6 +175,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
                           form={form}
                           allFormValues={allFormValues}
                           currentStepConfig={currentStepConfig}
+                          buildingImages={buildingImages}
                         />
                       );
                     })}
