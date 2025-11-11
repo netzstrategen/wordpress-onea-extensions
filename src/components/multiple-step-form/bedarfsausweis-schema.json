@@ -95,13 +95,7 @@
               "validation": {
                 "min": 1900,
                 "max": 2025,
-                "message": "Baujahr muss zwischen 1900 und heute liegen",
-                "customValidations": [
-                  {
-                    "condition": "buildingYear < 2022",
-                    "message": "Kein Energieausweis notwendig. Bitte [Bedarfsausweis beantragen](https://onlineenergieausweis.com/verbrauchsausweis-beantragen/)."
-                  }
-                ]
+                "message": "Baujahr muss zwischen 1900 und heute liegen"
               }
             }
           ]
