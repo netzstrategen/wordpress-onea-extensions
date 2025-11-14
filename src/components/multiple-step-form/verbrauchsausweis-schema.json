@@ -1230,11 +1230,14 @@
             {
               "name": "objectStreet",
               "type": "text",
-              "label": "Straße & Hausnummer",
-              "required": true,
-              "validation": {
-                "message": "Bitte geben Sie die Straße und Hausnummer ein"
-              }
+              "label": "Straße",
+              "required": true
+            },
+            {
+              "name": "objectNumber",
+              "type": "number",
+              "label": "Hausnummer",
+              "required": true
             },
             {
               "name": "objectZip",

@@ -33,6 +33,12 @@ interface FormFieldProps {
   form: UseFormReturn<any>;
   allFormValues?: any;
   currentStepConfig?: FormStep;
+  buildingImages?: {
+    rechteck?: string;
+    lForm?: string;
+    tForm?: string;
+    uForm?: string;
+  };
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -40,6 +46,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   form,
   allFormValues,
   currentStepConfig,
+  buildingImages,
 }) => {
   const consumptionUnit = getConsumptionFieldUnit(
     field.name,
@@ -76,7 +83,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           </FormLabel>
 
           <FormControl>
-            {renderFieldInput(field, formField, allFormValues)}
+            {renderFieldInput(field, formField, allFormValues, buildingImages)}
           </FormControl>
 
           {field.description && (
@@ -93,7 +100,13 @@ export const FormField: React.FC<FormFieldProps> = ({
 function renderFieldInput(
   field: FormFieldType,
   formField: any,
-  allFormValues?: any
+  allFormValues?: any,
+  buildingImages?: {
+    rechteck?: string;
+    lForm?: string;
+    tForm?: string;
+    uForm?: string;
+  }
 ) {
   // Check if this is the numberOfUnits field and determine if it should be disabled
   const isNumberOfUnitsField = field.name === "numberOfUnits";
@@ -162,21 +175,41 @@ function renderFieldInput(
             </SelectTrigger>
             <SelectContent>
               {field.options && field.options.length > 0 ? (
-                field.options.map((option) => (
-                  <SelectItem
-                    key={option.value}
-                    value={option.value}
-                    disabled={option.disabled}
-                  >
-                    {option.label}
-                    {(option as any).unit && (
-                      <span className="text-muted-foreground">
-                        {" "}
-                        ({(option as any).unit})
-                      </span>
-                    )}
-                  </SelectItem>
-                ))
+                field.options.map((option) => {
+                  // Check if option should be disabled based on business logic
+                  let isDisabled = option.disabled || false;
+
+                  // Special logic: if this is the fuelType field and heatingSystemType is "fernheizung"
+                  // only allow fernwaermeKWK and fernwaermeHeizwerk
+                  if (
+                    field.name === "fuelType" &&
+                    allFormValues?.heatingSystemType === "fernheizung"
+                  ) {
+                    const allowedFuels = [
+                      "fernwaermeKWK",
+                      "fernwaermeHeizwerk",
+                    ];
+                    if (!allowedFuels.includes(option.value)) {
+                      isDisabled = true;
+                    }
+                  }
+
+                  return (
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                      disabled={isDisabled}
+                    >
+                      {option.label}
+                      {(option as any).unit && (
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({(option as any).unit})
+                        </span>
+                      )}
+                    </SelectItem>
+                  );
+                })
               ) : (
                 <SelectItem value="no-options" disabled>
                   Keine Optionen verfügbar
@@ -184,6 +217,69 @@ function renderFieldInput(
               )}
             </SelectContent>
           </Select>
+        );
+      }
+      return null;
+
+    case "image-select":
+      if (field.type === "image-select") {
+        const imageMap: Record<string, string> = {
+          rechteck: buildingImages?.rechteck?.trim() || "",
+          lForm: buildingImages?.lForm?.trim() || "",
+          tForm: buildingImages?.tForm?.trim() || "",
+          uForm: buildingImages?.uForm?.trim() || "",
+        };
+
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            {field.options.map((option) => {
+              const isSelected = formField.value === option.value;
+              const imageKey = (option as any).image || option.value;
+              const imageSrc = imageMap[imageKey];
+
+              return (
+                <div
+                  key={option.value}
+                  onClick={() => formField.onChange(option.value)}
+                  className={`
+                    relative cursor-pointer rounded-lg border-2 p-4 transition-all
+                    ${
+                      isSelected
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-gray-300 hover:border-gray-400 hover:shadow-sm"
+                    }
+                  `}
+                >
+                  <div className="aspect-[4/3] w-full overflow-hidden rounded-md bg-white">
+                    <img
+                      src={imageSrc}
+                      alt={option.label}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                  <p className="mt-2 text-center text-sm font-medium">
+                    {option.label}
+                  </p>
+                  {isSelected && (
+                    <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         );
       }
       return null;
