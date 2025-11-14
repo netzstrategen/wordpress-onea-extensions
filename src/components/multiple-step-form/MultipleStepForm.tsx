@@ -143,45 +143,63 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
           ) : (
             /* Fields rendered in groups */
             <div className="space-y-6">
-              {currentStepConfig.fieldGroups.map((group, groupIndex) => (
-                <div
-                  key={groupIndex}
-                  className="field-group p-6 border border-border rounded-lg bg-card"
-                >
-                  {group.title && (
-                    <h4 className="text-base font-semibold mb-4">
-                      {group.title}
-                    </h4>
-                  )}
-                  {group.description && (
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {group.description}
-                    </p>
-                  )}
-                  <div className="space-y-4">
-                    {group.fields.map((field) => {
-                      // Collect all fields from current step for nested dependency checking
-                      const allStepFields =
-                        currentStepConfig.fieldGroups.flatMap((g) => g.fields);
-                      if (
-                        !shouldIncludeField(field, allFormValues, allStepFields)
-                      ) {
-                        return null;
-                      }
-                      return (
-                        <FormField
-                          key={field.name}
-                          field={field}
-                          form={form}
-                          allFormValues={allFormValues}
-                          currentStepConfig={currentStepConfig}
-                          buildingImages={buildingImages}
-                        />
-                      );
-                    })}
+              {currentStepConfig.fieldGroups.map((group, groupIndex) => {
+                // Collect all fields from current step for nested dependency checking
+                const allStepFields = currentStepConfig.fieldGroups.flatMap(
+                  (g) => g.fields
+                );
+
+                // Check if at least one field in this group should be visible
+                const hasVisibleFields = group.fields.some((field) =>
+                  shouldIncludeField(field, allFormValues, allStepFields)
+                );
+
+                // If no fields are visible, don't render the fieldGroup at all
+                if (!hasVisibleFields) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={groupIndex}
+                    className="field-group p-6 border border-border rounded-lg bg-card"
+                  >
+                    {group.title && (
+                      <h4 className="text-base font-semibold mb-4">
+                        {group.title}
+                      </h4>
+                    )}
+                    {group.description && (
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {group.description}
+                      </p>
+                    )}
+                    <div className="space-y-4">
+                      {group.fields.map((field) => {
+                        if (
+                          !shouldIncludeField(
+                            field,
+                            allFormValues,
+                            allStepFields
+                          )
+                        ) {
+                          return null;
+                        }
+                        return (
+                          <FormField
+                            key={field.name}
+                            field={field}
+                            form={form}
+                            allFormValues={allFormValues}
+                            currentStepConfig={currentStepConfig}
+                            buildingImages={buildingImages}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 

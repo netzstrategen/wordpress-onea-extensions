@@ -361,6 +361,7 @@
               "label": "Leerstand?",
               "required": true,
               "defaultValue": "nein",
+              "tooltip": "Den Leerstand berechnen Sie wie folgt: Leerstandsquote= (leerstehende Fläche in qm x Tage leerstehend) geteilt durch (Gesamtwohnfläche in qm x Tage des Gesamtjahres) x 100",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -414,6 +415,7 @@
               "label": "Leerstand?",
               "required": true,
               "defaultValue": "nein",
+              "tooltip": "Den Leerstand berechnen Sie wie folgt: Leerstandsquote= (leerstehende Fläche in qm x Tage leerstehend) geteilt durch (Gesamtwohnfläche in qm x Tage des Gesamtjahres) x 100",
               "options": [
                 { "value": "ja", "label": "Ja" },
                 { "value": "nein", "label": "Nein" }
@@ -462,7 +464,7 @@
                 },
                 {
                   "value": "central",
-                  "label": "Warmwasseraufbereitung erfolgt zentral"
+                  "label": "Warmwasseraufbereitung erfolgt dezentral"
                 }
               ]
             },
@@ -801,12 +803,18 @@
                 "min": 0,
                 "message": "Verbrauch muss positiv sein"
               }
-            },
+            }
+          ]
+        },
+        {
+          "title": "Warmwasseraufbereitung (2. Brennstoff)",
+          "fields": [
             {
               "name": "secondFuelHotWaterPreparation",
               "type": "select",
               "label": "Warmwasseraufbereitung (2. Brennstoff)",
               "required": true,
+              "tooltip": "Wählen Sie aus, mit welchem Brennstoff Ihre Warmwasseraufbereitung für den 2. Brennstoff erfolgt ist.",
               "dependsOn": {
                 "field": "hasAdditionalFuels",
                 "value": "ja"
@@ -822,14 +830,118 @@
                 },
                 {
                   "value": "central",
-                  "label": "Warmwasseraufbereitung erfolgt zentral"
+                  "label": "Warmwasseraufbereitung erfolgt dezentral"
                 }
               ]
             },
             {
+              "name": "secondFuelHotWaterFuel",
+              "type": "select",
+              "label": "Brennstoff für Warmwasser (2. Brennstoff)",
+              "placeholder": "Bitte wählen...",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuelHotWaterPreparation",
+                "value": "separate"
+              },
+              "options": [
+                { "value": "heizoel", "label": "Heizöl", "unit": "Liter" },
+                { "value": "erdgas", "label": "Erdgas", "unit": "kWh" },
+                { "value": "fluessiggas", "label": "Flüssiggas", "unit": "m³" },
+                { "value": "biogas", "label": "Biogas", "unit": "kWh" },
+                {
+                  "value": "biogasNahe",
+                  "label": "Biogas gebäudenah erzeugt",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "bioOel",
+                  "label": "Bioöl / Pflanzenöl",
+                  "unit": "Liter"
+                },
+                { "value": "strom", "label": "Strom", "unit": "kWh" },
+                { "value": "holz", "label": "Holz", "unit": "Ster" },
+                {
+                  "value": "holzpellets",
+                  "label": "Holzpellets",
+                  "unit": "kg"
+                },
+                {
+                  "value": "holzhackschnitzel",
+                  "label": "Holzhackschnitzel",
+                  "unit": "kg"
+                },
+                { "value": "raumkohle", "label": "Raumkohle", "unit": "kg" },
+                { "value": "steinkohle", "label": "Steinkohle", "unit": "kg" },
+                {
+                  "value": "fernwaermeHeizwerkFossil",
+                  "label": "Fernwärme aus Heizwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkFossil",
+                  "label": "Fernwärme aus Kraftwerken, fossil",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeKraftwerkErneuerbar",
+                  "label": "Fernwärme aus Kraftwerken, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "fernwaermeHeizwerkErneuerbar",
+                  "label": "Fernwärme aus Heizwerk, erneuerbar",
+                  "unit": "kWh"
+                },
+                {
+                  "value": "nachtstrom",
+                  "label": "Nachtstrom, NT",
+                  "unit": "kWh"
+                }
+              ]
+            },
+            {
+              "name": "secondFuelHotWaterFuelPrimaryEnergyFactor",
+              "type": "number",
+              "label": "Primärenergiefaktor (Warmwasser 2. Brennstoff)",
+              "description": "Der Primärenergiefaktor gibt an, wie viel Primärenergie für die Bereitstellung einer Einheit Endenergie benötigt wird. Diesen Wert finden Sie in Ihren Fernwärme-Unterlagen oder erhalten ihn von Ihrem Fernwärme-Anbieter.",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuelHotWaterFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "validation": {
+                "min": 0,
+                "max": 3,
+                "message": "Der Primärenergiefaktor muss zwischen 0 und 3 liegen"
+              }
+            },
+            {
+              "name": "secondFuelHotWaterFuelDocumentation",
+              "type": "file",
+              "label": "Nachweis Primärenergiefaktor (Warmwasser 2. Brennstoff)",
+              "description": "Bitte laden Sie einen Nachweis für den Primärenergiefaktor hoch (z.B. Bescheinigung des Fernwärme-Anbieters).",
+              "required": true,
+              "dependsOn": {
+                "field": "secondFuelHotWaterFuel",
+                "value": [
+                  "fernwaermeHeizwerkFossil",
+                  "fernwaermeKraftwerkFossil",
+                  "fernwaermeKraftwerkErneuerbar",
+                  "fernwaermeHeizwerkErneuerbar"
+                ]
+              },
+              "accept": "image/*,application/pdf"
+            },
+            {
               "name": "secondFuelHotWaterConsumption1",
               "type": "number",
-              "label": "Warmwasser Verbrauch 2. Brennstoff - 1. Periode",
+              "label": "Warmwasser Verbrauch - 1. Periode",
               "required": true,
               "dependsOn": {
                 "field": "secondFuelHotWaterPreparation",
@@ -843,7 +955,7 @@
             {
               "name": "secondFuelHotWaterConsumption2",
               "type": "number",
-              "label": "Warmwasser Verbrauch 2. Brennstoff - 2. Periode",
+              "label": "Warmwasser Verbrauch - 2. Periode",
               "required": true,
               "dependsOn": {
                 "field": "secondFuelHotWaterPreparation",
@@ -857,7 +969,7 @@
             {
               "name": "secondFuelHotWaterConsumption3",
               "type": "number",
-              "label": "Warmwasser Verbrauch 2. Brennstoff - 3. Periode",
+              "label": "Warmwasser Verbrauch - 3. Periode",
               "required": true,
               "dependsOn": {
                 "field": "secondFuelHotWaterPreparation",
@@ -885,6 +997,9 @@
               "label": "Gebäudelüftung",
               "required": true,
               "tooltip": "Geben Sie an, wie Ihr Gebäude belüftet wird.",
+              "validation": {
+                "message": "Bitte wählen Sie mindestens eine Lüftungsart aus"
+              },
               "options": [
                 { "value": "fenster", "label": "Fensterlüftung" },
                 { "value": "schacht", "label": "Schachtlüftung" },
@@ -905,7 +1020,10 @@
               "name": "energyMeasures",
               "type": "checkbox",
               "label": "Energetische Maßnahmen",
-              "required": false,
+              "required": true,
+              "validation": {
+                "message": "Bitte wählen Sie mindestens eine energetische Maßnahme aus"
+              },
               "options": [
                 { "value": "aussenwand", "label": "Außenwand gedämmt?" },
                 {
@@ -1068,6 +1186,9 @@
                 "field": "hasRenewableEnergy",
                 "value": "ja"
               },
+              "validation": {
+                "message": "Bitte wählen Sie mindestens eine Energiequelle aus"
+              },
               "options": [
                 { "value": "solarzelle", "label": "Solarzelle" },
                 { "value": "solarkollektor", "label": "Solarkollektor" },
@@ -1085,6 +1206,9 @@
               "dependsOn": {
                 "field": "hasRenewableEnergy",
                 "value": "ja"
+              },
+              "validation": {
+                "message": "Bitte wählen Sie mindestens eine Verwendungsart aus"
               },
               "options": [
                 { "value": "heizung", "label": "Heizung" },
@@ -1129,7 +1253,10 @@
               "name": "objectCity",
               "type": "text",
               "label": "Ort",
-              "required": true
+              "required": true,
+              "validation": {
+                "message": "Bitte geben Sie den Ort ein"
+              }
             }
           ]
         },

@@ -35,6 +35,20 @@ class CartService extends AbstractService {
 	 * @return string|\WP_Error Cart item key on success, WP_Error on failure.
 	 */
 	public function add_product_with_form_data(int $product_id, array $form_data, array $file_ids = []) {
+		// Initialize WooCommerce cart if not available (e.g., in REST API context).
+		if (! WC()->cart || is_null(WC()->cart)) {
+			// Load cart from session.
+			wc_load_cart();
+		}
+
+		// Check if cart is still not available.
+		if (! WC()->cart || is_null(WC()->cart)) {
+			return new \WP_Error(
+				'cart_not_available',
+				__('WooCommerce cart is not available. Please ensure WooCommerce is properly installed and activated.', 'wp-onea-extensions')
+			);
+		}
+
 		// Validate product exists and is purchasable.
 		$product = wc_get_product($product_id);
 
