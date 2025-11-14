@@ -4,7 +4,7 @@
   "steps": [
     {
       "id": "building-info",
-      "title": "Allgemeine Gebäudeinformationen",
+      "title": "Gebäudeinformationen",
       "fieldGroups": [
         {
           "title": "Gebäudeart & Wohneinheiten",
@@ -65,6 +65,7 @@
               "label": "Durchschnittliche Vollgeschosshöhe in m",
               "placeholder": "z.B. 2,95",
               "required": true,
+              "tooltip": "Die Vollgeschosshöhe ist der Abstand von der Oberkante eines Fußbodens bis zur Oberkante des nächsten Fußbodens – also inklusive der dazwischenliegenden Decke. Sie umfasst sowohl die lichte Raumhöhe als auch die Dicke der Decke darüber.",
               "validation": {
                 "min": 2,
                 "max": 5,
@@ -253,6 +254,7 @@
               "type": "number",
               "label": "Fensterausrichtung Nord (m²)",
               "required": false,
+              "tooltip": "Gesamtfensterfläche in Quadratmetern Nordseite",
               "validation": {
                 "min": 0,
                 "message": "Fläche muss positiv sein"
@@ -263,6 +265,7 @@
               "type": "number",
               "label": "Fensterausrichtung Ost (m²)",
               "required": false,
+              "tooltip": "Gesamtfensterfläche in Quadratmetern Ostseite",
               "validation": {
                 "min": 0,
                 "message": "Fläche muss positiv sein"
@@ -273,6 +276,7 @@
               "type": "number",
               "label": "Fensterausrichtung Süd (m²)",
               "required": false,
+              "tooltip": "Gesamtfensterfläche in Quadratmetern Südseite",
               "validation": {
                 "min": 0,
                 "message": "Fläche muss positiv sein"
@@ -283,6 +287,7 @@
               "type": "number",
               "label": "Fensterausrichtung West (m²)",
               "required": false,
+              "tooltip": "Gesamtfensterfläche in Quadratmetern Westseite",
               "validation": {
                 "min": 0,
                 "message": "Fläche muss positiv sein"
@@ -317,7 +322,7 @@
           "fields": [
             {
               "name": "basementCeilingConstruction",
-              "type": "checkbox",
+              "type": "radio",
               "label": "Aufbau Kellerdecke/Bodenplatte",
               "required": true,
               "options": [
@@ -484,9 +489,9 @@
               ]
             },
             {
-              "name": "roofType",
+              "name": "roofTypeAndPitch",
               "type": "select",
-              "label": "Dachform",
+              "label": "Dachform & Neigungsgrad",
               "placeholder": "Bitte wählen...",
               "required": true,
               "dependsOn": {
@@ -494,24 +499,31 @@
                 "value": "ja"
               },
               "options": [
-                { "value": "sattel", "label": "Sattel" },
-                { "value": "pult", "label": "Pult" }
+                {
+                  "value": "sattelSchwach",
+                  "label": "Satteldach – mit schwacher Neigung (10-25°)"
+                },
+                {
+                  "value": "sattelMittel",
+                  "label": "Satteldach – mit mittlerer Neigung (26-40°)"
+                },
+                {
+                  "value": "sattelStark",
+                  "label": "Satteldach – mit starker Neigung (> 40°)"
+                },
+                {
+                  "value": "pultSchwach",
+                  "label": "Pultdach – mit schwacher Neigung (10-25°)"
+                },
+                {
+                  "value": "pultMittel",
+                  "label": "Pultdach – mit mittlerer Neigung (26-40°)"
+                },
+                {
+                  "value": "pultStark",
+                  "label": "Pultdach – mit starker Neigung (> 40°)"
+                }
               ]
-            },
-            {
-              "name": "roofPitch",
-              "type": "number",
-              "label": "Neigungsgrad in °",
-              "required": true,
-              "dependsOn": {
-                "field": "hasAttic",
-                "value": "ja"
-              },
-              "validation": {
-                "min": 0,
-                "max": 90,
-                "message": "Neigungsgrad muss zwischen 0 und 90 Grad liegen"
-              }
             },
             {
               "name": "topFloorCeilingType",
@@ -1249,7 +1261,13 @@
               },
               "validation": {
                 "min": 0,
-                "message": "Fläche muss positiv sein"
+                "message": "Fläche muss positiv sein",
+                "customValidations": [
+                  {
+                    "condition": "cooledArea <= livingArea",
+                    "message": "Die gekühlte Fläche darf nicht größer als die Wohnfläche sein"
+                  }
+                ]
               }
             },
             {
@@ -1338,7 +1356,13 @@
             {
               "name": "objectStreet",
               "type": "text",
-              "label": "Straße & Hausnummer",
+              "label": "Straße",
+              "required": true
+            },
+            {
+              "name": "objectNumber",
+              "type": "number",
+              "label": "Hausnummer",
               "required": true
             },
             {
@@ -1375,6 +1399,30 @@
               "label": "Außenbild des Gebäudes",
               "required": false,
               "tooltip": "wird in den Energieausweis übernommen",
+              "accept": "image/*"
+            },
+            {
+              "name": "windowPhoto",
+              "type": "file",
+              "label": "Fenster",
+              "required": false,
+              "tooltip": "Zeigt die Art des Fensters sowie den Einbau in die Außenwand",
+              "accept": "image/*"
+            },
+            {
+              "name": "exteriorWallPhoto",
+              "type": "file",
+              "label": "Außenwand",
+              "required": false,
+              "tooltip": "Zeigt die Außenwand mit eventueller Außenwanddämmung",
+              "accept": "image/*"
+            },
+            {
+              "name": "buildingTechPhoto",
+              "type": "file",
+              "label": "Gebäudetechnik & Sanierungsstand",
+              "required": false,
+              "tooltip": "Senden Sie uns weitere Bilder von technischen Einrichtungen wie Warmwasseraufbereitung, Kühlung / Lüftung, Solar- und Photovoltaikanlagen und Kellerdecken & Dachdämmungen zu",
               "accept": "image/*"
             }
           ]

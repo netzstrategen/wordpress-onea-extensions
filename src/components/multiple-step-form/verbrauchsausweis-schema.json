@@ -1106,7 +1106,13 @@
             {
               "name": "objectStreet",
               "type": "text",
-              "label": "Straße & Hausnummer",
+              "label": "Straße",
+              "required": true
+            },
+            {
+              "name": "objectNumber",
+              "type": "number",
+              "label": "Hausnummer",
               "required": true
             },
             {
