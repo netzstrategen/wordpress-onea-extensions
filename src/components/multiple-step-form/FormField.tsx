@@ -223,36 +223,11 @@ function renderFieldInput(
 
     case "image-select":
       if (field.type === "image-select") {
-        // Default placeholder SVG images - used when no custom images are uploaded
-        const defaultImageMap: Record<string, string> = {
-          rechteck:
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect x='54' y='24' width='234' height='128' fill='%23e5e7eb' stroke='%236b7280' stroke-width='3'/%3E%3Ctext x='150' y='40' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='14'%3Ed%3C/text%3E%3Ctext x='30' y='90' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='14'%3Eb%3C/text%3E%3Ctext x='150' y='170' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ea%3C/text%3E%3Cpath d='M54,24 L54,16 M288,24 L288,16' stroke='%239ca3af' stroke-width='2'/%3E%3Cpath d='M54,16 L288,16' stroke='%239ca3af' stroke-width='2' marker-start='url(%23arrowgray)' marker-end='url(%23arrowgray)'/%3E%3Cpath d='M54,152 L54,160 M288,152 L288,160' stroke='%23f59e0b' stroke-width='2'/%3E%3Cpath d='M54,160 L288,160' stroke='%23f59e0b' stroke-width='2' marker-start='url(%23arroworange)' marker-end='url(%23arroworange)'/%3E%3Cdefs%3E%3Cmarker id='arrowgray' markerWidth='10' markerHeight='10' refX='5' refY='5' orient='auto'%3E%3Cpolygon points='0,5 10,0 10,10' fill='%239ca3af'/%3E%3C/marker%3E%3Cmarker id='arroworange' markerWidth='10' markerHeight='10' refX='5' refY='5' orient='auto'%3E%3Cpolygon points='0,5 10,0 10,10' fill='%23f59e0b'/%3E%3C/marker%3E%3C/defs%3E%3C/svg%3E",
-          lForm:
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'%3E%3Cpath d='M60,40 L150,40 L150,90 L240,90 L240,210 L60,210 Z' fill='%23e5e7eb' stroke='%236b7280' stroke-width='3'/%3E%3Ctext x='105' y='30' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ea%3C/text%3E%3Ctext x='195' y='70' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ee%3C/text%3E%3Ctext x='105' y='65' text-anchor='end' fill='%239ca3af' font-family='Arial' font-size='14'%3Eg%3C/text%3E%3Ctext x='160' y='125' text-anchor='start' fill='%239ca3af' font-family='Arial' font-size='14'%3Eb%3C/text%3E%3Ctext x='30' y='125' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='14'%3Ed%3C/text%3E%3Ctext x='230' y='110' text-anchor='end' fill='%239ca3af' font-family='Arial' font-size='14'%3Ec%3C/text%3E%3C/svg%3E",
-          tForm:
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'%3E%3Cpath d='M80,40 L140,40 L140,80 L220,80 L220,140 L140,140 L140,210 L80,210 L80,140 L40,140 L40,80 L80,80 Z' fill='%23e5e7eb' stroke='%236b7280' stroke-width='3'/%3E%3Ctext x='110' y='30' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ed%3C/text%3E%3Ctext x='180' y='110' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='14'%3Ee%3C/text%3E%3Ctext x='110' y='230' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ea%3C/text%3E%3Ctext x='230' y='65' text-anchor='start' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Eb%3C/text%3E%3Ctext x='30' y='65' text-anchor='end' fill='%239ca3af' font-family='Arial' font-size='14'%3Ef%3C/text%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='14'%3Eg%3C/text%3E%3C/svg%3E",
-          uForm:
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'%3E%3Cpath d='M40,40 L100,40 L100,140 L200,140 L200,40 L260,40 L260,210 L40,210 Z' fill='%23e5e7eb' stroke='%236b7280' stroke-width='3'/%3E%3Ctext x='70' y='30' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ef%3C/text%3E%3Ctext x='230' y='30' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Eb%3C/text%3E%3Ctext x='150' y='230' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ed%3C/text%3E%3Ctext x='30' y='125' text-anchor='middle' fill='%23f59e0b' font-family='Arial' font-size='14' font-weight='bold'%3Ea%3C/text%3E%3Ctext x='270' y='125' text-anchor='start' fill='%239ca3af' font-family='Arial' font-size='14'%3Eh%3C/text%3E%3Ctext x='150' y='125' text-anchor='middle' fill='%239ca3af' font-family='Arial' font-size='14'%3Eg%3C/text%3E%3C/svg%3E",
-        };
-
-        // Use custom uploaded images if available and not empty, otherwise fall back to defaults
         const imageMap: Record<string, string> = {
-          rechteck:
-            buildingImages?.rechteck && buildingImages.rechteck.trim()
-              ? buildingImages.rechteck
-              : defaultImageMap.rechteck,
-          lForm:
-            buildingImages?.lForm && buildingImages.lForm.trim()
-              ? buildingImages.lForm
-              : defaultImageMap.lForm,
-          tForm:
-            buildingImages?.tForm && buildingImages.tForm.trim()
-              ? buildingImages.tForm
-              : defaultImageMap.tForm,
-          uForm:
-            buildingImages?.uForm && buildingImages.uForm.trim()
-              ? buildingImages.uForm
-              : defaultImageMap.uForm,
+          rechteck: buildingImages?.rechteck?.trim() || "",
+          lForm: buildingImages?.lForm?.trim() || "",
+          tForm: buildingImages?.tForm?.trim() || "",
+          uForm: buildingImages?.uForm?.trim() || "",
         };
 
         return (
@@ -260,7 +235,7 @@ function renderFieldInput(
             {field.options.map((option) => {
               const isSelected = formField.value === option.value;
               const imageKey = (option as any).image || option.value;
-              const imageSrc = imageMap[imageKey] || defaultImageMap.rechteck;
+              const imageSrc = imageMap[imageKey];
 
               return (
                 <div
