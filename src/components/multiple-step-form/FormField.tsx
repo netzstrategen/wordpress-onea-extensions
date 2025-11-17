@@ -64,7 +64,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         <FormItem>
           <FormLabel>
             {field.label}
-            {field.required && <span className="text-red-500 ml-1">*</span>}
+            {field.required && <React.Fragment>*</React.Fragment>}
             {consumptionUnit && (
               <span className="consumption-unit text-muted-foreground font-normal">
                 (in {consumptionUnit})
