@@ -263,24 +263,21 @@ function renderFieldInput(
                   key={option.value}
                   onClick={() => formField.onChange(option.value)}
                   className={`
-                    relative cursor-pointer rounded-lg border-2 p-4 transition-all
+                    relative cursor-pointer rounded-lg border-2 transition-all
                     ${
                       isSelected
-                        ? "border-primary bg-primary/5 shadow-md"
+                        ? "border-primary shadow-md"
                         : "border-gray-300 hover:border-gray-400 hover:shadow-sm"
                     }
                   `}
                 >
-                  <div className="aspect-[4/3] w-full overflow-hidden rounded-md bg-white">
+                  <div className="w-full overflow-hidden rounded-md bg-white">
                     <img
                       src={imageSrc}
                       alt={option.label}
                       className="h-full w-full object-contain"
                     />
                   </div>
-                  <p className="mt-2 text-center text-sm font-medium">
-                    {option.label}
-                  </p>
                   {isSelected && (
                     <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white">
                       <svg

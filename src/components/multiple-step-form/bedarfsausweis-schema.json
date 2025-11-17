@@ -688,7 +688,7 @@
               "name": "wallLengthC",
               "type": "number",
               "label": "Wandlänge c (in Metern)",
-              "required": false,
+              "required": true,
               "dependsOn": {
                 "field": "buildingShape",
                 "value": ["lForm", "tForm", "uForm"]
@@ -702,7 +702,7 @@
               "name": "wallLengthD",
               "type": "number",
               "label": "Wandlänge d (in Metern)",
-              "required": false,
+              "required": true,
               "dependsOn": {
                 "field": "buildingShape",
                 "value": ["lForm", "tForm", "uForm"]
@@ -716,10 +716,10 @@
               "name": "wallLengthE",
               "type": "number",
               "label": "Wandlänge e (in Metern)",
-              "required": false,
+              "required": true,
               "dependsOn": {
                 "field": "buildingShape",
-                "value": ["tForm", "uForm"]
+                "value": ["lForm", "tForm", "uForm"]
               },
               "validation": {
                 "min": 0,
