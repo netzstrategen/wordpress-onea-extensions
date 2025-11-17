@@ -54,6 +54,8 @@ export const FormField: React.FC<FormFieldProps> = ({
     currentStepConfig
   );
 
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+
   return (
     <ShadcnFormField
       control={form.control}
@@ -70,9 +72,28 @@ export const FormField: React.FC<FormFieldProps> = ({
             )}
             {field.tooltip && (
               <TooltipProvider delayDuration={300}>
-                <Tooltip>
+                <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
                   <TooltipTrigger asChild>
-                    <div className="tooltip-trigger">i</div>
+                    <div
+                      className="tooltip-trigger"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Mehr Informationen anzeigen"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsTooltipOpen(!isTooltipOpen);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setIsTooltipOpen(!isTooltipOpen);
+                        }
+                      }}
+                      onMouseEnter={() => setIsTooltipOpen(true)}
+                      onMouseLeave={() => setIsTooltipOpen(false)}
+                    >
+                      i
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="tooltip-content">{field.tooltip}</p>
