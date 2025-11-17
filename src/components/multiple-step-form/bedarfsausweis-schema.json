@@ -727,48 +727,6 @@
               }
             },
             {
-              "name": "wallLengthF",
-              "type": "number",
-              "label": "Wandlänge f (in Metern)",
-              "required": false,
-              "dependsOn": {
-                "field": "buildingShape",
-                "value": ["tForm", "uForm"]
-              },
-              "validation": {
-                "min": 0,
-                "message": "Wandlänge muss positiv sein"
-              }
-            },
-            {
-              "name": "wallLengthG",
-              "type": "number",
-              "label": "Wandlänge g (in Metern)",
-              "required": false,
-              "dependsOn": {
-                "field": "buildingShape",
-                "value": ["uForm"]
-              },
-              "validation": {
-                "min": 0,
-                "message": "Wandlänge muss positiv sein"
-              }
-            },
-            {
-              "name": "wallLengthH",
-              "type": "number",
-              "label": "Wandlänge h (in Metern)",
-              "required": false,
-              "dependsOn": {
-                "field": "buildingShape",
-                "value": ["uForm"]
-              },
-              "validation": {
-                "min": 0,
-                "message": "Wandlänge muss positiv sein"
-              }
-            },
-            {
               "name": "buildingAttachment",
               "type": "select",
               "label": "Anbau an Gebäudeseiten?",
