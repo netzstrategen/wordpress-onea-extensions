@@ -7,7 +7,7 @@
       "title": "Gebäudeinformationen",
       "fieldGroups": [
         {
-          "title": "Gebäudeart & Wohneinheiten",
+          "title": "Gebäudeaufbau",
           "fields": [
             {
               "name": "buildingType",
@@ -55,8 +55,8 @@
               "label": "Wohnfläche in m²",
               "required": true,
               "validation": {
-                "min": 1,
-                "message": "Wohnfläche muss mindestens 1 m² betragen"
+                "min": 50,
+                "message": "Wohnfläche muss mindestens 50 m² betragen - Kein Energieausweis notwendig"
               }
             },
             {
@@ -252,45 +252,45 @@
             {
               "name": "windowOrientationNorth",
               "type": "number",
-              "label": "Fensterausrichtung Nord (m²)",
-              "required": false,
-              "tooltip": "Gesamtfensterfläche in Quadratmetern Nordseite",
+              "label": "Gesamtfensterfläche in Quadratmetern Gebäude-Nordseite",
+              "required": true,
+              "tooltip": "Bitte summieren Sie die Fensterflächen der angegebenen Himmelsrichtung des Gebäudes. Sollte die angegebene Seite angebaut sein, tragen Sie bitte entsprechend \"0\" ein.",
               "validation": {
                 "min": 0,
-                "message": "Fläche muss positiv sein"
+                "message": "Fläche muss positiv sein oder 0"
               }
             },
             {
               "name": "windowOrientationEast",
               "type": "number",
-              "label": "Fensterausrichtung Ost (m²)",
-              "required": false,
-              "tooltip": "Gesamtfensterfläche in Quadratmetern Ostseite",
+              "label": "Gesamtfensterfläche in Quadratmetern Gebäude-Ostseite",
+              "required": true,
+              "tooltip": "Bitte summieren Sie die Fensterflächen der angegebenen Himmelsrichtung des Gebäudes. Sollte die angegebene Seite angebaut sein, tragen Sie bitte entsprechend \"0\" ein.",
               "validation": {
                 "min": 0,
-                "message": "Fläche muss positiv sein"
+                "message": "Fläche muss positiv sein oder 0"
               }
             },
             {
               "name": "windowOrientationSouth",
               "type": "number",
-              "label": "Fensterausrichtung Süd (m²)",
-              "required": false,
-              "tooltip": "Gesamtfensterfläche in Quadratmetern Südseite",
+              "label": "Gesamtfensterfläche in Quadratmetern Gebäude-Südseite",
+              "required": true,
+              "tooltip": "Bitte summieren Sie die Fensterflächen der angegebenen Himmelsrichtung des Gebäudes. Sollte die angegebene Seite angebaut sein, tragen Sie bitte entsprechend \"0\" ein.",
               "validation": {
                 "min": 0,
-                "message": "Fläche muss positiv sein"
+                "message": "Fläche muss positiv sein oder 0"
               }
             },
             {
               "name": "windowOrientationWest",
               "type": "number",
-              "label": "Fensterausrichtung West (m²)",
-              "required": false,
-              "tooltip": "Gesamtfensterfläche in Quadratmetern Westseite",
+              "label": "Gesamtfensterfläche in Quadratmetern Gebäude-Westseite",
+              "required": true,
+              "tooltip": "Bitte summieren Sie die Fensterflächen der angegebenen Himmelsrichtung des Gebäudes. Sollte die angegebene Seite angebaut sein, tragen Sie bitte entsprechend \"0\" ein.",
               "validation": {
                 "min": 0,
-                "message": "Fläche muss positiv sein"
+                "message": "Fläche muss positiv sein oder 0"
               }
             },
             {
@@ -632,7 +632,7 @@
               "label": "Gebäudeform",
               "placeholder": "Bitte wählen...",
               "required": true,
-              "tooltip": "Bitte wählen Sie die passende Gebäudeform und tragen Sie die zugehörigen Wandlängen in Metern ein. Nicht zutreffende Felder können leer bleiben.",
+              "tooltip": "Bitte wählen Sie die passende Gebäudeform und tragen Sie die zugehörigen Wandlängen in Metern ein.",
               "options": [
                 {
                   "value": "rechteck",
@@ -661,6 +661,7 @@
               "type": "file",
               "label": "Grundriss hochladen",
               "required": false,
+              "tooltip": "Wenn Ihr Gebäude von den oben gezeigten Gebäudeformen abweicht, laden Sie bitte Ihren Gebäudegrundriss hoch",
               "accept": "image/*,application/pdf"
             },
             {
@@ -782,7 +783,7 @@
             {
               "name": "sideAOrientation",
               "type": "select",
-              "label": "Himmelsrichtung Seite A",
+              "label": "Himmelsrichtung Seite a",
               "placeholder": "Bitte wählen...",
               "required": true,
               "options": [
@@ -1405,7 +1406,7 @@
               "name": "windowPhoto",
               "type": "file",
               "label": "Fenster",
-              "required": false,
+              "required": true,
               "tooltip": "Zeigt die Art des Fensters sowie den Einbau in die Außenwand",
               "accept": "image/*"
             },
@@ -1413,7 +1414,7 @@
               "name": "exteriorWallPhoto",
               "type": "file",
               "label": "Außenwand",
-              "required": false,
+              "required": true,
               "tooltip": "Zeigt die Außenwand mit eventueller Außenwanddämmung",
               "accept": "image/*"
             },
@@ -1441,8 +1442,7 @@
                 { "value": "vermietung", "label": "Vermietung" },
                 {
                   "value": "modernisierung",
-                  "label": "Modernisierung",
-                  "disabled": true
+                  "label": "Modernisierung"
                 },
                 { "value": "sonstiges", "label": "Sonstiges" }
               ]
