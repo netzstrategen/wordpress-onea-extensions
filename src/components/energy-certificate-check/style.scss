@@ -64,10 +64,6 @@
   margin-top: 2rem;
 }
 
-.back-button:hover {
-  background-color: #9dd2a1 !important;
-  border-color: #9dd2a1 !important;
-}
 /* Results Styles */
 .energy-certificate-results {
   width: 100%;
@@ -167,29 +163,78 @@
 }
 
 .certificate-card {
-  background: #fff;
-  border: 3px solid #e5e5e5;
+  background: #f5f5f5 !important;
+  outline: 3px solid #e5e5e5 !important;
   border-radius: 0.625rem;
-  padding: 1.5rem 1.25rem;
+  padding: calc(1.5rem + 3px) calc(1.25rem + 3px);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
   height: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.certificate-card .card-title,
+.certificate-card .price-amount,
+.certificate-card .feature-item {
+  color: #1a1a1a !important;
 }
 
 .certificate-card.recommended {
-  background: #c8e6ca !important;
-  border-color: #9dd2a1 !important;
-  border-width: 3px !important;
-  box-shadow: 0 10px 30px rgba(200, 217, 174, 0.25) !important;
-  transform: scale(1);
+  outline: none !important;
+  position: relative;
+  isolation: isolate;
+}
+
+.certificate-card.recommended::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 0.625rem;
+  background: linear-gradient(
+    90deg,
+    #ff6b6b,
+    #feca57,
+    #48dbfb,
+    #1dd1a1,
+    #ff9ff3,
+    #54a0ff,
+    #ff6b6b
+  );
+  background-size: 300% 300%;
+  animation: borderFlow 10s linear infinite;
+  z-index: -1;
+}
+
+.certificate-card.recommended::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
+  z-index: -1;
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
 }
 
 .certificate-card.recommended .card-title,
 .certificate-card.recommended .price-amount,
 .certificate-card.recommended .feature-item {
-  color: #2d3319 !important;
+  color: #1a1a1a !important;
 }
 
 .card-header {
@@ -228,7 +273,7 @@
 }
 
 .certificate-card.recommended .price-note {
-  color: #2d3319 !important;
+  color: #666 !important;
 }
 
 .card-features {
@@ -291,7 +336,8 @@
   text-align: center;
 }
 
-.reset-button {
+.reset-button,
+.back-button {
   background: #f5f5f5;
   border: 2px solid #e5e5e5;
   color: #1a1a1a;
