@@ -54,6 +54,7 @@ export interface TextField extends BaseField {
 
 export interface NumberField extends BaseField {
   type: "number";
+  step?: number;
 }
 
 export interface SelectField extends BaseField {

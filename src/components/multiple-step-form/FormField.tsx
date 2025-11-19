@@ -162,6 +162,7 @@ function renderFieldInput(
           {...formField}
           type="number"
           placeholder={field.placeholder}
+          step="any"
           onChange={(e) => {
             const value = e.target.value;
             formField.onChange(value === "" ? "" : Number(value));
