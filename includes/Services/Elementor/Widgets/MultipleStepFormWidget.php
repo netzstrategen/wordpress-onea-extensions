@@ -97,6 +97,63 @@ class MultipleStepFormWidget extends Widget_Base {
 		);
 
 		$this->add_control(
+			'building_shape_images_heading',
+			[
+				'label'     => __('Building Shape Images', 'wp-onea-extensions'),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'rechteck_image',
+			[
+				'label'       => __('Rectangle Building Image', 'wp-onea-extensions'),
+				'type'        => \Elementor\Controls_Manager::MEDIA,
+				'default'     => [
+					'url' => '',
+				],
+				'description' => __('Upload image for rectangle-shaped buildings', 'wp-onea-extensions'),
+			]
+		);
+
+		$this->add_control(
+			'lform_image',
+			[
+				'label'       => __('L-Form Building Image', 'wp-onea-extensions'),
+				'type'        => \Elementor\Controls_Manager::MEDIA,
+				'default'     => [
+					'url' => '',
+				],
+				'description' => __('Upload image for L-shaped buildings', 'wp-onea-extensions'),
+			]
+		);
+
+		$this->add_control(
+			'tform_image',
+			[
+				'label'       => __('T-Form Building Image', 'wp-onea-extensions'),
+				'type'        => \Elementor\Controls_Manager::MEDIA,
+				'default'     => [
+					'url' => '',
+				],
+				'description' => __('Upload image for T-shaped buildings', 'wp-onea-extensions'),
+			]
+		);
+
+		$this->add_control(
+			'uform_image',
+			[
+				'label'       => __('U-Form Building Image', 'wp-onea-extensions'),
+				'type'        => \Elementor\Controls_Manager::MEDIA,
+				'default'     => [
+					'url' => '',
+				],
+				'description' => __('Upload image for U-shaped buildings', 'wp-onea-extensions'),
+			]
+		);
+
+		$this->add_control(
 			'form_config',
 			[
 				'label'       => __('Form Configuration (JSON)', 'wp-onea-extensions'),
@@ -174,12 +231,21 @@ class MultipleStepFormWidget extends Widget_Base {
 		// Generate nonce for REST API authentication.
 		$nonce = wp_create_nonce('wp_rest');
 
+		// Get building shape images.
+		$building_images = [
+			'rechteck' => ! empty($settings['rechteck_image']['url']) ? $settings['rechteck_image']['url'] : '',
+			'lForm'    => ! empty($settings['lform_image']['url']) ? $settings['lform_image']['url'] : '',
+			'tForm'    => ! empty($settings['tform_image']['url']) ? $settings['tform_image']['url'] : '',
+			'uForm'    => ! empty($settings['uform_image']['url']) ? $settings['uform_image']['url'] : '',
+		];
+
 		// Prepare props for React component.
 		$props = [
-			'componentId' => $this->get_id(),
-			'formConfig'  => $form_config,
-			'productId'   => ! empty($settings['product_id']) ? $settings['product_id'] : '',
-			'nonce'       => $nonce,
+			'componentId'     => $this->get_id(),
+			'formConfig'      => $form_config,
+			'productId'       => ! empty($settings['product_id']) ? $settings['product_id'] : '',
+			'nonce'           => $nonce,
+			'buildingImages'  => $building_images,
 		];
 
 		// Render container for React app.
