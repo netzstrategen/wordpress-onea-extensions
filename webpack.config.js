@@ -9,6 +9,11 @@ module.exports = {
       "src/components/multiple-step-form",
       "index.tsx"
     ),
+    "components/energy-certificate-check/index": path.resolve(
+      process.cwd(),
+      "src/components/energy-certificate-check",
+      "index.tsx"
+    ),
     // Add more components here:
     // 'components/another-component/index': path.resolve(process.cwd(), 'src/components/another-component', 'index.tsx'),
   },
