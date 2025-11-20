@@ -40,8 +40,8 @@ function plugin(): Plugin {
  * @return void
  */
 function onea_log(string $message, string $level = 'INFO'): void {
-	// Only log if WP_DEBUG_LOG is enabled.
-	if (! defined('WP_DEBUG_LOG') || ! WP_DEBUG_LOG) {
+	// Only log if ONEA_DEBUG_LOG is enabled.
+	if (! defined('ONEA_DEBUG_LOG') || ! ONEA_DEBUG_LOG) {
 		return;
 	}
 

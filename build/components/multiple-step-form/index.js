@@ -31440,9 +31440,11 @@ const FormField = ({
   field,
   form,
   allFormValues,
-  currentStepConfig
+  currentStepConfig,
+  buildingImages
 }) => {
   const consumptionUnit = (0,_utils_consumption_fields__WEBPACK_IMPORTED_MODULE_8__.getConsumptionFieldUnit)(field.name, allFormValues, currentStepConfig);
+  const [isTooltipOpen, setIsTooltipOpen] = react__WEBPACK_IMPORTED_MODULE_0___default().useState(false);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormField, {
     control: form.control,
     name: field.name,
@@ -31450,8 +31452,7 @@ const FormField = ({
       field: formField
     }) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormItem, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormLabel, {
-        children: [field.label, field.required && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("span", {
-          className: "text-red-500 ml-1",
+        children: [field.label, field.required && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), {
           children: "*"
         }), consumptionUnit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
           className: "consumption-unit text-muted-foreground font-normal",
@@ -31459,10 +31460,27 @@ const FormField = ({
         }), field.tooltip && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.TooltipProvider, {
           delayDuration: 300,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.Tooltip, {
+            open: isTooltipOpen,
+            onOpenChange: setIsTooltipOpen,
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.TooltipTrigger, {
               asChild: true,
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
                 className: "tooltip-trigger",
+                role: "button",
+                tabIndex: 0,
+                "aria-label": "Mehr Informationen anzeigen",
+                onClick: e => {
+                  e.preventDefault();
+                  setIsTooltipOpen(!isTooltipOpen);
+                },
+                onKeyDown: e => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setIsTooltipOpen(!isTooltipOpen);
+                  }
+                },
+                onMouseEnter: () => setIsTooltipOpen(true),
+                onMouseLeave: () => setIsTooltipOpen(false),
                 children: "i"
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_tooltip__WEBPACK_IMPORTED_MODULE_6__.TooltipContent, {
@@ -31474,14 +31492,14 @@ const FormField = ({
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormControl, {
-        children: renderFieldInput(field, formField, allFormValues)
+        children: renderFieldInput(field, formField, allFormValues, buildingImages)
       }), field.description && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormDescription, {
         children: field.description
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_form__WEBPACK_IMPORTED_MODULE_1__.FormMessage, {})]
     })
   });
 };
-function renderFieldInput(field, formField, allFormValues) {
+function renderFieldInput(field, formField, allFormValues, buildingImages) {
   // Check if this is the numberOfUnits field and determine if it should be disabled
   const isNumberOfUnitsField = field.name === "numberOfUnits";
   const buildingType = allFormValues?.buildingType;
@@ -31508,6 +31526,7 @@ function renderFieldInput(field, formField, allFormValues) {
         ...formField,
         type: "number",
         placeholder: field.placeholder,
+        step: "any",
         onChange: e => {
           const value = e.target.value;
           formField.onChange(value === "" ? "" : Number(value));
@@ -31537,19 +31556,78 @@ function renderFieldInput(field, formField, allFormValues) {
               placeholder: field.placeholder || "Bitte auswählen..."
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectContent, {
-            children: field.options && field.options.length > 0 ? field.options.map(option => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
-              value: option.value,
-              disabled: option.disabled,
-              children: [option.label, option.unit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
-                className: "text-muted-foreground",
-                children: [" ", "(", option.unit, ")"]
-              })]
-            }, option.value)) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+            children: field.options && field.options.length > 0 ? field.options.map(option => {
+              // Check if option should be disabled based on business logic
+              let isDisabled = option.disabled || false;
+
+              // Special logic: if this is the fuelType field and heatingSystemType is "fernheizung"
+              // only allow fernwaermeKWK and fernwaermeHeizwerk
+              if (field.name === "fuelType" && allFormValues?.heatingSystemType === "fernheizung") {
+                const allowedFuels = ["fernwaermeKWK", "fernwaermeHeizwerk"];
+                if (!allowedFuels.includes(option.value)) {
+                  isDisabled = true;
+                }
+              }
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
+                value: option.value,
+                disabled: isDisabled,
+                children: [option.label, option.unit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
+                  className: "text-muted-foreground",
+                  children: [" ", "(", option.unit, ")"]
+                })]
+              }, option.value);
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_ui_select__WEBPACK_IMPORTED_MODULE_3__.SelectItem, {
               value: "no-options",
               disabled: true,
               children: "Keine Optionen verf\xFCgbar"
             })
           })]
+        });
+      }
+      return null;
+    case "image-select":
+      if (field.type === "image-select") {
+        const imageMap = {
+          rechteck: buildingImages?.rechteck?.trim() || "",
+          lForm: buildingImages?.lForm?.trim() || "",
+          tForm: buildingImages?.tForm?.trim() || "",
+          uForm: buildingImages?.uForm?.trim() || ""
+        };
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+          className: "grid grid-cols-2 gap-4",
+          children: field.options.map(option => {
+            const isSelected = formField.value === option.value;
+            const imageKey = option.image || option.value;
+            const imageSrc = imageMap[imageKey];
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+              onClick: () => formField.onChange(option.value),
+              className: `
+                    relative cursor-pointer rounded-lg border-2 transition-all
+                    ${isSelected ? "border-primary shadow-md" : "border-gray-300 hover:border-gray-400 hover:shadow-sm"}
+                  `,
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                className: "w-full overflow-hidden rounded-md bg-white",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("img", {
+                  src: imageSrc,
+                  alt: option.label,
+                  className: "h-full w-full object-contain"
+                })
+              }), isSelected && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
+                className: "absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("svg", {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  className: "h-4 w-4",
+                  viewBox: "0 0 20 20",
+                  fill: "currentColor",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("path", {
+                    fillRule: "evenodd",
+                    d: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
+                    clipRule: "evenodd"
+                  })
+                })
+              })]
+            }, option.value);
+          })
         });
       }
       return null;
@@ -31862,7 +31940,8 @@ const MultiStepForm = ({
   formConfig,
   componentId,
   productId,
-  nonce
+  nonce,
+  buildingImages
 }) => {
   // Inject dynamic billing period options into form config
   const config = (0,_hooks_useBillingPeriodOptions__WEBPACK_IMPORTED_MODULE_7__.useBillingPeriodOptions)(formConfig);
@@ -31921,7 +32000,9 @@ const MultiStepForm = ({
     defaultValues: initialData.values,
     mode: "onChange",
     // Validate on change for instant feedback
-    reValidateMode: "onChange" // Continue validating on change
+    reValidateMode: "onChange",
+    // Continue validating on change
+    criteriaMode: "all" // Show all validation errors at once (required + custom validations)
   });
 
   // Handle automatic calculations (billing periods, number of units)
@@ -32026,7 +32107,8 @@ const MultiStepForm = ({
                     field: field,
                     form: form,
                     allFormValues: allFormValues,
-                    currentStepConfig: currentStepConfig
+                    currentStepConfig: currentStepConfig,
+                    buildingImages: buildingImages
                   }, field.name);
                 })
               })]
