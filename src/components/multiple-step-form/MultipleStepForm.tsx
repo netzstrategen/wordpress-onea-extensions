@@ -13,6 +13,7 @@ import { useFormPersistence } from "./hooks/useFormPersistence";
 import { useBillingPeriodOptions } from "./hooks/useBillingPeriodOptions";
 import { useFormAutoCalculations } from "./hooks/useFormAutoCalculations";
 import { useFormNavigation } from "./hooks/useFormNavigation";
+import { useResetDependentFields } from "./hooks/useResetDependentFields";
 import { StepIndicator } from "./StepIndicator";
 import { FormField } from "./FormField";
 import { FormSummary } from "./FormSummary";
@@ -85,6 +86,14 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
     allFormValues,
     setAllFormValues,
     saveData,
+  });
+
+  // Reset dependent fields when their parent field value changes
+  useResetDependentFields({
+    form,
+    config,
+    isInitialized,
+    setAllFormValues,
   });
 
   // Handle navigation (next, previous, step click, reset)
