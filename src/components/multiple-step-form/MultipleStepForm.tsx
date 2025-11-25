@@ -47,7 +47,8 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({
       // Merge schema defaults with saved data (saved data takes precedence)
       return {
         values: { ...schemaDefaultValues, ...savedData.values },
-        step: savedData.currentStep,
+        //TODO: remove the step from the localstorage logic
+        step: 0,
       };
     }
     // Use schema defaults if no saved data

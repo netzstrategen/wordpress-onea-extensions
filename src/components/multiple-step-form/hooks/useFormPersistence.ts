@@ -36,8 +36,22 @@ export function useFormPersistence({
       if (!enabled) return;
 
       try {
+        // Filter out file objects and file metadata - they cannot be properly stored in localStorage
+        const serializableValues: FormValues = {};
+        for (const [key, value] of Object.entries(values)) {
+          // Skip File objects and file metadata
+          if (value instanceof File || value instanceof FileList) {
+            continue;
+          }
+          // Skip objects that look like file metadata from localStorage
+          if (value && typeof value === "object" && "_isFile" in value) {
+            continue;
+          }
+          serializableValues[key] = value;
+        }
+
         const dataToSave = {
-          values,
+          values: serializableValues,
           currentStep,
           timestamp: Date.now(),
         };
