@@ -31,11 +31,11 @@ class FormSubmissionService extends AbstractService {
 	protected ?CartService $cart_service = null;
 
 	/**
-	 * Maximum file size in bytes (5MB).
+	 * Maximum file size in bytes (40MB).
 	 *
 	 * @var int
 	 */
-	protected int $max_file_size = 5242880;
+	protected int $max_file_size = 41943040;
 
 	/**
 	 * Allowed file MIME types.

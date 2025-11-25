@@ -367,8 +367,8 @@ function renderFieldInput(
 
     case "file":
       if (field.type === "file") {
-        // Maximum file size: 5MB (backend limit is 5MB)
-        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+        // Maximum file size: 40MB (backend limit is 40MB)
+        const MAX_FILE_SIZE = 40 * 1024 * 1024; // 40MB in bytes
 
         // Check if we have file metadata from localStorage
         const fileMetadata = formField.value?._isFile ? formField.value : null;
