@@ -367,6 +367,12 @@ function renderFieldInput(
 
     case "file":
       if (field.type === "file") {
+        // Maximum file size: 5MB (backend limit is 5MB)
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+
+        // Check if we have file metadata from localStorage
+        const fileMetadata = formField.value?._isFile ? formField.value : null;
+
         return (
           <Input
             type="file"
@@ -374,6 +380,24 @@ function renderFieldInput(
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
+                // Validate file size on client side
+                if (file.size > MAX_FILE_SIZE) {
+                  // Set an error - we'll use form.setError to show proper validation
+                  alert(
+                    `Datei ist zu groß. Maximale Dateigröße: ${(
+                      MAX_FILE_SIZE /
+                      1024 /
+                      1024
+                    ).toFixed(0)}MB. Ihre Datei: ${(
+                      file.size /
+                      1024 /
+                      1024
+                    ).toFixed(2)}MB`
+                  );
+                  e.target.value = ""; // Clear the input
+                  return;
+                }
+
                 // Store file with metadata that can be serialized
                 const fileWithMeta = Object.assign(file, {
                   _fileName: file.name,
