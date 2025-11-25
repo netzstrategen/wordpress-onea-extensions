@@ -11,6 +11,7 @@ namespace Netzstrategen\Onea\Providers;
 use Netzstrategen\Onea\Contracts\AbstractServiceProvider;
 use Netzstrategen\Onea\Services\WooCommerce\CartService;
 use Netzstrategen\Onea\Services\WooCommerce\OrderMetaService;
+use Netzstrategen\Onea\Services\WooCommerce\PdfInvoiceService;
 
 /**
  * WooCommerce Service Provider
@@ -25,8 +26,9 @@ class WooCommerceServiceProvider extends AbstractServiceProvider {
 	 * @var array<string, string>
 	 */
 	protected array $services = [
-		'woocommerce.cart'       => CartService::class,
-		'woocommerce.order_meta' => OrderMetaService::class,
+		'woocommerce.cart'        => CartService::class,
+		'woocommerce.order_meta'  => OrderMetaService::class,
+		'woocommerce.pdf_invoice' => PdfInvoiceService::class,
 	];
 
 	/**
