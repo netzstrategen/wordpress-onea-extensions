@@ -8,7 +8,7 @@ import "./style.scss";
 
 export const EnergyCertificateCheck: React.FC = () => {
   const [currentQuestionId, setCurrentQuestionId] =
-    useState<string>("isNewBuilding");
+    useState<string>("numberOfUnits");
   const [answers, setAnswers] = useState<UserAnswers>({});
   const [questionHistory, setQuestionHistory] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -51,7 +51,7 @@ export const EnergyCertificateCheck: React.FC = () => {
   };
 
   const handleReset = () => {
-    setCurrentQuestionId("isNewBuilding");
+    setCurrentQuestionId("numberOfUnits");
     setAnswers({});
     setQuestionHistory([]);
     setShowResults(false);

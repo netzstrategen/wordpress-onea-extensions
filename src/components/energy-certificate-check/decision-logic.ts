@@ -7,90 +7,81 @@ export function determineCertificateType(
   answers: UserAnswers
 ): CertificateRecommendation {
   const {
-    isNewBuilding,
-    buildingType,
+    numberOfUnits,
     buildingYear,
     hasExtensiveRenovation,
     hasConsumptionData,
   } = answers;
 
-  // New buildings must use Bedarfsausweis
-  if (isNewBuilding === "ja") {
+  // 1-4 units AND before 1978 = Bedarfsausweis mandatory
+  if (numberOfUnits === "1-4" && buildingYear === "before-1978") {
     return {
       recommended: "bedarfsausweis",
       canChoose: false,
       reasons: [
-        "Für Neubauten ist gesetzlich ein Bedarfsausweis vorgeschrieben.",
-        "Der Bedarfsausweis basiert auf der Gebäudesubstanz und geplanten Technik.",
-      ],
-    };
-  }
-
-  // Buildings with 5+ units can choose
-  if (buildingType === "fuenf-plus") {
-    return {
-      recommended: "bedarfsausweis",
-      canChoose: true,
-      reasons: [
-        "Bei Gebäuden mit 5 oder mehr Wohneinheiten können Sie zwischen beiden Ausweisarten wählen.",
-        "Wir empfehlen den Bedarfsausweis aufgrund der größeren Aussagekraft.",
-      ],
-    };
-  }
-
-  // Buildings built before 1977 with up to 4 units must use Bedarfsausweis
-  if (buildingYear === "before-1977") {
-    return {
-      recommended: "bedarfsausweis",
-      canChoose: false,
-      reasons: [
-        "Für Gebäude mit bis zu 4 Wohneinheiten, die vor 1977 gebaut wurden, ist ein Bedarfsausweis Pflicht.",
+        "Für Gebäude mit 1 bis 4 Wohneinheiten, die vor 1978 gebaut wurden, ist ein Bedarfsausweis Pflicht.",
         "Dies gilt gemäß der Energieeinsparverordnung (EnEV) und dem Gebäudeenergiegesetz (GEG).",
       ],
     };
   }
 
-  // Buildings from 1977+ with extensive renovation can choose
-  if (buildingYear === "1977-nach" && hasExtensiveRenovation === "ja") {
+  // All other combinations with 1-4 units and 1978+ OR 5+ units = free choice
+  // Buildings from 1978+ with extensive renovation can choose
+  if (buildingYear === "1978+" && hasExtensiveRenovation === "ja") {
     return {
       recommended: "bedarfsausweis",
       canChoose: true,
       reasons: [
-        "Durch die umfassende Sanierung können Sie zwischen beiden Ausweisarten wählen.",
-        "Der Bedarfsausweis zeigt die Qualität der Sanierung besser auf.",
+        "Für Ihr Gebäude können Sie zwischen beiden Ausweisarten wählen.",
+        "Wir empfehlen den Bedarfsausweis aufgrund der höheren energetischen Aussagekraft.",
       ],
     };
   }
 
-  // Buildings from 1977+ without extensive renovation
-  if (buildingYear === "1977-nach" && hasExtensiveRenovation === "nein") {
+  // Buildings from 1978+ without extensive renovation
+  if (buildingYear === "1978+" && hasExtensiveRenovation === "nein") {
     // Has consumption data - can choose
     if (hasConsumptionData === "ja") {
       return {
-        recommended: "verbrauchsausweis",
+        recommended: "bedarfsausweis",
         canChoose: true,
         reasons: [
-          "Mit vollständigen Verbrauchsdaten können Sie zwischen beiden Ausweisarten wählen.",
-          "Der Verbrauchsausweis ist günstiger und schneller verfügbar.",
+          "Für Ihr Gebäude können Sie zwischen beiden Ausweisarten wählen.",
+          "Wir empfehlen den Bedarfsausweis aufgrund der höheren energetischen Aussagekraft.",
         ],
       };
     }
 
-    // No consumption data - must use Bedarfsausweis
+    // No consumption data - can still choose (recommendation applies)
     return {
       recommended: "bedarfsausweis",
-      canChoose: false,
+      canChoose: true,
       reasons: [
-        "Ohne vollständige Verbrauchsdaten ist ein Bedarfsausweis erforderlich.",
-        "Der Bedarfsausweis benötigt keine historischen Verbrauchswerte.",
+        "Für Ihr Gebäude können Sie zwischen beiden Ausweisarten wählen.",
+        "Wir empfehlen den Bedarfsausweis aufgrund der höheren energetischen Aussagekraft.",
       ],
     };
   }
 
-  // Default fallback
+  // 5+ units with before 1978 - free choice
+  if (numberOfUnits === "5+" && buildingYear === "before-1978") {
+    return {
+      recommended: "bedarfsausweis",
+      canChoose: true,
+      reasons: [
+        "Für Ihr Gebäude können Sie zwischen beiden Ausweisarten wählen.",
+        "Wir empfehlen den Bedarfsausweis aufgrund der höheren energetischen Aussagekraft.",
+      ],
+    };
+  }
+
+  // Default fallback - free choice with Bedarfsausweis recommendation
   return {
     recommended: "bedarfsausweis",
     canChoose: true,
-    reasons: ["Basierend auf Ihren Angaben empfehlen wir den Bedarfsausweis."],
+    reasons: [
+      "Für Ihr Gebäude können Sie zwischen beiden Ausweisarten wählen.",
+      "Wir empfehlen den Bedarfsausweis aufgrund der höheren energetischen Aussagekraft.",
+    ],
   };
 }
