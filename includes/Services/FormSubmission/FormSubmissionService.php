@@ -14,6 +14,8 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 
+use function Netzstrategen\Onea\onea_log;
+
 /**
  * Form Submission Service
  *
@@ -187,7 +189,22 @@ class FormSubmissionService extends AbstractService {
 	protected function validate_request(WP_REST_Request $request) {
 		// Check product ID.
 		$product_id = $request->get_param('product_id');
-		if (empty($product_id) || ! is_numeric($product_id) || absint($product_id) === 0) {
+		
+		// Convert string to integer if numeric string was sent.
+		$product_id_int = is_numeric($product_id) ? absint($product_id) : 0;
+		
+		if (empty($product_id) || $product_id_int === 0) {
+			// Log debug info for troubleshooting.
+			onea_log(
+				sprintf(
+					'Invalid product_id received. Type: %s, Value: %s, Request params: %s',
+					gettype($product_id),
+					var_export($product_id, true),
+					wp_json_encode($request->get_params())
+				),
+				'ERROR'
+			);
+			
 			return new WP_Error(
 				'missing_product_id',
 				__('Product ID is required and must be a valid number. Please configure a product ID in the Elementor widget settings.', 'wp-onea-extensions')
