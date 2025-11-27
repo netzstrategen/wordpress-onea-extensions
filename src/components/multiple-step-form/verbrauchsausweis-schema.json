@@ -1020,7 +1020,7 @@
               "name": "energyMeasures",
               "type": "checkbox",
               "label": "Energetische Maßnahmen",
-              "required": true,
+              "required": false,
               "validation": {
                 "message": "Bitte wählen Sie mindestens eine energetische Maßnahme aus"
               },
