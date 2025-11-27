@@ -1121,7 +1121,7 @@
               "label": "Inspektionspflichtige Klimaanlagen vorhanden?",
               "required": true,
               "defaultValue": "nein",
-              "tooltip": "Unterliegt die Klimaanlage einer Inspektionspflicht?",
+              "tooltip": "Klimaanlagen müssen regelmäßig energetisch geprüft werden, wenn sie Räume kühlen und mehr als 12 kW Leistung haben. Bitte nur eintragen, sofern zutreffend.",
               "dependsOn": {
                 "field": "hasAirConditioning",
                 "value": "ja"
