@@ -10,6 +10,7 @@ namespace Netzstrategen\Onea\Services\Elementor;
 
 use Netzstrategen\Onea\Contracts\AbstractService;
 use Netzstrategen\Onea\Services\Elementor\Widgets\MultipleStepFormWidget;
+use Netzstrategen\Onea\Services\Elementor\Widgets\EnergyCertificateCheckWidget;
 
 /**
  * Elementor Widgets Service
@@ -25,6 +26,7 @@ class ElementorWidgetsService extends AbstractService {
 	 */
 	private array $widgets = [
 		MultipleStepFormWidget::class,
+		EnergyCertificateCheckWidget::class,
 	];
 
 	/**
@@ -63,33 +65,58 @@ class ElementorWidgetsService extends AbstractService {
 		$plugin_dir = plugin_dir_path(__FILE__) . '../../../';
 		$plugin_url = plugin_dir_url(__FILE__) . '../../../';
 
-		$assets_file = $plugin_dir . 'build/components/multiple-step-form/index.asset.php';
+		// Multiple Step Form
+		$msf_assets_file = $plugin_dir . 'build/components/multiple-step-form/index.asset.php';
+		if (file_exists($msf_assets_file)) {
+			$msf_assets = include $msf_assets_file;
 
-		if (! file_exists($assets_file)) {
-			return;
+			$script_function = $enqueue ? 'wp_enqueue_script' : 'wp_register_script';
+			$style_function  = $enqueue ? 'wp_enqueue_style' : 'wp_register_style';
+
+			$script_function(
+				'onea-multiple-step-form',
+				$plugin_url . 'build/components/multiple-step-form/index.js',
+				$msf_assets['dependencies'],
+				$msf_assets['version'],
+				true
+			);
+
+			$msf_style_file = $plugin_dir . 'build/components/multiple-step-form/style-index.css';
+			if (file_exists($msf_style_file)) {
+				$style_function(
+					'onea-multiple-step-form',
+					$plugin_url . 'build/components/multiple-step-form/style-index.css',
+					[],
+					$msf_assets['version']
+				);
+			}
 		}
 
-		$assets = include $assets_file;
+		// Energy Certificate Check
+		$ecc_assets_file = $plugin_dir . 'build/components/energy-certificate-check/index.asset.php';
+		if (file_exists($ecc_assets_file)) {
+			$ecc_assets = include $ecc_assets_file;
 
-		$script_function = $enqueue ? 'wp_enqueue_script' : 'wp_register_script';
-		$style_function  = $enqueue ? 'wp_enqueue_style' : 'wp_register_style';
+			$script_function = $enqueue ? 'wp_enqueue_script' : 'wp_register_script';
+			$style_function  = $enqueue ? 'wp_enqueue_style' : 'wp_register_style';
 
-		$script_function(
-			'onea-multiple-step-form',
-			$plugin_url . 'build/components/multiple-step-form/index.js',
-			$assets['dependencies'],
-			$assets['version'],
-			true
-		);
-
-		$style_file = $plugin_dir . 'build/components/multiple-step-form/style-index.css';
-		if (file_exists($style_file)) {
-			$style_function(
-				'onea-multiple-step-form',
-				$plugin_url . 'build/components/multiple-step-form/style-index.css',
-				[],
-				$assets['version']
+			$script_function(
+				'onea-energy-certificate-check',
+				$plugin_url . 'build/components/energy-certificate-check/index.js',
+				$ecc_assets['dependencies'],
+				$ecc_assets['version'],
+				true
 			);
+
+			$ecc_style_file = $plugin_dir . 'build/components/energy-certificate-check/style-index.css';
+			if (file_exists($ecc_style_file)) {
+				$style_function(
+					'onea-energy-certificate-check',
+					$plugin_url . 'build/components/energy-certificate-check/style-index.css',
+					[],
+					$ecc_assets['version']
+				);
+			}
 		}
 	}
 
