@@ -1320,7 +1320,7 @@
             },
             {
               "name": "objectNumber",
-              "type": "number",
+              "type": "text",
               "label": "Hausnummer",
               "required": true
             },
