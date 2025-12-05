@@ -68,6 +68,8 @@ class OrderMetaService extends AbstractService {
 			return $formatted_meta;
 		}
 
+
+
 		// Only process product items.
 		if (! $order_item instanceof WC_Order_Item_Product) {
 			return $formatted_meta;
@@ -79,6 +81,11 @@ class OrderMetaService extends AbstractService {
 
 		if (empty($form_data)) {
 			return $formatted_meta;
+		}
+
+		// Skip during email sending (admin emails trigger is_admin() = true).
+		if (doing_action('woocommerce_email_order_details')) {
+			return [];
 		}
 
 		// Build ONEA meta entries in a fresh array.
