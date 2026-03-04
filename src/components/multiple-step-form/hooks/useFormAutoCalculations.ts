@@ -79,6 +79,44 @@ export function useFormAutoCalculations({
         };
         needsUpdate = true;
       }
+      // Handle electricity billing period auto-calculation
+      else if (
+        name === "electricityBillingPeriod1" &&
+        values.electricityBillingPeriod1
+      ) {
+        const period1Value = values.electricityBillingPeriod1;
+        const period2Value = calculatePreviousPeriod(period1Value, 1);
+        const period3Value = calculatePreviousPeriod(period1Value, 2);
+
+        // Use batch updates to prevent multiple re-renders
+        skipSave = true; // Don't save yet
+        setTimeout(() => {
+          form.setValue("electricityBillingPeriod2", period2Value, {
+            shouldValidate: false,
+            shouldDirty: false,
+          });
+          form.setValue("electricityBillingPeriod3", period3Value, {
+            shouldValidate: false,
+            shouldDirty: false,
+          });
+
+          // Now update state and save
+          const finalValues = {
+            ...allFormValuesRef.current,
+            electricityBillingPeriod1: period1Value,
+            electricityBillingPeriod2: period2Value,
+            electricityBillingPeriod3: period3Value,
+          };
+          setAllFormValues(finalValues);
+          saveData(finalValues, currentStep);
+        }, 0);
+
+        updatedValues = {
+          ...updatedValues,
+          electricityBillingPeriod1: period1Value,
+        };
+        needsUpdate = true;
+      }
       // Handle buildingType auto-set numberOfUnits
       else if (name === "buildingType" && values.buildingType) {
         const buildingType = values.buildingType;

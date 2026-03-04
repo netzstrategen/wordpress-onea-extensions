@@ -9,7 +9,7 @@ export function useBillingPeriodOptions(formConfig: FormConfig) {
   // Generate dynamic billing period options
   const billingPeriodOptions = useMemo(
     () => generateBillingPeriodOptions(),
-    []
+    [],
   );
 
   const config = useMemo(() => {
@@ -19,12 +19,18 @@ export function useBillingPeriodOptions(formConfig: FormConfig) {
     configCopy.steps.forEach((step) => {
       step.fieldGroups.forEach((group) => {
         group.fields.forEach((field) => {
-          if (field.name === "billingPeriod1" && field.type === "select") {
+          if (
+            (field.name === "billingPeriod1" ||
+              field.name === "electricityBillingPeriod1") &&
+            field.type === "select"
+          ) {
             (field as any).options = billingPeriodOptions;
           }
           if (
             (field.name === "billingPeriod2" ||
-              field.name === "billingPeriod3") &&
+              field.name === "billingPeriod3" ||
+              field.name === "electricityBillingPeriod2" ||
+              field.name === "electricityBillingPeriod3") &&
             field.type === "select"
           ) {
             (field as any).options = [];
