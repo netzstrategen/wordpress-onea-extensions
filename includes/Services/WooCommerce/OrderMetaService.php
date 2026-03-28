@@ -53,83 +53,98 @@ class OrderMetaService extends AbstractService {
 	}
 
 	/**
-	 * Format order item meta for display.
+	 * Format order item meta for display in admin.
 	 *
-	 * @param array          $formatted_meta Formatted meta data.
-	 * @param \WC_Order_Item $item           Order item object.
-	 * @return array Modified formatted meta data.
+	 * Transforms internal form data and uploaded files into displayable meta entries.
+	 * Only applies to admin area and product order items.
+	 *
+	 * @param array          $formatted_meta Existing formatted meta data from WooCommerce.
+	 * @param \WC_Order_Item $order_item     Order item object.
+	 * @return array Formatted meta data with ONEA fields.
 	 */
-	public function format_order_item_meta(array $formatted_meta, $item): array {
+	public function format_order_item_meta(array $formatted_meta, $order_item): array {
 		// Only show in admin area, not in emails or thank you page.
 		if (! is_admin()) {
 			return $formatted_meta;
 		}
 
+
+
 		// Only process product items.
-		if (! $item instanceof WC_Order_Item_Product) {
+		if (! $order_item instanceof WC_Order_Item_Product) {
 			return $formatted_meta;
 		}
 
 		// Get the hidden meta data.
-		$form_data = $item->get_meta('_onea_form_data', true);
-		$uploaded_files = $item->get_meta('_onea_uploaded_files', true);
+		$form_data = $order_item->get_meta('_onea_form_data', true);
+		$uploaded_files = $order_item->get_meta('_onea_uploaded_files', true);
 
 		if (empty($form_data)) {
 			return $formatted_meta;
 		}
 
-		// Add form fields to display.
-		foreach ($form_data as $key => $field) {
+		// Skip during email sending (admin emails trigger is_admin() = true).
+		if (doing_action('woocommerce_email_order_details')) {
+			return [];
+		}
 
+		// Build ONEA meta entries in a fresh array.
+		$onea_meta = [];
+
+		// Add form fields to display.
+		foreach ($form_data as $field_key => $field_data) {
 			// Skip file fields (they only have label, no value).
-			if (! isset($field['value'])) {
+			if (! isset($field_data['value'])) {
 				continue;
 			}
 
-			// Get label and value.
-			$label = $field['label'] ?? $key;
-			$value = $this->format_value_for_display($field['value']);
+			$field_label = $field_data['label'] ?? $field_key;
+			$field_value = $this->format_value_for_display($field_data['value']);
 
-			// Add to formatted meta.
-			$formatted_meta[] = (object) [
-				'key'           => $key,
-				'value'         => $value,
-				'display_key'   => $label,
-				'display_value' => $value,
+			$onea_meta[] = (object) [
+				'key'           => $field_key,
+				'value'         => $field_value,
+				'display_key'   => $field_label,
+				'display_value' => $field_value,
 			];
 		}
 
 		// Add uploaded files to display.
 		if (! empty($uploaded_files)) {
-			foreach ($uploaded_files as $field_name => $file_data) {
-				// Get field label from form_data.
-				$field_label = $form_data[ $field_name ]['label'] ?? $field_name;
+			foreach ($uploaded_files as $file_field_key => $file_attachment_ids) {
+				$file_field_label = $form_data[ $file_field_key ]['label'] ?? $file_field_key;
 
-				// Handle single file or array of files.
-				$file_ids = is_array($file_data) ? $file_data : [ $file_data ];
+				// Normalize to array for consistent handling.
+				$attachment_ids = is_array($file_attachment_ids) ? $file_attachment_ids : [ $file_attachment_ids ];
 
 				$file_links = [];
-				foreach ($file_ids as $attachment_id) {
-					$file_url = wp_get_attachment_url($attachment_id);
-					$file_name = basename(get_attached_file($attachment_id));
+				foreach ($attachment_ids as $attachment_id) {
+					$attachment_url = wp_get_attachment_url($attachment_id);
+					$attachment_filename = basename(get_attached_file($attachment_id));
 
-					if ($file_url && $file_name) {
-						$file_links[] = sprintf('<a href="%s" target="_blank">%s</a>', esc_url($file_url), esc_html($file_name));
+					if ($attachment_url && $attachment_filename) {
+						$file_links[] = sprintf(
+							'<a href="%s" target="_blank">%s</a>',
+							esc_url($attachment_url),
+							esc_html($attachment_filename)
+						);
 					}
 				}
 
 				if (! empty($file_links)) {
-					$formatted_meta[] = (object) [
-						'key'           => $field_name,
-						'value'         => implode(', ', $file_links),
-						'display_key'   => $field_label,
-						'display_value' => implode(', ', $file_links),
+					$file_links_html = implode(', ', $file_links);
+
+					$onea_meta[] = (object) [
+						'key'           => $file_field_key,
+						'value'         => $file_links_html,
+						'display_key'   => $file_field_label,
+						'display_value' => $file_links_html,
 					];
 				}
 			}
 		}
 
-		return $formatted_meta;
+		return $onea_meta;
 	}
 
 	/**
